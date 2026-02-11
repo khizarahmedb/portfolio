@@ -1,26 +1,72 @@
+import { profile } from "../content/portfolio";
+
 export default function ContactPage() {
   return (
-    <section className="space-y-6">
-      <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Contact</p>
-        <h1 className="text-2xl font-semibold text-white">Let’s connect</h1>
-        <p className="text-sm text-zinc-400">
-          I’m open to freelance and full-time opportunities.
+    <section className="page-stack">
+      <header className="hero-block compact">
+        <p className="hero-kicker">Contact</p>
+        <h1>Work With Me</h1>
+        <p className="hero-summary">
+          Open to engineering roles, consulting, and contract work where
+          full-stack product delivery meets marketing and business analytics.
+          I build systems that connect paid-media, commerce, and operational
+          data into decision-ready dashboards, reporting workflows, and
+          automation pipelines used by growth, finance, and leadership teams.
         </p>
       </header>
-      <div className="space-y-4">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-5">
-          <p className="text-sm text-zinc-300">Email</p>
-          <p className="text-base font-semibold text-white">hello@yourdomain.dev</p>
-        </div>
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-5">
-          <p className="text-sm text-zinc-300">Location</p>
-          <p className="text-base font-semibold text-white">Remote · EST/UTC-5</p>
-        </div>
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-5">
-          <p className="text-sm text-zinc-300">Response time</p>
-          <p className="text-base font-semibold text-white">Within 48 hours</p>
-        </div>
+
+      <div className="contact-grid">
+        <article className="contact-card contact-wide">
+          <h2>Business + Marketing Analytics Capability</h2>
+          <p className="skills-description">
+            Hands-on experience building D2C marketing data infrastructure:
+            PnL automation, daily and weekly performance reporting, attribution
+            indexing, forecasting pipelines, alerting systems, and executive
+            summaries that reduce manual reporting and improve decision speed.
+          </p>
+        </article>
+
+        <article className="contact-card">
+          <h2>Email</h2>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        </article>
+
+        <article className="contact-card">
+          <h2>Phone</h2>
+          <a href={`tel:${profile.phone.replace(/\s+/g, "")}`}>{profile.phone}</a>
+        </article>
+
+        <article className="contact-card">
+          <h2>LinkedIn</h2>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer">
+            View profile
+          </a>
+        </article>
+
+        <article className="contact-card">
+          <h2>GitHub</h2>
+          <a href={profile.github} target="_blank" rel="noreferrer">
+            View repositories
+          </a>
+        </article>
+
+        <article className="contact-card">
+          <h2>CV</h2>
+          <a href="/reports/khizar-ahmed-cv.pdf" target="_blank" rel="noreferrer">
+            Open resume PDF
+          </a>
+        </article>
+
+        <article className="contact-card">
+          <h2>Thesis Report</h2>
+          <a
+            href="/reports/thesis-report-khizar-ahmed.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open QA + Security report
+          </a>
+        </article>
       </div>
     </section>
   );

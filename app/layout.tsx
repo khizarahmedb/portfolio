@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import LayoutShell from "./components/LayoutShell";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "Khizar Ahmed | Software Developer",
+  title: "Khizar Ahmed | Portfolio",
   description:
-    "Portfolio and AI chat assistant for Khizar Ahmed, full-stack developer.",
+    "Portfolio of Khizar Ahmed: software engineering, automation, QA/security case studies, and production web builds.",
 };
 
 export default function RootLayout({
@@ -26,9 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-black text-zinc-100 antialiased`}
-      >
+      <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}>
         <LayoutShell>{children}</LayoutShell>
       </body>
     </html>

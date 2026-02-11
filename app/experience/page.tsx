@@ -1,48 +1,45 @@
-const experience = [
-  {
-    role: "Senior Software Engineer · Aurora Labs",
-    period: "2023 — Present",
-    summary:
-      "Led a platform rebuild, introduced typed API contracts, and coached a growing frontend team.",
-  },
-  {
-    role: "Full-Stack Engineer · Fieldstone",
-    period: "2021 — 2023",
-    summary:
-      "Built data ingestion pipelines and a unified insights dashboard for enterprise clients.",
-  },
-  {
-    role: "Frontend Engineer · Willow Studio",
-    period: "2019 — 2021",
-    summary:
-      "Shipped a design system and improved page performance across a multi-brand SaaS suite.",
-  },
-];
+import { education, workExperience } from "../content/portfolio";
 
 export default function ExperiencePage() {
   return (
-    <section className="space-y-6">
-      <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Experience</p>
-        <h1 className="text-2xl font-semibold text-white">Career highlights</h1>
-        <p className="text-sm text-zinc-400">
-          A quick timeline of the teams and outcomes I’ve contributed to.
+    <section className="page-stack">
+      <header className="hero-block compact">
+        <p className="hero-kicker">Experience</p>
+        <h1>Career Timeline</h1>
+        <p className="hero-summary">
+          Software, automation, and product delivery roles across agency,
+          startup, and growth environments, with strong ownership of marketing
+          analytics and business performance reporting.
         </p>
       </header>
-      <div className="grid gap-4">
-        {experience.map((item) => (
-          <div
-            key={item.role}
-            className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-5"
-          >
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-zinc-500">
-              <span>{item.period}</span>
+
+      <div className="experience-grid">
+        {workExperience.map((item) => (
+          <article key={`${item.company}-${item.period}`} className="experience-card">
+            <div className="experience-head">
+              <p>{item.period}</p>
+              <span>{item.location}</span>
             </div>
-            <h2 className="mt-2 text-lg font-semibold text-white">{item.role}</h2>
-            <p className="mt-2 text-sm text-zinc-400">{item.summary}</p>
-          </div>
+            <h2>{item.role}</h2>
+            <p className="experience-company">{item.company}</p>
+            <ul>
+              {item.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          </article>
         ))}
       </div>
+
+      <article className="card-block">
+        <div className="section-head">
+          <p className="section-kicker">Education</p>
+          <h2>{education.degree}</h2>
+        </div>
+        <p className="meta-line">{education.school}</p>
+        <p className="meta-line">Year: {education.year}</p>
+        <p className="meta-line">GPA: {education.gpa}</p>
+      </article>
     </section>
   );
 }
