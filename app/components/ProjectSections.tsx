@@ -11,6 +11,12 @@ function isExternalUrl(url: string) {
 }
 
 function ProjectPanel({ project }: { project: ProjectCaseStudy }) {
+  const disclosures =
+    project.disclosures ??
+    (project.confidentialityNote
+      ? [{ title: "Public-Safe Disclosure", detail: project.confidentialityNote }]
+      : []);
+
   return (
     <article className="project-panel" id={`${project.slug}-details`}>
       <div className="project-panel-grid">
@@ -113,10 +119,17 @@ function ProjectPanel({ project }: { project: ProjectCaseStudy }) {
         </section>
       ) : null}
 
-      {project.confidentialityNote ? (
-        <section className="confidentiality-note">
-          <h3>Public-Safe Disclosure</h3>
-          <p>{project.confidentialityNote}</p>
+      {disclosures.length > 0 ? (
+        <section className="disclosure-grid">
+          {disclosures.map((disclosure) => (
+            <article
+              key={`${project.slug}-${disclosure.title}`}
+              className="confidentiality-note"
+            >
+              <h3>{disclosure.title}</h3>
+              <p>{disclosure.detail}</p>
+            </article>
+          ))}
         </section>
       ) : null}
     </article>
@@ -133,7 +146,7 @@ export default function ProjectSections({
   defaultOpenSlug,
 }: ProjectSectionsProps) {
   const [openProjectSlug, setOpenProjectSlug] = useState<string | null>(
-    defaultOpenSlug ?? projects[0]?.slug ?? null
+    defaultOpenSlug ?? null
   );
 
   return (
@@ -164,11 +177,14 @@ export default function ProjectSections({
               </div>
               <div className="project-toggle-meta">
                 <span>{project.period}</span>
-                <span
-                  aria-hidden="true"
-                  className={`project-toggle-indicator ${isOpen ? "is-open" : ""}`}
-                >
-                  &gt;
+                <span className={`project-toggle-cta ${isOpen ? "is-open" : ""}`}>
+                  <span className="project-toggle-cta-label">Details</span>
+                  <span
+                    aria-hidden="true"
+                    className={`project-toggle-indicator ${isOpen ? "is-open" : ""}`}
+                  >
+                    &gt;
+                  </span>
                 </span>
               </div>
             </button>

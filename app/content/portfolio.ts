@@ -32,6 +32,10 @@ export type ProjectCaseStudy = {
   skillsUsed: string[];
   links: ExternalLink[];
   scriptUseCases?: ProjectScriptUseCase[];
+  disclosures?: Array<{
+    title: string;
+    detail: string;
+  }>;
   confidentialityNote?: string;
 };
 
@@ -234,8 +238,18 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "Remediation validation",
     ],
     links: [],
-    confidentialityNote:
-      "Sensitive system identifiers and payload details are intentionally withheld. I can share additional context with interested contractors and employers on request.",
+    disclosures: [
+      {
+        title: "Thesis Report Availability",
+        detail:
+          "I can share thesis report details with interested contractors and employers on request.",
+      },
+      {
+        title: "Non-Identifiable Disclosure",
+        detail:
+          "Any shared thesis material excludes company-identifying details, system identifiers, and sensitive payload data.",
+      },
+    ],
   },
   {
     slug: "d2c-marketing-automation",
@@ -644,7 +658,6 @@ export const skills = {
     "PHP",
     "SQL",
     "Bash",
-    "Go",
     "Java",
   ],
   frontend: [
@@ -688,7 +701,6 @@ export const skills = {
   devopsAndInfra: [
     "Docker",
     "Docker Compose",
-    "Kubernetes",
     "Nginx reverse proxy",
     "PM2 process management",
     "Linux server management",
