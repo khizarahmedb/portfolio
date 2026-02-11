@@ -16,7 +16,6 @@ const externalLinks = [
   { href: profile.linkedin, label: "LinkedIn" },
   { href: profile.github, label: "GitHub" },
   { href: "/reports/khizar-ahmed-cv.pdf", label: "CV" },
-  { href: "/reports/thesis-report-khizar-ahmed.pdf", label: "Thesis Report" },
 ];
 
 function isExternalUrl(url: string) {

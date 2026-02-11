@@ -1,4 +1,5 @@
 import Sidebar from "./Sidebar";
+import SiteFooter from "./SiteFooter";
 
 type LayoutShellProps = {
   children: React.ReactNode;
@@ -10,7 +11,10 @@ export default function LayoutShell({ children }: LayoutShellProps) {
       <div className="app-noise" aria-hidden="true" />
       <div className="shell-wrap">
         <Sidebar />
-        <main className="content-card fade-up">{children}</main>
+        <main className="content-card fade-up">
+          {children}
+          <SiteFooter />
+        </main>
       </div>
     </div>
   );
