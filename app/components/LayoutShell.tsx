@@ -1,4 +1,5 @@
 import SiteFooter from "./SiteFooter";
+import ScrollEffects from "./ScrollEffects";
 import TopNav from "./TopNav";
 
 type LayoutShellProps = {
@@ -14,8 +15,12 @@ export default function LayoutShell({ children }: LayoutShellProps) {
         <span className="ambient-shape ambient-shape-b" />
         <span className="ambient-shape ambient-shape-c" />
       </div>
+      <ScrollEffects />
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <TopNav />
-      <main className="content-card fade-up">
+      <main id="main-content" className="content-card fade-up">
         {children}
         <SiteFooter />
       </main>

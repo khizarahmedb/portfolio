@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import {
   projectCaseStudies,
   type ProjectCaseStudy,
@@ -151,13 +151,20 @@ export default function ProjectSections({
 
   return (
     <div className="project-sections">
-      {projects.map((project) => {
+      {projects.map((project, index) => {
         const isOpen = openProjectSlug === project.slug;
+        const previewSkills = project.skillsUsed.slice(0, 4);
 
         return (
           <section
             key={project.slug}
             className={`project-section ${isOpen ? "is-open" : ""}`}
+            data-reveal="slide-up"
+            style={
+              {
+                "--reveal-delay": `${Math.min(index * 85, 380)}ms`,
+              } as CSSProperties
+            }
           >
             <button
               type="button"
@@ -174,6 +181,11 @@ export default function ProjectSections({
                 <p className="project-kicker">{project.projectType}</p>
                 <h2>{project.title}</h2>
                 <p className="project-summary">{project.summary}</p>
+                <div className="project-mini-chips" aria-hidden="true">
+                  {previewSkills.map((skill) => (
+                    <span key={`${project.slug}-${skill}`}>{skill}</span>
+                  ))}
+                </div>
               </div>
               <div className="project-toggle-meta">
                 <span>{project.period}</span>

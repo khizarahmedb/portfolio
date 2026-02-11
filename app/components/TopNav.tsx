@@ -25,13 +25,14 @@ export default function TopNav() {
           </Link>
 
           <nav className="top-nav-links" aria-label="Primary">
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={pathname === link.href ? "is-active" : ""}
               >
-                {link.label}
+                <span className="top-nav-channel">{`0${index}`.slice(-2)}</span>
+                <span>{link.label}</span>
               </Link>
             ))}
           </nav>
@@ -45,15 +46,20 @@ export default function TopNav() {
             </a>
           </div>
         </div>
+        <div className="top-nav-meta" aria-hidden="true">
+          <span>experimental mode</span>
+          <span>main feed online</span>
+        </div>
       </header>
 
       <nav className="mobile-dock" aria-label="Mobile navigation">
-        {navLinks.map((link) => (
+        {navLinks.map((link, index) => (
           <Link
             key={`dock-${link.href}`}
             href={link.href}
             className={pathname === link.href ? "is-active" : ""}
           >
+            <small>{`0${index}`.slice(-2)}</small>
             {link.label}
           </Link>
         ))}
