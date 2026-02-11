@@ -1687,3 +1687,437 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Windows desktop branch styles */
+
+.win-desktop {
+  position: relative;
+  min-height: 100vh;
+  color: #edf4ff;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(112, 151, 208, 0.3), transparent 42%),
+    radial-gradient(circle at 82% 6%, rgba(176, 111, 191, 0.28), transparent 36%),
+    linear-gradient(140deg, #2c4b72, #355377 46%, #2f4f77 100%);
+  overflow: hidden;
+}
+
+.win-desktop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(24deg, rgba(255, 255, 255, 0.06) 25%, transparent 26%, transparent 50%, rgba(255, 255, 255, 0.06) 51%, rgba(255, 255, 255, 0.06) 75%, transparent 76%, transparent),
+    linear-gradient(62deg, rgba(0, 0, 0, 0.14) 24%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.14) 51%, rgba(0, 0, 0, 0.14) 74%, transparent 75%, transparent);
+  background-size: 190px 160px, 220px 180px;
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.win-browser-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 40;
+  min-height: 3.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid rgba(213, 227, 255, 0.3);
+  background: rgba(233, 240, 250, 0.92);
+}
+
+.win-browser-dot {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 72, 96, 0.35);
+  background: radial-gradient(circle at 30% 30%, #ffffff, #cad7e8 70%);
+}
+
+.win-browser-address {
+  width: 100%;
+  border-radius: 999px;
+  padding: 0.35rem 0.76rem;
+  border: 1px solid rgba(67, 89, 122, 0.24);
+  color: #31445f;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+  background: rgba(191, 206, 225, 0.65);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.win-workspace {
+  position: relative;
+  min-height: 100vh;
+  padding: 3.8rem 0.8rem 3.7rem;
+}
+
+.win-shortcut {
+  position: absolute;
+  width: 4.5rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #f7fbff;
+  display: grid;
+  justify-items: center;
+  gap: 0.24rem;
+  padding: 0.26rem;
+  cursor: pointer;
+}
+
+.win-shortcut:hover {
+  background: rgba(19, 40, 63, 0.48);
+  border-color: rgba(228, 240, 255, 0.26);
+}
+
+.win-shortcut:focus-visible {
+  outline: 2px solid #c7dcf8;
+  outline-offset: 1px;
+  background: rgba(20, 44, 70, 0.5);
+}
+
+.win-shortcut-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  border: 1px solid rgba(230, 240, 255, 0.36);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+}
+
+.win-icon-pc {
+  background: linear-gradient(145deg, #43b2f7, #236cbf);
+}
+
+.win-icon-projects {
+  background: linear-gradient(145deg, #f6bb4d, #c8801e);
+}
+
+.win-icon-experience {
+  background: linear-gradient(145deg, #68d1aa, #2f976f);
+}
+
+.win-icon-skills {
+  background: linear-gradient(145deg, #f2db65, #b89d1d);
+}
+
+.win-icon-contact {
+  background: linear-gradient(145deg, #cd8ce3, #8943a8);
+}
+
+.win-icon-cv {
+  background: linear-gradient(145deg, #94a1b3, #5a6d86);
+}
+
+.win-shortcut-label {
+  font-size: 0.52rem;
+  line-height: 1.14;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.62);
+}
+
+.win-shortcut-label small {
+  display: block;
+  font-size: 0.52rem;
+}
+
+.win-window-layer {
+  position: absolute;
+  inset: 3.8rem 0.9rem 3.8rem 0.9rem;
+  pointer-events: none;
+}
+
+.win-window {
+  position: absolute;
+  border: 1px solid rgba(173, 188, 214, 0.52);
+  background: rgba(12, 18, 30, 0.94);
+  box-shadow: 0 24px 55px rgba(5, 8, 16, 0.42);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  pointer-events: auto;
+}
+
+.win-window.is-active {
+  border-color: rgba(217, 233, 255, 0.78);
+}
+
+.win-window-titlebar {
+  min-height: 2rem;
+  padding: 0.25rem 0.35rem 0.25rem 0.45rem;
+  border-bottom: 1px solid rgba(149, 169, 203, 0.3);
+  background: linear-gradient(90deg, #101720, #161f2d);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.win-window-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  min-width: 0;
+}
+
+.win-window-title span:last-child {
+  font-size: 0.74rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.win-window-controls {
+  display: inline-flex;
+  gap: 0.18rem;
+}
+
+.win-window-controls button {
+  border: 1px solid rgba(181, 199, 226, 0.4);
+  min-width: 1.5rem;
+  min-height: 1.35rem;
+  background: rgba(21, 31, 46, 0.96);
+  color: #ecf4ff;
+  font-size: 0.64rem;
+  cursor: pointer;
+}
+
+.win-window-controls button:hover {
+  background: rgba(41, 56, 78, 0.96);
+}
+
+.win-window-body {
+  overflow: auto;
+  padding: 0.82rem;
+}
+
+.win-window-footer {
+  border-top: 1px solid rgba(142, 163, 197, 0.26);
+  background: rgba(19, 28, 42, 0.96);
+  padding: 0.3rem 0.52rem;
+}
+
+.win-window-footer a {
+  font-size: 0.64rem;
+  color: #d9e8ff;
+}
+
+.win-content-grid {
+  display: grid;
+  grid-template-columns: 1.1fr minmax(0, 1fr);
+  gap: 0.66rem;
+}
+
+.win-content-grid section,
+.win-list-card {
+  border: 1px solid rgba(151, 171, 205, 0.33);
+  background: rgba(21, 31, 48, 0.82);
+  padding: 0.66rem;
+}
+
+.win-content-grid h2,
+.win-list-card h3,
+.win-stat-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.win-content-grid p,
+.win-list-card p,
+.win-list-card li,
+.win-stat-card p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #cad8ec;
+}
+
+.win-muted {
+  margin-bottom: 0.3rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-size: 0.64rem !important;
+  color: #9bb2d5 !important;
+}
+
+.win-link-row {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.win-link-row a,
+.win-link-row button,
+.win-link-column a,
+.win-link-column button {
+  border: 1px solid rgba(161, 179, 208, 0.42);
+  background: rgba(24, 35, 52, 0.9);
+  color: #e8f1ff;
+  padding: 0.3rem 0.52rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.win-link-column {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.win-list-grid {
+  display: grid;
+  gap: 0.56rem;
+}
+
+.win-list-card ul {
+  margin: 0.45rem 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.24rem;
+}
+
+.win-stat-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.win-stat-card {
+  border: 1px solid rgba(151, 171, 205, 0.33);
+  background: rgba(22, 32, 50, 0.82);
+  padding: 0.62rem;
+}
+
+.win-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+}
+
+.win-chip-grid span {
+  border: 1px solid rgba(165, 183, 210, 0.45);
+  background: rgba(16, 25, 38, 0.8);
+  color: #d8e6fc;
+  padding: 0.2rem 0.46rem;
+  font-size: 0.68rem;
+}
+
+.win-taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 2.1rem;
+  z-index: 60;
+  border-top: 1px solid rgba(132, 160, 204, 0.48);
+  background: rgba(8, 14, 24, 0.9);
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.3rem;
+}
+
+.win-start-button,
+.win-search-button {
+  border: 1px solid rgba(156, 180, 215, 0.42);
+  background: rgba(20, 31, 47, 0.92);
+  color: #deebff;
+  min-width: 1.7rem;
+  min-height: 1.55rem;
+  font-size: 1rem;
+}
+
+.win-search-button {
+  font-size: 0.8rem;
+}
+
+.win-task-items {
+  display: flex;
+  align-items: center;
+  gap: 0.24rem;
+  overflow-x: auto;
+  padding-bottom: 0.08rem;
+}
+
+.win-task-item {
+  border: 1px solid rgba(130, 155, 193, 0.46);
+  background: rgba(20, 32, 50, 0.9);
+  color: #d7e4f8;
+  min-height: 1.55rem;
+  padding: 0.2rem 0.46rem;
+  font-size: 0.66rem;
+  white-space: nowrap;
+}
+
+.win-task-item.is-active {
+  border-color: rgba(219, 235, 255, 0.8);
+  background: rgba(44, 66, 95, 0.95);
+}
+
+.win-task-clock {
+  margin: 0;
+  min-width: 6.5rem;
+  text-align: right;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.72rem;
+  color: #d6e6ff;
+  padding-right: 0.3rem;
+}
+
+@media (max-width: 960px) {
+  .win-workspace {
+    padding: 4.1rem 0.55rem 3.9rem;
+  }
+
+  .win-shortcut {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    width: 4.4rem;
+  }
+
+  .win-workspace {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+  }
+
+  .win-window-layer {
+    position: relative;
+    inset: auto;
+    min-height: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .win-window {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: min(72vh, 560px) !important;
+  }
+
+  .win-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .win-browser-address {
+    font-size: 0.66rem;
+  }
+
+  .win-task-clock {
+    min-width: 5.5rem;
+    font-size: 0.62rem;
+  }
+
+  .win-task-item {
+    font-size: 0.6rem;
+  }
+}
