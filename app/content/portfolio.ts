@@ -56,7 +56,7 @@ export const quickStats = [
   {
     label: "Verified Security Findings",
     value: "8",
-    detail: "Confirmed exploitable QA/AppSec issues in thesis case study reporting.",
+    detail: "Confirmed exploitable QA/AppSec issues in a live audit engagement.",
   },
   {
     label: "Primary Delivery Stack",
@@ -197,22 +197,22 @@ export const d2cAutomationScriptUseCases: ProjectScriptUseCase[] = [
 export const projectCaseStudies: ProjectCaseStudy[] = [
   {
     slug: "qa-security-thesis-report",
-    title: "QA + Application Security Thesis Report",
+    title: "QA + Application Security Audit Execution",
     period: "2026",
-    projectType: "QA / AppSec / Technical Reporting",
+    projectType: "QA / AppSec Execution",
     summary:
-      "End-to-end QA and security audit with reproducible findings, remediation rechecks, and a formal thesis-style deliverable.",
+      "Executed end-to-end QA and application security work on a live SaaS product, from discovery to remediation validation.",
     description:
-      "A portfolio-safe report package documenting a QA and application-security engagement on a live SaaS web platform and API surface.",
+      "Hands-on QA and AppSec task execution across web and API surfaces, focused on exploit validation and fix verification.",
     goal:
-      "Run a complete QA/AppSec cycle from discovery to risk validation and remediation re-verification, then package results as leadership-ready and technical documents.",
+      "Run a complete QA/AppSec cycle: identify issues, validate exploit paths, verify remediations, and communicate actionable outcomes.",
     achievement:
-      "Verified 8 findings including 2 critical account-impact paths; completed remediation recheck and delivered a structured thesis report with actionable fix guidance.",
+      "Verified 8 findings including 2 critical account-impact paths, then rechecked remediation status and documented implementation guidance for the team.",
     whatIBuilt: [
       "Risk-ranked finding catalog with exploit preconditions and impact narratives.",
       "Reproducible validation notes for web and API abuse paths.",
       "Recheck matrix comparing pre-fix and post-fix behavior.",
-      "Final PDF report and portfolio-safe summary outputs.",
+      "Clear engineering handoff notes with prioritized remediation actions.",
     ],
     features: [
       "Structured vulnerability workflow",
@@ -233,14 +233,9 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "Technical writing",
       "Remediation validation",
     ],
-    links: [
-      {
-        label: "Read thesis report (PDF)",
-        href: "/reports/thesis-report-khizar-ahmed.pdf",
-      },
-    ],
+    links: [],
     confidentialityNote:
-      "Target system identifiers and sensitive payload details are intentionally removed in this public version.",
+      "Sensitive system identifiers and payload details are intentionally withheld. I can share additional context with interested contractors and employers on request.",
   },
   {
     slug: "d2c-marketing-automation",
