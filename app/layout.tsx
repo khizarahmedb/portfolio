@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutShell from "./components/LayoutShell";
 
-const spaceGrotesk = Space_Grotesk({
+const spaceGrotesk = Space_Mono({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({

@@ -133,7 +133,7 @@ export default function ProjectSections({
   defaultOpenSlug,
 }: ProjectSectionsProps) {
   const [openProjectSlug, setOpenProjectSlug] = useState<string | null>(
-    defaultOpenSlug ?? projects[0]?.slug ?? null
+    defaultOpenSlug ?? null
   );
 
   return (
@@ -164,11 +164,14 @@ export default function ProjectSections({
               </div>
               <div className="project-toggle-meta">
                 <span>{project.period}</span>
-                <span
-                  aria-hidden="true"
-                  className={`project-toggle-indicator ${isOpen ? "is-open" : ""}`}
-                >
-                  &gt;
+                <span className={`project-toggle-cta ${isOpen ? "is-open" : ""}`}>
+                  <span className="project-toggle-cta-label">Details</span>
+                  <span
+                    aria-hidden="true"
+                    className={`project-toggle-indicator ${isOpen ? "is-open" : ""}`}
+                  >
+                    &gt;
+                  </span>
                 </span>
               </div>
             </button>
