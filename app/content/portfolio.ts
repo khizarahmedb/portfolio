@@ -327,12 +327,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "PostgreSQL",
       "Scheduler workflows",
     ],
-    links: [
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/triplewhale-assistant",
-      },
-    ],
+    links: [],
   },
   {
     slug: "public-ai-config",
@@ -421,10 +416,6 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
         label: "Live website",
         href: "https://munik.iba.edu.pk",
       },
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/munik",
-      },
     ],
   },
   {
@@ -465,17 +456,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "Leaflet",
       "REST API development",
     ],
-    links: [
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/heystranger",
-      },
-      {
-        label: "Historical domain reference",
-        href: "https://ittefaq.com",
-        note: "Public domain behavior may differ from project deployment history.",
-      },
-    ],
+    links: [],
   },
   {
     slug: "api-scrapper",
@@ -515,12 +496,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "Validation workflow design",
       "Frontend dashboard integration",
     ],
-    links: [
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/api-scrapper",
-      },
-    ],
+    links: [],
     confidentialityNote:
       "Tool usage is restricted to authorized security research contexts only.",
   },
@@ -569,10 +545,6 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
         label: "Live website",
         href: "https://invader.shop",
       },
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/invader_shop",
-      },
     ],
   },
   {
@@ -613,12 +585,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "Auth and authorization",
       "API route architecture",
     ],
-    links: [
-      {
-        label: "GitHub repository",
-        href: "https://github.com/khizarahmedb/rocklist",
-      },
-    ],
+    links: [],
   },
   {
     slug: "decentralized-insurance-fyp",

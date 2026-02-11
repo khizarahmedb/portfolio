@@ -26,6 +26,26 @@ export default function ContactPage() {
           </p>
         </article>
 
+        <article className="contact-card contact-wide">
+          <h2>Software Development Capability</h2>
+          <p className="skills-description">
+            End-to-end product development across Next.js, React, TypeScript,
+            Node.js, and API architecture. I design and ship full-stack
+            features from planning to deployment, with focus on scalability,
+            maintainability, performance, and clean implementation standards.
+          </p>
+        </article>
+
+        <article className="contact-card contact-wide">
+          <h2>DevOps + Cybersec QA + Product Engineering Capability</h2>
+          <p className="skills-description">
+            Practical delivery across Dockerized deployments, Nginx/PM2 server
+            operations, CI/CD, QA/security testing, remediation verification,
+            and product engineering workflows that align technical execution
+            with business outcomes.
+          </p>
+        </article>
+
         <article className="contact-card">
           <h2>Email</h2>
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
