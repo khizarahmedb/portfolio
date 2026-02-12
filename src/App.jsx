@@ -1531,22 +1531,29 @@ function handleShow(name) {
 
   if (!itemExists) {
     const directBrowserItems = {
-      github: 'Github',
       cv: 'CV',
       bunbranch: 'BunBranch',
-      linkedin: 'LinkedIn',
-      type: 'Type',
       agentconfig: 'AgentConfig',
       portfoliov2: 'PortfolioV2',
-      ie: 'IE',
       nft: 'Nft',
       note: 'Note',
       aiagent: 'AiAgent',
+      d2cautomation: 'D2CAutomation',
       '3dobject': '3dObject',
       fortune: 'Fortune',
       pixelpic: 'PixelPic',
       thesis: 'Thesis',
     };
+    const directExternalLinks = {
+      ie: 'https://www.google.com',
+      linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
+      type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
+      github: 'https://github.com/khizarahmedb',
+    };
+    if (directExternalLinks[lowerCaseName]) {
+      window.open(directExternalLinks[lowerCaseName], '_blank', 'noopener,noreferrer');
+      return;
+    }
     if (directBrowserItems[lowerCaseName]) {
       handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
       handleShow('Internet');
@@ -1607,6 +1614,10 @@ function handleShow(name) {
           handleDoubleClickiframe('AiAgent', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe   )
           handleShow('Internet');
         }
+        if(lowerCaseName === 'd2cautomation') {
+          handleDoubleClickiframe('D2CAutomation', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
         if(lowerCaseName === '3dobject') {
         handleDoubleClickiframe('3dObject', setOpenProjectExpand, setProjectUrl , setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
@@ -1620,8 +1631,7 @@ function handleShow(name) {
         handleShow('Internet');
         }
         if(lowerCaseName === 'ie') {
-        handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-        handleShow('Internet');
+          window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'agentconfig') {
         handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1631,17 +1641,11 @@ function handleShow(name) {
         handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
         }
-        if(lowerCaseName === 'linkedin') {
-        handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-        handleShow('Internet');
-        }
-        if(lowerCaseName === 'type') {
-        handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-        handleShow('Internet');
+        if(lowerCaseName === 'linkedin' || lowerCaseName === 'type') {
+          window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'github') {
-        handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-        handleShow('Internet');
+          window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'cv') {
         handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1672,7 +1676,7 @@ function handleShow(name) {
   if(tap.includes(name)) return;
   setStartActive(false);
 
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', 'D2CAutomation', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
   if (notToOpenList.includes(name)) return;
 
   setTap(prevTap => [...prevTap, name]);
@@ -1705,22 +1709,29 @@ function handleShowMobile(name) {
   
     if (!itemExists) {
       const directBrowserItems = {
-        github: 'Github',
         cv: 'CV',
         bunbranch: 'BunBranch',
-        linkedin: 'LinkedIn',
-        type: 'Type',
         agentconfig: 'AgentConfig',
         portfoliov2: 'PortfolioV2',
-        ie: 'IE',
         nft: 'Nft',
         note: 'Note',
         aiagent: 'AiAgent',
+        d2cautomation: 'D2CAutomation',
         '3dobject': '3dObject',
         fortune: 'Fortune',
         pixelpic: 'PixelPic',
         thesis: 'Thesis',
       };
+      const directExternalLinks = {
+        ie: 'https://www.google.com',
+        linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
+        type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
+        github: 'https://github.com/khizarahmedb',
+      };
+      if (directExternalLinks[lowerCaseName]) {
+        window.open(directExternalLinks[lowerCaseName], '_blank', 'noopener,noreferrer');
+        return;
+      }
       if (directBrowserItems[lowerCaseName]) {
         handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
         handleShow('Internet');
@@ -1777,6 +1788,10 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('AiAgent', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
+        if(lowerCaseName === 'd2cautomation') {
+          handleDoubleClickiframe('D2CAutomation', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
         if(lowerCaseName === '3dobject') {
         handleDoubleClickiframe('3dObject', setOpenProjectExpand, setProjectUrl)
         handleShow('Internet');
@@ -1790,8 +1805,7 @@ function handleShowMobile(name) {
         handleShow('Internet');
         }
         if(lowerCaseName === 'ie') {
-          handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
+          window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'agentconfig') {
           handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1801,17 +1815,11 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
-        if(lowerCaseName === 'linkedin') {
-          handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
-        }
-        if(lowerCaseName === 'type') {
-          handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
+        if(lowerCaseName === 'linkedin' || lowerCaseName === 'type') {
+          window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'github') {
-          handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
+          window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
         }
         if(lowerCaseName === 'cv') {
           handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1839,7 +1847,7 @@ function handleShowMobile(name) {
     if(tap.includes(name)) return;
     setStartActive(false)
   
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', 'D2CAutomation', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
     if (notToOpenList.includes(name)) return;
   
     setTap(prevTap => [...prevTap, name]);

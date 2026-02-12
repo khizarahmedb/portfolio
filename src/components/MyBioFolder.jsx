@@ -23,21 +23,12 @@ function MyBioFolder() {
     StyleHide,
     isTouchDevice,
     handleSetFocusItemTrue,
-    handleShow,
-    setProjectUrl,
-    setBackTrackIe,
     setCurrentFolder,
     setMyComputerExpand,
     inlineStyleExpand,
     inlineStyle,
     deleteTap,
    } = useContext(UseContext);
-
-  function openInBrowser(url) {
-    setProjectUrl(url);
-    setBackTrackIe((prev) => [...prev, url]);
-    handleShow('Internet');
-  }
 
   function openSkillsDialog() {
     setCurrentFolder('DiskC');
@@ -121,9 +112,9 @@ function MyBioFolder() {
         <br />
         <strong>Quick Links:</strong>
         <br />
-        <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/')}>LinkedIn</span>
+        <a href="https://www.linkedin.com/in/khizar-ahmed-0a62841b5/" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>LinkedIn</a>
         <br />
-        <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://github.com/khizarahmedb')}>GitHub</span>
+        <a href="https://github.com/khizarahmedb" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>GitHub</a>
         <br />
         <span>CV and thesis details are available on direct request.</span>
     </>

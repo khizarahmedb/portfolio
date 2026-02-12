@@ -284,6 +284,11 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
         setBackTrackIe(prev => [...prev, 'project://AiAgent']);
     break;
 
+    case 'D2CAutomation':
+        setProjectUrl('project://D2CAutomation');
+        setBackTrackIe(prev => [...prev, 'project://D2CAutomation']);
+    break;
+
     case '3dObject': 
         setProjectUrl('project://3dObject'); 
         setBackTrackIe(prev => [...prev, 'project://3dObject']);
@@ -300,8 +305,8 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
     break;
 
     case 'IE': 
-        setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
-        setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+        setProjectUrl('https://www.google.com'); 
+        setBackTrackIe(prev => [...prev, 'https://www.google.com']);
     break;
 
     case 'AgentConfig': 
@@ -372,6 +377,11 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
         setBackTrackIe(prev => [...prev, 'project://AiAgent']);
         break;
 
+        case 'D2CAutomation':
+        setProjectUrl('project://D2CAutomation');
+        setBackTrackIe(prev => [...prev, 'project://D2CAutomation']);
+        break;
+
         case '3dObject': 
         setProjectUrl('project://3dObject'); 
         setBackTrackIe(prev => [...prev, 'project://3dObject']);
@@ -388,8 +398,8 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
         break;
 
         case 'IE': 
-        setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
-        setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+        setProjectUrl('https://www.google.com'); 
+        setBackTrackIe(prev => [...prev, 'https://www.google.com']);
         break;
 
         case 'AgentConfig': 
@@ -438,16 +448,27 @@ export function handleDoubleClickEnterLink(name, handleshow) {
   switch(name) {
     case 'Nft':
     case 'Note':
-    case 'Type':
     case '3dObject':
     case 'Fortune':
-    case 'Github':
+    case 'D2CAutomation':
     case 'AgentConfig':
     case 'BunBranch':
     case 'PortfolioV2':
-    case 'LinkedIn':
     case 'CV':
       handleshow(name);
+      break;
+
+    case 'Type':
+    case 'LinkedIn':
+      window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
+      break;
+
+    case 'IE':
+      window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+      break;
+
+    case 'Github':
+      window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
       break;
 
     default: break; 
@@ -461,20 +482,29 @@ if (now - lastTapTime < 300) {
   switch(name) {
     case 'Nft': setProjectUrl('project://Nft'); break;
     case 'Note': setProjectUrl('project://Note'); break;
-    case 'Type':
-    case 'LinkedIn':
-      setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/');
-      break;
-    case 'Github': setProjectUrl('https://github.com/khizarahmedb'); break;
     case 'AgentConfig': setProjectUrl('project://AgentConfig'); break;
     case 'BunBranch': setProjectUrl('project://BunBranch'); break;
     case 'PortfolioV2': setProjectUrl('project://PortfolioV2'); break;
     case '3dObject': setProjectUrl('project://3dObject'); break;
     case 'Fortune': setProjectUrl('project://Fortune'); break;
+    case 'D2CAutomation': setProjectUrl('project://D2CAutomation'); break;
     case 'CV': setProjectUrl('project://CV'); break;
+    case 'Type':
+    case 'LinkedIn':
+      window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
+      break;
+    case 'IE':
+      window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+      break;
+    case 'Github':
+      window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
+      break;
     default: break; 
   }
-  setOpenProjectExpand(prev => ({ ...prev, show: true, hide: false, focusItem: true }));
+  const projectOnly = ['Nft', 'Note', 'AgentConfig', 'BunBranch', 'PortfolioV2', '3dObject', 'Fortune', 'D2CAutomation', 'CV'];
+  if (projectOnly.includes(name)) {
+    setOpenProjectExpand(prev => ({ ...prev, show: true, hide: false, focusItem: true }));
+  }
 }
 setLastTapTime(now);
 }

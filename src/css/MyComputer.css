@@ -172,26 +172,45 @@
 
 .skills_panel_mypc {
     margin: 8px;
-    padding: 8px;
+    padding: 10px 12px;
     border: 1px solid #4f4f4f;
     border-right-color: #f0f0f0;
     border-bottom-color: #f0f0f0;
     background: #efefef;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .skills_panel_mypc h4 {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    line-height: 1.2;
 }
 
 .skills_panel_grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 10px;
 }
 
 .skills_panel_grid p {
-    margin-top: 2px;
-    line-height: 1.25;
+    margin-top: 3px;
+    line-height: 1.35;
+}
+
+.skills_panel_grid strong {
+    font-size: 14px;
+}
+
+@media screen and (max-width: 900px) {
+    .skills_panel_grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .skills_panel_mypc {
+        font-size: 12px;
+    }
+    .skills_panel_grid strong {
+        font-size: 13px;
+    }
 }
     

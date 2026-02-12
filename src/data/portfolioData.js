@@ -171,15 +171,32 @@ export const projectProfiles = [
     period: '2025 - Present',
     projectType: 'Automation / Data Engineering / Marketing Ops',
     summary: 'Production automation for paid media, PnL reporting, forecasting, and alerting workflows.',
+    description: 'Large-scale script and pipeline portfolio built for growth, finance, and operations teams to replace manual reporting.',
+    goal: 'Replace disconnected spreadsheet reporting with reliable scheduled jobs that produce channel, PnL, forecast, and anomaly signals.',
+    achievement: 'Reduced reporting cycle time by 90% and established reusable automation packs used across daily, hourly, and weekly decision workflows.',
     whatIBuilt: [
       'PnL extraction and backfill scripts across reporting windows.',
       'Daily/weekly executive reporting workflows.',
       'Anomaly and threshold alerts with operational notifications.',
       'Reusable script catalog for rapid metric rollout.'
     ],
+    features: [
+      'Scheduled multi-frequency script orchestration',
+      'Cross-source data normalization',
+      'Alert routing for spend drops and tracking failures',
+      'Executive summary generation for CMO and growth reviews'
+    ],
     outcomes: [
       'Reduced reporting cycle time by 90%.',
       'Standardized decision metrics across finance and marketing.'
+    ],
+    scriptUseCases: [
+      { script: 'Daily PnL Reconciliation', useCase: 'Automates paid media spend, margin, and order-value reconciliation across stores.' },
+      { script: 'Historical Backfill Jobs', useCase: 'Repairs delayed reporting windows so long-term trends remain decision-ready.' },
+      { script: 'CMO Daily Report Pack', useCase: 'Generates leadership-ready daily snapshots of channel movement and risk signals.' },
+      { script: 'Hourly Performance Monitor', useCase: 'Runs hourly checks for sudden spend/performance anomalies and sends alerts.' },
+      { script: 'Attach-Rate Analysis Pack', useCase: 'Produces repeatable attach-rate and bundle-performance reviews for merchandising.' },
+      { script: 'Forecast and Pacing Runner', useCase: 'Builds pacing and forecast snapshots for planning and inventory coordination.' }
     ],
     skillsUsed: ['JavaScript automation', 'Python scripting', 'Data transformation', 'Business intelligence'],
     confidentialityNote: 'Store/company identifiers are anonymized.'
@@ -300,5 +317,8 @@ export const skillCatalog = {
   data: ['PostgreSQL', 'MySQL', 'MongoDB', 'SQLite', 'Redis', 'Prisma ORM', 'SQL query optimization', 'Data normalization pipelines', 'Reporting data models', 'Analytics schema mapping'],
   qaSecurity: ['Application security testing', 'API security testing', 'Authorization boundary analysis', 'Exploit path validation', 'Vulnerability reporting and remediation rechecks', 'Test strategy design', 'Unit and integration testing', 'Cypress component and flow testing', 'Rate limiting and abuse protection patterns', 'Secure API transport handling'],
   automation: ['Marketing reporting automation', 'PnL automation workflows', 'Forecasting automation', 'Attribution/indexing pipelines', 'Slack alerting integrations', 'Shopify connector integration', 'TripleWhale connector integration', 'Google Ads data integration', 'Meta paid-media data integration', 'Looker-ready feed preparation', 'Executive dashboard reporting'],
-  infra: ['Docker', 'Docker Compose', 'Nginx reverse proxy', 'PM2 process management', 'Linux server management', 'Vercel deployments', 'Netlify deployments', 'Environment and secret management', 'CI/CD with GitHub Actions', 'Build/release troubleshooting', 'Domain and SSL setup']
+  infra: ['Docker', 'Docker Compose', 'Nginx reverse proxy', 'PM2 process management', 'Linux server management', 'Vercel deployments', 'Netlify deployments', 'Environment and secret management', 'CI/CD with GitHub Actions', 'Build/release troubleshooting', 'Domain and SSL setup'],
+  architecture: ['Modular monolith architecture', 'Service-layer backend design', 'Repository/data-access pattern', 'Adapter/connector pattern', 'API-first product design', 'Feature-driven frontend structure', 'State management patterns', 'Pipeline and scheduler architecture', 'Event/alert workflow orchestration', 'Scalability and maintainability planning'],
+  frameworks: ['Next.js', 'React', 'Node.js', 'ASP.NET Core', 'EF Core', 'Cypress'],
+  delivery: ['Technical documentation', 'Performance optimization', 'Accessibility']
 };

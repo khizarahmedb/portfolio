@@ -90,9 +90,7 @@ function Dragdrop() {
     if (searchValue.trim() !== '') {
       const query = encodeURIComponent(searchValue);
       const url = `https://www.google.com/search?q=${query}`;
-      setProjectUrl(url);
-      setBackTrackIe(prev => [...prev, url]);
-      handleShow('Internet');
+      window.open(url, '_blank', 'noopener,noreferrer');
       setSearchValue('');
     }
   }

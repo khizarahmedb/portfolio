@@ -301,6 +301,18 @@
         "label": "TripleWhale Assistant"
     },
     {
+        "name": "D2CAutomation",
+        "pic": "AiAgent",
+        "folderId": "Project",
+        "size": 9600,
+        "type": ".exe",
+        "x": 48,
+        "y": 48,
+        "category": "Productivity",
+        "description": "Marketing automation platform for PnL, forecasting, and alert workflows.",
+        "label": "D2C Automation Platform"
+    },
+    {
         "name": "Cat",
         "pic": "Cat",
         "folderId": "Desktop",

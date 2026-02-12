@@ -82,15 +82,11 @@ function ErrorBtn({themeDragBar, stateVal, text, setStateVal, runOpenFuction}) {
                 return removeLocalStorage();
 
             case "github": 
-                setProjectUrl('https://github.com/khizarahmedb');
-                setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
-                handleShow('Internet');
+                window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
                 return;
 
             case "webresume": 
-                setProjectUrl('https://github.com/khizarahmedb/portfolio');
-                setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
-                handleShow('Internet');
+                window.open('https://github.com/khizarahmedb/portfolio', '_blank', 'noopener,noreferrer');
                 return;
             
             case "cat": 

@@ -1,40 +1,20 @@
 # Windows 95 Portfolio (Khizar Ahmed)
 
-This branch (`codex/windows95`) now runs a Windows95-style portfolio experience based on the upstream `wins95Portfolio` implementation, customized for Khizar Ahmed.
+Windows 95-style portfolio experience customized for Khizar Ahmed.
 
-## What was achieved in this conversation
+## Attribution
 
-- Rebased this branch to the upstream Win95-style codebase structure (Vite + React) to keep behavior and UI close to the original interaction model.
-- Kept the experience deploy-safe for static hosting by replacing live network dependencies with static/local behavior where needed.
-- Updated personal identity/contact details to Khizar Ahmed across the experience.
-- Converted project-facing content to Khizar-only work.
+This project is based on (forked/cloned from) the public repository:
 
-## UI/content changes made
+- `https://github.com/Yuteoctober/wins95Portfolio`
 
-- Desktop keeps all extra icons, while emphasizing five primary section icons:
-  - `About`
-  - `Projects`
-  - `Experience`
-  - `Skills`
-  - `Contact`
-- Projects folder now shows only Khizar projects:
-  - MUNIK XVI Website
-  - Invader Shop
-  - Decentralized Insurance (FYP)
-  - Insurance Backend API
-  - QA + AppSec Thesis
-- About window was expanded with deeper profile detail:
-  - objective + impact snapshot
-  - role history + education summary
-  - core stack + specialization areas
-  - direct links (LinkedIn, GitHub, CV, thesis)
-- Contact window now includes always-visible quick links to LinkedIn/GitHub/CV/thesis in addition to the contact form flow.
+The original source and design concept belong to the upstream author.
 
-## Static/deploy adjustments
+## License
 
-- Removed dependence on live websocket/news/weather/wallpaper external APIs for baseline behavior.
-- Resume and thesis assets are served locally from `public/reports/`.
-- App runs at root path for local/dev preview.
+This repository is licensed under the MIT License.
+
+See `LICENSE` for full text.
 
 ## Run
 
