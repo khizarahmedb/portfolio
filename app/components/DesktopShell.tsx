@@ -37,55 +37,55 @@ type DesktopShortcut = {
 const shortcutLayout: DesktopShortcut[] = [
   {
     id: "overview",
-    label: "Overview",
-    top: "1.2rem",
-    left: "1rem",
+    label: "My Computer",
+    top: "1rem",
+    left: "0.8rem",
     icon: "/win-icons/overview.svg",
   },
   {
     id: "projects",
     label: "Projects",
-    top: "1.2rem",
-    left: "5.9rem",
+    top: "6.2rem",
+    left: "0.8rem",
     icon: "/win-icons/projects.svg",
   },
   {
     id: "experience",
     label: "Experience",
-    top: "1.2rem",
-    left: "10.8rem",
+    top: "11.4rem",
+    left: "0.8rem",
     icon: "/win-icons/experience.svg",
   },
   {
     id: "skills",
     label: "Skills",
-    top: "6.2rem",
-    left: "1rem",
+    top: "16.6rem",
+    left: "0.8rem",
     icon: "/win-icons/skills.svg",
   },
   {
     id: "contact",
     label: "Contact",
-    top: "6.2rem",
-    left: "5.9rem",
+    top: "21.8rem",
+    left: "0.8rem",
     icon: "/win-icons/contact.svg",
   },
   {
     id: "cv",
-    label: "CV",
-    top: "11.2rem",
-    left: "1rem",
+    label: "Resume",
+    top: "27rem",
+    left: "0.8rem",
     icon: "/win-icons/cv.svg",
   },
 ];
 
 const windowTitles: Record<WindowId, string> = {
-  overview: "Overview",
+  overview: "My Computer",
   projects: "Projects",
   experience: "Experience",
   skills: "Skills",
   contact: "Contact",
-  cv: "CV",
+  cv: "Resume",
 };
 
 const windowRoutes: Record<WindowId, string> = {
@@ -129,6 +129,16 @@ const windowShellStyles: Record<WindowId, string> = {
   skills: "is-program-manager",
   contact: "is-network-center",
   cv: "is-paint-lab",
+};
+
+const classicMenuItems = ["File", "Edit", "View", "Help"];
+const windowObjectCount: Record<WindowId, number> = {
+  overview: quickStats.length + 3,
+  projects: projectCaseStudies.length,
+  experience: workExperience.length + 1,
+  skills: skillGroups.length,
+  contact: 4,
+  cv: 3,
 };
 
 function formatTime(date: Date) {
@@ -999,9 +1009,35 @@ export default function DesktopShell({
                   </div>
                 </header>
 
+                <nav className="win-window-menubar" aria-label={`${windowTitles[windowId]} menu`}>
+                  {classicMenuItems.map((item) => (
+                    <button
+                      key={`${windowId}-menu-${item}`}
+                      type="button"
+                      className="win-menu-button"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </nav>
+
+                <div className="win-window-toolbar" role="toolbar" aria-label="Window toolbar">
+                  <span className="win-toolbar-icon" aria-hidden="true">↩</span>
+                  <span className="win-toolbar-icon" aria-hidden="true">↪</span>
+                  <span className="win-toolbar-icon" aria-hidden="true">✂</span>
+                  <span className="win-toolbar-icon" aria-hidden="true">📋</span>
+                  <span className="win-toolbar-icon" aria-hidden="true">⎘</span>
+                  <span className="win-toolbar-icon" aria-hidden="true">✖</span>
+                  <div className="win-address-bar">
+                    <span className="win-address-label">Address</span>
+                    <p>{windowRoutes[windowId]}</p>
+                  </div>
+                </div>
+
                 <div className="win-window-body">{renderWindowContent(windowId)}</div>
 
                 <footer className="win-window-footer">
+                  <p>{windowObjectCount[windowId]} object(s)</p>
                   <Link href={windowRoutes[windowId]}>Open Route</Link>
                 </footer>
                 <button
@@ -1024,7 +1060,7 @@ export default function DesktopShell({
           aria-label="Open Start menu"
           onClick={() => setStartMenuOpen((current) => !current)}
         >
-          <span aria-hidden="true">⧉</span>
+          <span aria-hidden="true">▣</span>
           <span>Start</span>
         </button>
         <button type="button" className="win-search-button" aria-label="Search">
