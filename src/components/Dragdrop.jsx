@@ -153,6 +153,23 @@ function Dragdrop() {
       <div className='drag_drop'
         key={refresh}
       >
+        {/* Credit text - bottom right */}
+        <div style={{
+          position: 'fixed',
+          bottom: '40px',
+          right: '10px',
+          fontSize: '10px',
+          color: 'rgba(255,255,255,0.7)',
+          zIndex: 1,
+          textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+        }}>
+          fork of <a 
+            href="https://github.com/khizarahmedb/windows95portfolio" 
+            target="_blank" 
+            rel="noreferrer"
+            style={{color: 'rgba(255,255,255,0.9)', textDecoration: 'underline'}}
+          >@khizarahmedb</a>
+        </div>
         {desktopIcon.filter(icon => icon.folderId === 'Desktop').map((icon) => (
           <Draggable
             key={icon.name}

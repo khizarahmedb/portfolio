@@ -141,7 +141,7 @@ function App() {
   const [reMountRun, setReMountRun] = useState(0)
   const [ErrorPopup, setErrorPopup] = useState(false)
   const [themeDragBar, setThemeDragBar] = useState(() => localStorage.getItem('barcolor') || '#14045c')
-  const [login, setLogin] = useState(true) 
+    const [login, setLogin] = useState(false)
   const [windowsShutDownAnimation, setWindowsShutDownAnimation] = useState(false)
   const [detectMouse, setDetectMouse] = useState(false)
   const endOfMessagesRef = useRef(null);
@@ -288,11 +288,18 @@ function App() {
     const allPicture = desktopIcon.filter(picture => picture.type === '.jpeg'); // photo open
 
   const textError = ( // error message
-      <>
-          Cannot find the file '{RunInputVal || regErrorPopUpVal}' (or one of its component). 
-          Make sure the path and filename are correct and that all required 
-          libraries are available.
-      </>
+      regErrorPopUpVal === 'Thesis' ? (
+        <>
+          This document contains sensitive information. 
+          Please contact me directly to discuss further details.
+        </>
+      ) : (
+        <>
+            Cannot find the file '{RunInputVal || regErrorPopUpVal}' (or one of its component). 
+            Make sure the path and filename are correct and that all required 
+            libraries are available.
+        </>
+      )
   ) 
   
   function projectname() { // project name
@@ -303,7 +310,8 @@ function App() {
         { match: 'invader.shop', label: 'Invader Shop' },
         { match: 'DecentralizedInsurance', label: 'Decentralized Insurance (FYP)' },
         { match: 'decentralizedInsurance-backend', label: 'Insurance Backend API' },
-        { match: '/reports/thesis-report-khizar-ahmed.pdf', label: 'QA + AppSec Thesis' },
+        { match: 'agents-config', label: 'AI Agents Config' },
+        { match: 'portfolio', label: 'Portfolio v2' },
         { match: 'linkedin.com/in/khizar-ahmed-0a62841b5', label: 'Khizar Ahmed LinkedIn' },
       ];
 
@@ -325,11 +333,7 @@ function App() {
   const allSetters = [setClippyThanks, setClippySendemail, setClippySong, setClippyUsername];
   const allClears = [ClearTOclippyThanksYouFunction, ClearTOclippySendemailfunction, ClearTOSongfunction, ClearTOclippyUsernameFunction];
 
-  useEffect(() => { // force user to update version by clearing their local storage!
-    setTimeout(() => {
-      handleShow('Patch');
-    }, 2500);
-    
+  useEffect(() => { // check for IE icon to verify version
     if(!desktopIcon.find(icon => icon.name === 'IE')) {
       localStorage.clear();
       location.reload();
@@ -1577,7 +1581,29 @@ function handleShow(name) {
         if(lowerCaseName === 'ie') {
         handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
-      }
+        }
+        if(lowerCaseName === 'agentconfig') {
+        handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'portfoliov2') {
+        handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'linkedin') {
+        handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'type') {
+        handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
+          // Show error for thesis - sensitive information
+          setRegErrorPopUp(true);
+          setRegErrorPopUpVal('Thesis');
+          return;
+        }
     } else {
       // Set other items to not focused
       if(item.type === 'userCreatedFolder') {
@@ -1687,6 +1713,28 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
+        if(lowerCaseName === 'agentconfig') {
+          handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'portfoliov2') {
+          handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'linkedin') {
+          handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'type') {
+          handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
+          // Show error for thesis - sensitive information
+          setRegErrorPopUp(true);
+          setRegErrorPopUpVal('Thesis');
+          return;
+        }
       }
       if(item.type === 'userCreatedFolder') {
         item.setter({ focusItem: false });
@@ -1699,7 +1747,7 @@ function handleShowMobile(name) {
     if(tap.includes(name)) return;
     setStartActive(false)
   
-    const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic','IE'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic','IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis'];
     if (notToOpenList.includes(name)) return;
   
     setTap(prevTap => [...prevTap, name]);

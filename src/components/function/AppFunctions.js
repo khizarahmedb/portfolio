@@ -295,6 +295,31 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
         setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
     break;
 
+    case 'AgentConfig': 
+        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+    break;
+
+    case 'PortfolioV2': 
+        setProjectUrl('https://github.com/khizarahmedb/portfolio'); 
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+    break;
+
+    case 'LinkedIn': 
+        setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
+        setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+    break;
+
+    case 'Thesis': 
+        setProjectUrl('/reports/thesis-report-khizar-ahmed.pdf'); 
+        setBackTrackIe(prev => [...prev, '/reports/thesis-report-khizar-ahmed.pdf']);
+    break;
+
+    case 'Type': 
+        setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
+        setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+    break;
+
     default: break; 
   }
 }
@@ -334,6 +359,21 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
         break;
 
         case 'IE': 
+        setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
+        setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+        break;
+
+        case 'AgentConfig': 
+        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+        break;
+
+        case 'PortfolioV2': 
+        setProjectUrl('https://github.com/khizarahmedb/portfolio'); 
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+        break;
+
+        case 'LinkedIn': 
         setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
         setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
         break;

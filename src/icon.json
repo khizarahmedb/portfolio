@@ -424,5 +424,62 @@
         "type": ".exe",
         "x": 41,
         "y": 41
+    },
+    {
+        "name": "AgentConfig",
+        "pic": "Github",
+        "folderId": "Project",
+        "size": 2500,
+        "type": ".exe",
+        "x": 42,
+        "y": 42,
+        "category": "Productivity",
+        "description": "AI agent configuration management system for opencode.",
+        "label": "Agents Config"
+    },
+    {
+        "name": "PortfolioV2",
+        "pic": "WebResume",
+        "folderId": "Project",
+        "size": 3200,
+        "type": ".exe",
+        "x": 43,
+        "y": 43,
+        "category": "Productivity",
+        "description": "Modern portfolio website built with Next.js and React.",
+        "label": "Portfolio v2"
+    },
+    {
+        "name": "LinkedIn",
+        "pic": "IE",
+        "folderId": "Resume",
+        "size": 15,
+        "type": ".exe",
+        "x": 44,
+        "y": 44,
+        "category": "Productivity",
+        "description": "LinkedIn profile - Khizar Ahmed"
+    },
+    {
+        "name": "Thesis",
+        "pic": "PixelPic",
+        "folderId": "Resume",
+        "size": 8500,
+        "type": ".exe",
+        "x": 45,
+        "y": 45,
+        "category": "Productivity",
+        "description": "QA + Application Security Thesis Report"
+    },
+    {
+        "name": "Type",
+        "pic": "Type",
+        "folderId": "Desktop",
+        "size": 1200,
+        "type": ".exe",
+        "x": 46,
+        "y": 46,
+        "category": "Productivity",
+        "description": "LinkedIn Profile Access"
     }
 ]
