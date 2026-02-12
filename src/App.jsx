@@ -170,7 +170,6 @@ function App() {
   const [showClippy, setShowClippy] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [startActive, setStartActive] = useState(false);
-  const [time, setTime] = useState('');
   const [tap, setTap] = useState([])
   const [lastTapTime, setLastTapTime] = useState(0)
   const [projectUrl, setProjectUrl] = useState('')
@@ -566,9 +565,10 @@ useEffect(() => { // touch support device === true
   const onTouchStartSupported = 'ontouchstart' in document.documentElement;
   setIsTouchDevice(onTouchStartSupported);
 
-  document.addEventListener('gesturestart', function (e) { // prevent zooming on mobile
+  const handleGestureStart = (e) => {
     e.preventDefault();
-  });
+  };
+  document.addEventListener('gesturestart', handleGestureStart);
 
   function handleKeyPress(event){ // hitting windows button activates start menu
     if (event.keyCode === 91 || event.keyCode === 92 || event.keyCode === 93) {
@@ -578,6 +578,7 @@ useEffect(() => { // touch support device === true
   document.addEventListener('keydown', handleKeyPress);
   return () => {
       document.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener('gesturestart', handleGestureStart);
       htmlElement.removeEventListener('mouseenter', handleMouseSeen);
   };
 
@@ -933,7 +934,6 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     dropTargetFolder, setDropTargetFolder,
     draggedIcon, setDraggedIcon,
     startActive, setStartActive,
-    time, setTime,
     desktopIcon, setDesktopIcon,
     MybioExpand, setMybioExpand,
     tap, setTap,
@@ -1128,15 +1128,15 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
           photoMode={true}
         />
         <Suspense fallback={null}>
-          <Store/>
-          <TaskManager/>
-          <Patch/>
-          <SpinningCat/>
-          <NewsApp/>
+          {StoreExpand.show && <Store/>}
+          {TaskManagerExpand.show && <TaskManager/>}
+          {PatchExpand.show && <Patch/>}
+          {runCatVideo && <SpinningCat/>}
+          {newsPopup && <NewsApp/>}
         </Suspense>
         <RightClickWindows/>
         <Suspense fallback={null}>
-          <Notification/>
+          {notiOn && <Notification/>}
         </Suspense>
         <Shutdown/>
         <MyComputer/>
@@ -1146,14 +1146,14 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <MailFolder/>
         <ResumeFile/>
         <Suspense fallback={null}>
-          <WebampPlayer/>
-          <MineSweeper/>
+          {WinampExpand.show && <WebampPlayer/>}
+          {MineSweeperExpand.show && <MineSweeper/>}
         </Suspense>
         <OpenProject/>
         <BgSetting/>
         <Run/>
         <Suspense fallback={null}>
-          <BTC/>
+          {btcShow.show && <BTC/>}
         </Suspense>
         <Dragdrop/>
         <Footer/>
