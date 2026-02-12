@@ -30,9 +30,14 @@ function OpenProject() {
       url: 'https://github.com/khizarahmedb/decentralizedInsurance-backend',
     },
     {
-      id: 'PixelPic',
-      label: 'QA + AppSec Thesis',
-      url: '/reports/thesis-report-khizar-ahmed.pdf',
+      id: 'AgentConfig',
+      label: 'AI Agents Config',
+      url: 'https://github.com/khizarahmedb/agents-config',
+    },
+    {
+      id: 'PortfolioV2',
+      label: 'Portfolio v2',
+      url: 'https://github.com/khizarahmedb/portfolio',
     },
     {
       id: 'IE',
