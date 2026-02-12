@@ -86,7 +86,7 @@ function ErrorBtn({themeDragBar, stateVal, text, setStateVal, runOpenFuction}) {
                 return;
 
             case "webresume": 
-                window.open('https://github.com/khizarahmedb/portfolio', '_blank', 'noopener,noreferrer');
+                window.open('https://khizarahmed.com', '_blank', 'noopener,noreferrer');
                 return;
             
             case "cat": 

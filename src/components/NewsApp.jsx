@@ -17,9 +17,9 @@ const STATIC_NEWS = [
         originalNews: "Now open to software engineering, automation, and analytics-focused product roles."
     },
     {
-        url: "https://github.com/khizarahmedb/portfolio",
+        url: "https://khizarahmed.com",
         urlToImage: newsTile,
-        originalNews: "Project case studies now include detailed sections, outcomes, and skills inside the portfolio windows."
+        originalNews: "Project case studies now include deeper repo-backed details inside each project window."
     },
 ];
 
