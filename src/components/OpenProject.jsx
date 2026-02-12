@@ -146,6 +146,13 @@ function OpenProject() {
   const canEmbed = Boolean(embeddableUrl) && !isFrameBlockedUrl(embeddableUrl);
   const mirrorUrl = isFrameBlockedUrl(embeddableUrl) ? getMirrorUrl(embeddableUrl) : '';
   const splitColumns = window.innerWidth <= 800 ? '1fr' : '1.1fr 1fr';
+  const referenceLinks = (activeProject?.references || [])
+    .filter((reference) => Boolean(reference?.url))
+    .filter(
+      (reference, index, all) =>
+        all.findIndex((item) => item.url === reference.url) === index
+    );
+  const hasPublicResources = Boolean(activeProject?.url) || referenceLinks.length > 0;
 
   return (
     <>
@@ -348,6 +355,21 @@ function OpenProject() {
                     <h3>{activeProject.title}</h3>
                     <p><strong>{activeProject.projectType}</strong> - {activeProject.period}</p>
                     <p style={{ margin: '8px 0' }}>{activeProject.summary}</p>
+                    {activeProject.description ? (
+                      <p style={{ margin: '8px 0' }}>
+                        <strong>Context:</strong> {activeProject.description}
+                      </p>
+                    ) : null}
+                    {activeProject.goal ? (
+                      <p style={{ margin: '8px 0' }}>
+                        <strong>Goal:</strong> {activeProject.goal}
+                      </p>
+                    ) : null}
+                    {activeProject.achievement ? (
+                      <p style={{ margin: '8px 0' }}>
+                        <strong>Result:</strong> {activeProject.achievement}
+                      </p>
+                    ) : null}
                     <p><strong>What I built</strong></p>
                     <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
                       {activeProject.whatIBuilt.map((point) => <li key={point}>{point}</li>)}
@@ -390,8 +412,27 @@ function OpenProject() {
                         </p>
                       </div>
                     ) : null}
+                    {referenceLinks.length > 0 ? (
+                      <div style={{ marginTop: '10px' }}>
+                        <p><strong>Reference links</strong></p>
+                        <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
+                          {referenceLinks.map((reference) => (
+                            <li key={`${reference.label}-${reference.url}`}>
+                              <a
+                                href={reference.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ color: 'blue', textDecoration: 'underline' }}
+                              >
+                                {reference.label || reference.url}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                     <p style={{ marginTop: '10px' }}>
-                      <strong>Availability:</strong> {activeProject.url ? 'Public resources available in Address list.' : 'Contact Khizar Ahmed for more details.'}
+                      <strong>Availability:</strong> {hasPublicResources ? 'Public resources available in Address list.' : 'Contact Khizar Ahmed for more details.'}
                     </p>
                     {activeProject.confidentialityNote && (
                       <p style={{ marginTop: '8px' }}><strong>Note:</strong> {activeProject.confidentialityNote}</p>

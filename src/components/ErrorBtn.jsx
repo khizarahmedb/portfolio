@@ -88,8 +88,8 @@ function ErrorBtn({themeDragBar, stateVal, text, setStateVal, runOpenFuction}) {
                 return;
 
             case "webresume": 
-                setProjectUrl('https://github.com/khizarahmedb/portfolio');
-                setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+                setProjectUrl('https://khizarahmed.com');
+                setBackTrackIe(prev => [...prev, 'https://khizarahmed.com']);
                 handleShow('Internet');
                 return;
             
