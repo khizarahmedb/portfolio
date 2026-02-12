@@ -26,7 +26,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="side-card fade-up stagger-1">
+    <aside className="side-card">
       <div className="side-head">
         <p className="side-kicker">Khizar Ahmed</p>
         <h1>{profile.title}</h1>
