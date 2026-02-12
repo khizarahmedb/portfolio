@@ -17,9 +17,9 @@ const STATIC_NEWS = [
         originalNews: "Now open to software engineering, automation, and analytics-focused product roles."
     },
     {
-        url: "/reports/thesis-report-khizar-ahmed.pdf",
+        url: "https://github.com/khizarahmedb/portfolio",
         urlToImage: newsTile,
-        originalNews: "QA and AppSec thesis report is available for serious hiring and contract discussions."
+        originalNews: "Project case studies now include detailed sections, outcomes, and skills inside the portfolio windows."
     },
 ];
 
@@ -33,7 +33,10 @@ function NewsApp() {
         city, setCity,
         Cel, setCel,
         weather, setWeather,
-        newsPopup, setNewsPopup }
+        newsPopup, setNewsPopup,
+        setProjectUrl,
+        setBackTrackIe,
+        handleShow }
          = useContext(UseContext);
 
     const hasSeen = new Set();
@@ -95,7 +98,9 @@ function NewsApp() {
     }, [newsContainerRef]);
 
     function openNews(url) {
-        window.open(url);
+        setProjectUrl(url);
+        setBackTrackIe(prev => [...prev, url]);
+        handleShow('Internet');
     }
 
     useEffect(() => {

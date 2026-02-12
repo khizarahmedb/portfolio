@@ -4,10 +4,10 @@
 .folder_folder-open-project {
     display: none;
     position: fixed;
-    width: 600px;
-    min-width: 420px;
-    min-height: 500px;
-    height: 75%;
+    width: 920px;
+    min-width: 620px;
+    min-height: 620px;
+    height: 82%;
     background: #c5c4c4;
     border: 2px solid white;
     border-right: 1px solid black;

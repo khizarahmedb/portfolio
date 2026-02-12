@@ -10,41 +10,32 @@ import home from '../assets/ie_home.png'
 import refresh from '../assets/ie_refresh.png'
 import stop from '../assets/ie_stop.png'
 import downArrow from '../assets/arrow-down.png'
+import { projectProfiles } from '../data/portfolioData';
 
 
 function OpenProject() {
 
   const [iframeKey, setIframeKey] = useState(0);
   const [expandAddy, setExpandAddy] = useState(false);
-  const allIEPRojects = [
-    { id: 'Nft', label: 'MUNIK XVI Website', url: 'https://munik.iba.edu.pk' },
-    { id: 'Note', label: 'Invader Shop', url: 'https://invader.shop' },
-    {
-      id: '3dObject',
-      label: 'Decentralized Insurance (FYP)',
-      url: 'https://github.com/khizarahmedb/DecentralizedInsurance',
-    },
-    {
-      id: 'Fortune',
-      label: 'Insurance Backend API',
-      url: 'https://github.com/khizarahmedb/decentralizedInsurance-backend',
-    },
-    {
-      id: 'AgentConfig',
-      label: 'AI Agents Config',
-      url: 'https://github.com/khizarahmedb/agents-config',
-    },
-    {
-      id: 'PortfolioV2',
-      label: 'Portfolio v2',
-      url: 'https://github.com/khizarahmedb/portfolio',
-    },
-    {
-      id: 'IE',
-      label: 'LinkedIn Profile',
-      url: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
-    },
-  ];
+  const allIEPRojects = projectProfiles.flatMap((project) => {
+    const descriptionEntry = {
+      id: project.id,
+      label: `${project.title} (Details)`,
+      url: `project://${project.id}`,
+      type: 'details',
+    };
+
+    const publicEntry = project.url
+      ? {
+          id: `${project.id}-public`,
+          label: `${project.title} (Public URL)`,
+          url: project.url,
+          type: 'public',
+        }
+      : null;
+
+    return publicEntry ? [descriptionEntry, publicEntry] : [descriptionEntry];
+  });
 
   const { 
     handleShow,
@@ -119,9 +110,43 @@ function OpenProject() {
     setIframeKey(prevKey => prevKey + 1);
   }
 
-  function handleFetchLinkDes(projectName) {
-    return allIEPRojects.find((project) => project.id === projectName)?.url;
+  function isFrameBlockedUrl(url) {
+    if (!url) return false;
+    return url.includes('github.com') || url.includes('linkedin.com');
   }
+
+  function getMirrorUrl(url) {
+    if (!url || !url.startsWith('http')) return '';
+    return `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`;
+  }
+
+  function openInsideBrowser(url) {
+    if (!url) return;
+    setProjectUrl(url);
+    setBackTrackIe(prev => [...prev, url]);
+    setForwardTrackIe([]);
+    setExpandAddy(false);
+    setIframeKey(prevKey => prevKey + 1);
+  }
+
+  const activeProject = (() => {
+    const byId = projectProfiles.find((project) => projectUrl === `project://${project.id}`);
+    if (byId) return byId;
+
+    const byUrl = [...projectProfiles]
+      .filter((project) => Boolean(project.url))
+      .sort((a, b) => b.url.length - a.url.length)
+      .find((project) => projectUrl.includes(project.url));
+
+    return byUrl;
+  })();
+
+  const isProjectDetailsView = projectUrl.startsWith('project://');
+  const embeddableUrl = !isProjectDetailsView && projectUrl.startsWith('http') ? projectUrl : '';
+  const canEmbed = Boolean(embeddableUrl) && !isFrameBlockedUrl(embeddableUrl);
+  const mirrorUrl = isFrameBlockedUrl(embeddableUrl) ? getMirrorUrl(embeddableUrl) : '';
+  const splitColumns = window.innerWidth <= 800 ? '1fr' : '1.1fr 1fr';
+
   return (
     <>
       <Draggable
@@ -152,7 +177,7 @@ function OpenProject() {
             <div className="folder_barname">
               <img src={ie} alt="ie" style={{ width: '20px'}} />
                 <span>
-                    {projectname() === 'Www' ? 'Google' : projectname()}
+                    {projectname() === 'Www' ? 'Project Search' : projectname()}
                 </span>
               </div>
             <div className="folder_barbtn">
@@ -241,7 +266,7 @@ function OpenProject() {
           <div className="address_container">
             <p className='address'>Address:</p>
             <div className="address_box">
-                <p>{projectUrl.length > 1 ? projectUrl : 'Type your URL here'}</p>
+                    <p>{projectUrl.length > 1 ? projectUrl : 'Search project details or choose a public URL'}</p>
                 <div 
                   onClick={() => setExpandAddy(prev => !prev)}
                 >
@@ -253,8 +278,7 @@ function OpenProject() {
                 {allIEPRojects.map((project) => (
                   <div key={project.id}
                     onClick={() => {
-                      handleShow(project.id)
-                      setExpandAddy(false)
+                      openInsideBrowser(project.url)
                     }}
                   >
                     <p>
@@ -276,23 +300,112 @@ function OpenProject() {
               {}
             }
           >
-        {openProjectExpand.show && (
-          <iframe
-          key={iframeKey}
-          src={projectUrl}
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-          scrolling="yes"
-        />
-        )}
-        
+            <div style={{ display: 'grid', gridTemplateColumns: splitColumns, height: '100%' }}>
+              <div style={{ borderRight: '1px solid #b8b8b8', position: 'relative' }}>
+                {openProjectExpand.show && canEmbed ? (
+                  <iframe
+                    key={iframeKey}
+                    src={embeddableUrl}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    scrolling="yes"
+                  />
+                ) : (
+                  <div style={{ padding: '18px', fontSize: '14px' }}>
+                    <h3 style={{ marginBottom: '10px' }}>Project Search Results</h3>
+                    <p style={{ marginBottom: '10px' }}>
+                      {activeProject?.title || 'Select a project details page from the address list to view structured project results.'}
+                    </p>
+                    {embeddableUrl && !canEmbed ? (
+                      <div style={{ marginBottom: '10px' }}>
+                        <p style={{ marginBottom: '8px' }}>
+                          This site blocks embedding in iframes. Use the links on the right to continue.
+                        </p>
+                        {mirrorUrl ? (
+                          <button
+                            type="button"
+                            onClick={() => openInsideBrowser(mirrorUrl)}
+                            style={{ padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
+                          >
+                            Open text mirror in emulator
+                          </button>
+                        ) : null}
+                      </div>
+                    ) : null}
+                    <div style={{ border: '1px solid #d0d0d0', padding: '10px', background: '#f8f8f8' }}>
+                      <p style={{ fontWeight: 'bold' }}>{activeProject?.title || 'No project selected'}</p>
+                      <p>{activeProject?.summary || 'Project summary will appear here.'}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div style={{ padding: '12px', overflowY: 'auto', fontSize: '13px' }}>
+                {activeProject ? (
+                  <>
+                    <h3>{activeProject.title}</h3>
+                    <p><strong>{activeProject.projectType}</strong> - {activeProject.period}</p>
+                    <p style={{ margin: '8px 0' }}>{activeProject.summary}</p>
+                    <p><strong>What I built</strong></p>
+                    <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
+                      {activeProject.whatIBuilt.map((point) => <li key={point}>{point}</li>)}
+                    </ul>
+                    <p><strong>Outcomes</strong></p>
+                    <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
+                      {activeProject.outcomes.map((point) => <li key={point}>{point}</li>)}
+                    </ul>
+                    <p><strong>Skills used</strong></p>
+                    <p>{activeProject.skillsUsed.join(', ')}</p>
+                    {activeProject.url ? (
+                      <div style={{ marginTop: '10px' }}>
+                        <p>
+                          <strong>Public URL:</strong>{' '}
+                          <a
+                            href={activeProject.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'blue', textDecoration: 'underline' }}
+                          >
+                            {activeProject.url}
+                          </a>
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => openInsideBrowser(activeProject.url)}
+                          style={{ marginTop: '6px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
+                        >
+                          Open Public URL Here
+                        </button>
+                        <p style={{ marginTop: '8px' }}>
+                          <a
+                            href={activeProject.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: 'blue', textDecoration: 'underline' }}
+                          >
+                            View in your own browser
+                          </a>
+                        </p>
+                      </div>
+                    ) : null}
+                    <p style={{ marginTop: '10px' }}>
+                      <strong>Availability:</strong> {activeProject.url ? 'Public resources available in Address list.' : 'Contact Khizar Ahmed for more details.'}
+                    </p>
+                    {activeProject.confidentialityNote && (
+                      <p style={{ marginTop: '8px' }}><strong>Note:</strong> {activeProject.confidentialityNote}</p>
+                    )}
+                  </>
+                ) : (
+                  <p>Select a project to view full sections and details.</p>
+                )}
+              </div>
+            </div>
           </div>
           <div className='ifram_text_container'>
             <p>
-                If page does not load, please click <a href={projectUrl.length < 1 ? '#' : projectUrl} target="_blank" rel="noopener noreferrer">here</a> to view directly.
+                {activeProject?.url ? 'Use Open Public URL Here to load the page in this browser emulator, or View in your own browser to open a new tab.' : 'Contact Khizar Ahmed for non-public project details.'}
             </p>
           </div>
         </div>

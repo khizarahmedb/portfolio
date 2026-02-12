@@ -1,37 +1,36 @@
-import React, { useState, useEffect, useRef, } from 'react'
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import UserContext from './Context'
 import { Filter } from 'bad-words';
 import badword from './badword'
 import Footer from './components/Footer';
-import Store from './components/Store';
+const Store = lazy(() => import('./components/Store'));
 import Dragdrop from './components/Dragdrop';
 import MyBioFolder from './components/MyBioFolder';
 import MyComputer from './components/MyComputer';
 import ResumeFolder from './components/ResumeFolder';
 import ProjectFolder from './components/ProjectFolder';
 import MailFolder from './components/MailFolder';
-import WebampPlayer from './components/WinampPlayer';
+const WebampPlayer = lazy(() => import('./components/WinampPlayer'));
 import ResumeFile from './components/ResumeFile';
 import Shutdown from './components/Shutdown';
-import MineSweeper from './components/MineSweeper'
-import MsnFolder from './components/MsnFolder';
+const MineSweeper = lazy(() => import('./components/MineSweeper'));
 import iconInfo from './icon.json'
 import Login from './components/Login';
 import OpenProject from './components/OpenProject';
 import WindowsShutdown from './components/WindowsShutdown';
 import BgSetting from './components/BgSetting';
 import Run from './components/Run';
-import Notification from './components/Notification';
-import BTC from './components/BTC';
+const Notification = lazy(() => import('./components/Notification'));
+const BTC = lazy(() => import('./components/BTC'));
 import EmptyFolder from './components/EmptyFolder';
 import ErrorBtn from './components/ErrorBtn';
 import RightClickWindows from './components/RightClickWindows';
 import loadingSpin from './assets/loading.gif'
-import NewsApp from './components/NewsApp'
-import SpinningCat from './components/SpinningCat';
-import Patch from './components/Patch';
+const NewsApp = lazy(() => import('./components/NewsApp'));
+const SpinningCat = lazy(() => import('./components/SpinningCat'));
+const Patch = lazy(() => import('./components/Patch'));
 import WindowsDragLogin from './components/WindowsDragLogin';
-import TaskManager from './components/TaskManager';
+const TaskManager = lazy(() => import('./components/TaskManager'));
 import { StyleHide, imageMapping,
   handleDoubleClickEnterLink,handleDoubleTapEnterMobile,
   handleDoubleClickiframe, handleDoubleTapiframeMobile,
@@ -306,11 +305,17 @@ function App() {
       if (projectUrl.length < 1) return;
 
       const projectTitleByUrl = [
+        { match: 'project://AiAgent', label: 'TripleWhale Assistant' },
+        { match: 'project://3dObject', label: 'Decentralized Insurance (FYP)' },
+        { match: 'project://Fortune', label: 'Insurance Backend API' },
+        { match: 'project://PixelPic', label: 'QA + AppSec Audit Execution' },
+        { match: 'project://CV', label: 'CV - Khizar Ahmed' },
         { match: 'munik.iba.edu.pk', label: 'MUNIK XVI Website' },
         { match: 'invader.shop', label: 'Invader Shop' },
-        { match: 'DecentralizedInsurance', label: 'Decentralized Insurance (FYP)' },
-        { match: 'decentralizedInsurance-backend', label: 'Insurance Backend API' },
+        { match: 'agents-config/tree/bun', label: 'Agents Config (bun branch)' },
         { match: 'agents-config', label: 'AI Agents Config' },
+        { match: 'github.com/khizarahmedb', label: 'Khizar Ahmed GitHub' },
+        { match: 'project://CV', label: 'CV - Khizar Ahmed' },
         { match: 'portfolio', label: 'Portfolio v2' },
         { match: 'linkedin.com/in/khizar-ahmed-0a62841b5', label: 'Khizar Ahmed LinkedIn' },
       ];
@@ -532,6 +537,8 @@ useEffect(() => {
 
   useEffect(() => { // noti
     if(allowNoti){
+      const hasMsnIcon = desktopIcon.some((icon) => icon.name === 'MSN');
+      if (!hasMsnIcon) return;
 
       if (chatData.length) {
         endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -547,7 +554,7 @@ useEffect(() => {
       }
     }
       
-  },[chatData])
+  },[chatData, allowNoti, desktopIcon, MSNExpand.show, MSNExpand.hide])
 
 
 useEffect(() => { // touch support device === true
@@ -1120,13 +1127,17 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
           folderName='Photo'
           photoMode={true}
         />
-        <Store/>
-        <TaskManager/>
-        <Patch/>
-        <SpinningCat/>
-        <NewsApp/>
+        <Suspense fallback={null}>
+          <Store/>
+          <TaskManager/>
+          <Patch/>
+          <SpinningCat/>
+          <NewsApp/>
+        </Suspense>
         <RightClickWindows/>
-        <Notification/>
+        <Suspense fallback={null}>
+          <Notification/>
+        </Suspense>
         <Shutdown/>
         <MyComputer/>
         <MyBioFolder/>
@@ -1134,13 +1145,16 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <ProjectFolder/>
         <MailFolder/>
         <ResumeFile/>
-        <WebampPlayer/>
-        <MineSweeper/>
-        <MsnFolder/>
+        <Suspense fallback={null}>
+          <WebampPlayer/>
+          <MineSweeper/>
+        </Suspense>
         <OpenProject/>
         <BgSetting/>
         <Run/>
-        <BTC/>
+        <Suspense fallback={null}>
+          <BTC/>
+        </Suspense>
         <Dragdrop/>
         <Footer/>
       </UserContext.Provider>
@@ -1516,6 +1530,33 @@ function handleShow(name) {
   }
 
   if (!itemExists) {
+    const directBrowserItems = {
+      github: 'Github',
+      cv: 'CV',
+      bunbranch: 'BunBranch',
+      linkedin: 'LinkedIn',
+      type: 'Type',
+      agentconfig: 'AgentConfig',
+      portfoliov2: 'PortfolioV2',
+      ie: 'IE',
+      nft: 'Nft',
+      note: 'Note',
+      aiagent: 'AiAgent',
+      '3dobject': '3dObject',
+      fortune: 'Fortune',
+      pixelpic: 'PixelPic',
+      thesis: 'Thesis',
+    };
+    if (directBrowserItems[lowerCaseName]) {
+      handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
+      handleShow('Internet');
+      return;
+    }
+    if (name === 'BunBranch') {
+      handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
+      handleShow('Internet');
+      return;
+    }
     setRegErrorPopUp(true);
     setRegErrorPopUpVal(name);
     return;
@@ -1598,6 +1639,18 @@ function handleShow(name) {
         handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
         }
+        if(lowerCaseName === 'github') {
+        handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'cv') {
+        handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'bunbranch') {
+        handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
         if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
           // Show error for thesis - sensitive information
           setRegErrorPopUp(true);
@@ -1619,7 +1672,7 @@ function handleShow(name) {
   if(tap.includes(name)) return;
   setStartActive(false);
 
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic','IE'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
   if (notToOpenList.includes(name)) return;
 
   setTap(prevTap => [...prevTap, name]);
@@ -1651,6 +1704,33 @@ function handleShowMobile(name) {
     }
   
     if (!itemExists) {
+      const directBrowserItems = {
+        github: 'Github',
+        cv: 'CV',
+        bunbranch: 'BunBranch',
+        linkedin: 'LinkedIn',
+        type: 'Type',
+        agentconfig: 'AgentConfig',
+        portfoliov2: 'PortfolioV2',
+        ie: 'IE',
+        nft: 'Nft',
+        note: 'Note',
+        aiagent: 'AiAgent',
+        '3dobject': '3dObject',
+        fortune: 'Fortune',
+        pixelpic: 'PixelPic',
+        thesis: 'Thesis',
+      };
+      if (directBrowserItems[lowerCaseName]) {
+        handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
+        handleShow('Internet');
+        return;
+      }
+      if (name === 'BunBranch') {
+        handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
+        handleShow('Internet');
+        return;
+      }
       setRegErrorPopUp(true);
       setRegErrorPopUpVal(name);
       return;
@@ -1729,6 +1809,18 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
+        if(lowerCaseName === 'github') {
+          handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'cv') {
+          handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'bunbranch') {
+          handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
         if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
           // Show error for thesis - sensitive information
           setRegErrorPopUp(true);
@@ -1747,7 +1839,7 @@ function handleShowMobile(name) {
     if(tap.includes(name)) return;
     setStartActive(false)
   
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic','IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
     if (notToOpenList.includes(name)) return;
   
     setTap(prevTap => [...prevTap, name]);

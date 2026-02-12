@@ -13,7 +13,10 @@ function ErrorBtn({themeDragBar, stateVal, text, setStateVal, runOpenFuction}) {
         deletepermanently,
         iconBeingRightClicked,
         setUserCreatedFolder,
-        handleSetFocusItemTrue, setRunCatVideo 
+        handleSetFocusItemTrue, setRunCatVideo,
+        handleShow,
+        setProjectUrl,
+        setBackTrackIe
 
     } = useContext(UseContext);
     const textResetStroage = "Warning: Resetting local storage will erase all your info. Are you sure you want to continue?"
@@ -79,11 +82,16 @@ function ErrorBtn({themeDragBar, stateVal, text, setStateVal, runOpenFuction}) {
                 return removeLocalStorage();
 
             case "github": 
-                return window.open('https://github.com/khizarahmedb', '_blank');
+                setProjectUrl('https://github.com/khizarahmedb');
+                setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
+                handleShow('Internet');
+                return;
 
             case "webresume": 
-                
-            return window.open('/reports/khizar-ahmed-cv.pdf', '_blank');
+                setProjectUrl('https://github.com/khizarahmedb/portfolio');
+                setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+                handleShow('Internet');
+                return;
             
             case "cat": 
                 setRunCatVideo(true)

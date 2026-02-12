@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import '../css/MyComputer.css';
 import undoIcon from '../assets/arrowback.png'
 import { BsCaretDownFill } from "react-icons/bs";
+import { skillCatalog } from '../data/portfolioData';
 
 function MyComputer() {
 
   const iconRefs = useRef([]);
+  const getIconLabel = (icon) => icon.label || icon.desktopLabel || icon.name;
   const [popUpFolder, setPopUpFolder] = useState(false)
 
   const { 
@@ -80,6 +82,9 @@ function MyComputer() {
     }
     return false
   })
+
+  const showSkillPanel = ['DiskC', 'DiskD', 'CD-ROM', 'Hard Disk (C:)', 'Hard Disk (D:)'].includes(currentFolder) ||
+    ['Hard Disk (C:)', 'Hard Disk (D:)', 'CD-ROM'].includes(selectedFolder.label);
 
   function handleDragStop(event, data) {
     const positionX = data.x;
@@ -204,6 +209,10 @@ function MyComputer() {
                     ? inlineStyleExpand('MyComputer')
                     : inlineStyle('MyComputer')
             ),
+            width: MyComputerExpand.expand ? 'calc(100vw - 12px)' : '760px',
+            height: MyComputerExpand.expand ? 'calc(100svh - 46px)' : '560px',
+            minWidth: '620px',
+            minHeight: '460px',
             overflow: dragging ? '' : 'hidden'
         }}
         >
@@ -344,6 +353,29 @@ function MyComputer() {
             overflow: dragging? '' : 'hidden' 
           }}
         >
+          {showSkillPanel && (
+            <div className="skills_panel_mypc">
+              <h4>Core Skills</h4>
+              <div className="skills_panel_grid">
+                <div>
+                  <strong>Languages:</strong>
+                  <p>{skillCatalog.languages.join(', ')}</p>
+                </div>
+                <div>
+                  <strong>Frontend:</strong>
+                  <p>{skillCatalog.frontend.join(', ')}</p>
+                </div>
+                <div>
+                  <strong>Backend:</strong>
+                  <p>{skillCatalog.backend.join(', ')}</p>
+                </div>
+                <div>
+                  <strong>Data + QA/Security:</strong>
+                  <p>{[...skillCatalog.data, ...skillCatalog.qaSecurity].join(', ')}</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div className='parent_item_container' key={key}
             onClick={() => handleSetFocusItemTrue('MyComputer')}
           >
@@ -408,7 +440,7 @@ function MyComputer() {
                     <p className={icon.focus ? 'p_focus' : 'p_normal'}
                       style={iconTextSize(iconScreenSize)}
                     >
-                      {icon.name}
+                      {getIconLabel(icon)}
                     </p>
                   </div>
                   </Draggable>

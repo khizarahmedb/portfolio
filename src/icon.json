@@ -63,15 +63,16 @@
         "description": "Classic puzzle game where you clear mines without detonating them."
     },
     {
-        "name": "MSN",
-        "pic": "MSN",
+        "name": "CV",
+        "pic": "ResumeFile",
         "folderId": "Desktop",
-        "size": 1500,
+        "size": 28,
         "type": ".exe",
         "x": 6,
         "y": 6,
-        "category": "Utilities",
-        "description": "Instant messaging application for chatting with friends."
+        "category": "Productivity",
+        "description": "Quick profile overview with experience and impact sections.",
+        "desktopLabel": "CV"
     },
     {
         "name": "Winamp",
@@ -290,13 +291,14 @@
     {
         "name": "AiAgent",
         "pic": "AiAgent",
-        "folderId": "Desktop",
+        "folderId": "Project",
         "size": 10000,
         "type": ".exe",
         "x": 29,
         "y": 29,
         "category": "Productivity",
-        "description": "AI-powered personal assistant for answering questions."
+        "description": "Analytics assistant with task planning, report runs, and chat workflows.",
+        "label": "TripleWhale Assistant"
     },
     {
         "name": "Cat",
@@ -474,12 +476,24 @@
     {
         "name": "Type",
         "pic": "Type",
-        "folderId": "Desktop",
+        "folderId": "Resume",
         "size": 1200,
         "type": ".exe",
         "x": 46,
         "y": 46,
         "category": "Productivity",
         "description": "LinkedIn Profile Access"
+    },
+    {
+        "name": "BunBranch",
+        "pic": "Github",
+        "folderId": "Project",
+        "size": 1800,
+        "type": ".exe",
+        "x": 47,
+        "y": 47,
+        "category": "Productivity",
+        "description": "Bun-focused branch variant for agents-config workflows.",
+        "label": "Agents Config (bun branch)"
     }
 ]

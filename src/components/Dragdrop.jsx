@@ -30,6 +30,8 @@ function Dragdrop() {
     desktopIcon,setDesktopIcon,
     imageMapping,
     handleShow, handleShowMobile,
+    setProjectUrl,
+    setBackTrackIe,
     isTouchDevice,
     iconFocusIcon,
     setStartActive
@@ -88,7 +90,9 @@ function Dragdrop() {
     if (searchValue.trim() !== '') {
       const query = encodeURIComponent(searchValue);
       const url = `https://www.google.com/search?q=${query}`;
-      window.open(url, '_blank');
+      setProjectUrl(url);
+      setBackTrackIe(prev => [...prev, url]);
+      handleShow('Internet');
       setSearchValue('');
     }
   }
@@ -164,11 +168,11 @@ function Dragdrop() {
           textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
         }}>
           fork of <a 
-            href="https://github.com/khizarahmedb/windows95portfolio" 
+            href="https://github.com/Yuteoctober/wins95Portfolio/" 
             target="_blank" 
             rel="noreferrer"
             style={{color: 'rgba(255,255,255,0.9)', textDecoration: 'underline'}}
-          >@khizarahmedb</a>
+          >@Yuteoctober</a>
         </div>
         {desktopIcon.filter(icon => icon.folderId === 'Desktop').map((icon) => (
           <Draggable

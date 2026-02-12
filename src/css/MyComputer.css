@@ -169,4 +169,29 @@
     left: 3px;
     width: 20px;
 }
+
+.skills_panel_mypc {
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid #4f4f4f;
+    border-right-color: #f0f0f0;
+    border-bottom-color: #f0f0f0;
+    background: #efefef;
+    font-size: 12px;
+}
+
+.skills_panel_mypc h4 {
+    margin-bottom: 6px;
+}
+
+.skills_panel_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.skills_panel_grid p {
+    margin-top: 2px;
+    line-height: 1.25;
+}
     
