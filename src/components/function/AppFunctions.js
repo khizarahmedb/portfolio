@@ -6,7 +6,6 @@ import Project from '../../assets/regFolder.png'
 import Winamp from '../../assets/winampIcon.png'
 import resumefile from '../../assets/resume.png'
 import MineSweeper from '../../assets/minesweepericon.png'
-import MSN from '../../assets/msn.png'
 import ie from '../../assets/ie.png'
 import settings from '../../assets/setting.png'
 import file from '../../assets/file4download.png'
@@ -104,14 +103,12 @@ export function imageMapping (name, type) {
       return Winamp;
 
     case 'ResumeFile':
+    case 'CV':
       return resumefile;
 
     case 'MineSweeper':
     case 'Mine Sweeper':
       return MineSweeper;
-
-    case 'MSN':
-      return MSN;
 
     case 'Internet':
     case 'WebResume':
@@ -154,6 +151,10 @@ export function imageMapping (name, type) {
 
     case "AiAgent":
       return aiagent;
+
+    case "AgentConfig":
+    case "BunBranch":
+      return github;
 
     case "Cat":
     case "cat":
@@ -202,7 +203,15 @@ export function imageMapping (name, type) {
 
     case "IE":
     case "ie":
+    case "Type":
+    case "LinkedIn":
       return ie;
+
+    case "PortfolioV2":
+      return resumefile;
+
+    case "Thesis":
+      return layer;
 
     default:
       if(type === 'folder') {
@@ -261,33 +270,33 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
 
   switch(name) {
     case 'Nft': 
-      setProjectUrl('https://munik.iba.edu.pk');
-      setBackTrackIe(prev => [...prev, 'https://munik.iba.edu.pk']);
+      setProjectUrl('project://Nft');
+      setBackTrackIe(prev => [...prev, 'project://Nft']);
     break;
 
     case 'Note': 
-      setProjectUrl('https://invader.shop'); 
-        setBackTrackIe(prev => [...prev, 'https://invader.shop']);
+      setProjectUrl('project://Note'); 
+        setBackTrackIe(prev => [...prev, 'project://Note']);
     break;
 
     case 'AiAgent': 
-        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+        setProjectUrl('project://AiAgent'); 
+        setBackTrackIe(prev => [...prev, 'project://AiAgent']);
     break;
 
     case '3dObject': 
-        setProjectUrl('https://github.com/khizarahmedb/DecentralizedInsurance'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/DecentralizedInsurance']);
+        setProjectUrl('project://3dObject'); 
+        setBackTrackIe(prev => [...prev, 'project://3dObject']);
     break;
 
     case 'Fortune': 
-        setProjectUrl('https://github.com/khizarahmedb/decentralizedInsurance-backend'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/decentralizedInsurance-backend']);
+        setProjectUrl('project://Fortune'); 
+        setBackTrackIe(prev => [...prev, 'project://Fortune']);
     break;
 
     case 'PixelPic': 
-        setProjectUrl('/reports/thesis-report-khizar-ahmed.pdf'); 
-        setBackTrackIe(prev => [...prev, '/reports/thesis-report-khizar-ahmed.pdf']);
+        setProjectUrl('project://PixelPic'); 
+        setBackTrackIe(prev => [...prev, 'project://PixelPic']);
     break;
 
     case 'IE': 
@@ -296,13 +305,23 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
     break;
 
     case 'AgentConfig': 
-        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+        setProjectUrl('project://AgentConfig'); 
+        setBackTrackIe(prev => [...prev, 'project://AgentConfig']);
+    break;
+
+    case 'Github':
+        setProjectUrl('https://github.com/khizarahmedb');
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
+    break;
+
+    case 'BunBranch': 
+        setProjectUrl('project://BunBranch'); 
+        setBackTrackIe(prev => [...prev, 'project://BunBranch']);
     break;
 
     case 'PortfolioV2': 
-        setProjectUrl('https://github.com/khizarahmedb/portfolio'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+        setProjectUrl('project://PortfolioV2'); 
+        setBackTrackIe(prev => [...prev, 'project://PortfolioV2']);
     break;
 
     case 'LinkedIn': 
@@ -311,13 +330,23 @@ export function handleDoubleClickiframe(name, setOpenProjectExpand, setProjectUr
     break;
 
     case 'Thesis': 
-        setProjectUrl('/reports/thesis-report-khizar-ahmed.pdf'); 
-        setBackTrackIe(prev => [...prev, '/reports/thesis-report-khizar-ahmed.pdf']);
+        setProjectUrl('project://PixelPic'); 
+        setBackTrackIe(prev => [...prev, 'project://PixelPic']);
     break;
 
     case 'Type': 
         setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
         setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+    break;
+
+    case 'Github':
+        setProjectUrl('https://github.com/khizarahmedb');
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
+    break;
+
+    case 'CV':
+        setProjectUrl('project://CV');
+        setBackTrackIe(prev => [...prev, 'project://CV']);
     break;
 
     default: break; 
@@ -329,33 +358,33 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
   if (now - lastTapTime < 300) {
     switch(name) {
       case 'Nft': 
-        setProjectUrl('https://munik.iba.edu.pk'); 
-        setBackTrackIe(prev => [...prev, 'https://munik.iba.edu.pk']);
+        setProjectUrl('project://Nft'); 
+        setBackTrackIe(prev => [...prev, 'project://Nft']);
         break;
   
         case 'Note': 
-        setProjectUrl('https://invader.shop'); 
-        setBackTrackIe(prev => [...prev, 'https://invader.shop']);
+        setProjectUrl('project://Note'); 
+        setBackTrackIe(prev => [...prev, 'project://Note']);
         break;
   
         case 'AiAgent': 
-        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+        setProjectUrl('project://AiAgent'); 
+        setBackTrackIe(prev => [...prev, 'project://AiAgent']);
         break;
 
         case '3dObject': 
-        setProjectUrl('https://github.com/khizarahmedb/DecentralizedInsurance'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/DecentralizedInsurance']);
+        setProjectUrl('project://3dObject'); 
+        setBackTrackIe(prev => [...prev, 'project://3dObject']);
         break;
 
         case 'Fortune': 
-        setProjectUrl('https://github.com/khizarahmedb/decentralizedInsurance-backend'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/decentralizedInsurance-backend']);
+        setProjectUrl('project://Fortune'); 
+        setBackTrackIe(prev => [...prev, 'project://Fortune']);
         break;
 
         case 'PixelPic': 
-        setProjectUrl('/reports/thesis-report-khizar-ahmed.pdf'); 
-        setBackTrackIe(prev => [...prev, '/reports/thesis-report-khizar-ahmed.pdf']);
+        setProjectUrl('project://PixelPic'); 
+        setBackTrackIe(prev => [...prev, 'project://PixelPic']);
         break;
 
         case 'IE': 
@@ -364,18 +393,38 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
         break;
 
         case 'AgentConfig': 
-        setProjectUrl('https://github.com/khizarahmedb/agents-config'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/agents-config']);
+        setProjectUrl('project://AgentConfig'); 
+        setBackTrackIe(prev => [...prev, 'project://AgentConfig']);
+        break;
+
+        case 'Github':
+        setProjectUrl('https://github.com/khizarahmedb');
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
+        break;
+
+        case 'BunBranch': 
+        setProjectUrl('project://BunBranch'); 
+        setBackTrackIe(prev => [...prev, 'project://BunBranch']);
         break;
 
         case 'PortfolioV2': 
-        setProjectUrl('https://github.com/khizarahmedb/portfolio'); 
-        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb/portfolio']);
+        setProjectUrl('project://PortfolioV2'); 
+        setBackTrackIe(prev => [...prev, 'project://PortfolioV2']);
         break;
 
         case 'LinkedIn': 
         setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); 
         setBackTrackIe(prev => [...prev, 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/']);
+        break;
+
+        case 'Github':
+        setProjectUrl('https://github.com/khizarahmedb');
+        setBackTrackIe(prev => [...prev, 'https://github.com/khizarahmedb']);
+        break;
+
+        case 'CV':
+        setProjectUrl('project://CV');
+        setBackTrackIe(prev => [...prev, 'project://CV']);
         break;
   
       default: break; 
@@ -387,13 +436,18 @@ export function handleDoubleTapiframeMobile(name, lastTapTime, setLastTapTime, s
 export function handleDoubleClickEnterLink(name, handleshow) {
 
   switch(name) {
-    case 'Nft': window.open('https://munik.iba.edu.pk', '_blank'); break;
-    case 'Note': window.open('https://invader.shop', '_blank'); break;
-    case 'Type': window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank'); break;
-    case '3dObject': window.open('https://github.com/khizarahmedb/DecentralizedInsurance', '_blank'); break;
-    case 'Fortune': window.open('https://github.com/khizarahmedb/decentralizedInsurance-backend', '_blank'); break;
-    case 'Github': 
-      handleshow('Github'); 
+    case 'Nft':
+    case 'Note':
+    case 'Type':
+    case '3dObject':
+    case 'Fortune':
+    case 'Github':
+    case 'AgentConfig':
+    case 'BunBranch':
+    case 'PortfolioV2':
+    case 'LinkedIn':
+    case 'CV':
+      handleshow(name);
       break;
 
     default: break; 
@@ -405,14 +459,22 @@ export function handleDoubleTapEnterMobile(name, lastTapTime, setLastTapTime, se
 const now = Date.now();
 if (now - lastTapTime < 300) {
   switch(name) {
-    case 'Nft': window.open('https://munik.iba.edu.pk', '_blank'); break;
-    case 'Note': window.open('https://invader.shop', '_blank'); break;
-    case 'Type': window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank'); break;
-    case 'Github': window.open('https://github.com/khizarahmedb', '_blank'); break;
-    case '3dObject': window.open('https://github.com/khizarahmedb/DecentralizedInsurance', '_blank'); break;
-    case 'Fortune': window.open('https://github.com/khizarahmedb/decentralizedInsurance-backend', '_blank'); break;
+    case 'Nft': setProjectUrl('project://Nft'); break;
+    case 'Note': setProjectUrl('project://Note'); break;
+    case 'Type':
+    case 'LinkedIn':
+      setProjectUrl('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/');
+      break;
+    case 'Github': setProjectUrl('https://github.com/khizarahmedb'); break;
+    case 'AgentConfig': setProjectUrl('project://AgentConfig'); break;
+    case 'BunBranch': setProjectUrl('project://BunBranch'); break;
+    case 'PortfolioV2': setProjectUrl('project://PortfolioV2'); break;
+    case '3dObject': setProjectUrl('project://3dObject'); break;
+    case 'Fortune': setProjectUrl('project://Fortune'); break;
+    case 'CV': setProjectUrl('project://CV'); break;
     default: break; 
   }
+  setOpenProjectExpand(prev => ({ ...prev, show: true, hide: false, focusItem: true }));
 }
 setLastTapTime(now);
 }

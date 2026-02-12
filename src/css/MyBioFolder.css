@@ -3,9 +3,9 @@
 .bio_folder {
     display: none;
     position: fixed;
-    width: 420px;
-    height: 475px;
-    min-height: 320px;
+    width: 760px;
+    height: 620px;
+    min-height: 500px;
     background: #c5c4c4;
     border: 2px solid white;
     border-right: 1px solid black;
@@ -169,7 +169,7 @@
     display: grid;
     position: relative;
     width: calc(100% - 10px);
-    height: calc(100% - 95px);
+    height: calc(100% - 86px);
     grid-template-columns: 1/2;
     padding: 1rem 1.5rem;
     border: 2px solid rgb(53, 52, 52);
@@ -221,10 +221,10 @@
 
 .folder_content-bio .bio_text_1 {
     position: relative;
-    font-size: 12px;
-    padding-top: 1rem;
-    padding-left: 1rem;
-    left: 1.2rem;
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 0.25rem 0.75rem;
+    left: 0;
 }
 
 .folder_content-bio .bio_text_1 strong {
@@ -232,22 +232,23 @@
 }
 
 .folder_content-bio .bio_text_1 span {
-    padding-left: 10px;
+    padding-left: 6px;
     color: #2b2828;
 }
 
 
 .folder_content-bio .bio_text_1_other {
     position: relative;
-    font-size: 12px;
-    padding-left: 1rem;
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 0.25rem 0.75rem;
 
 }
 
 .folder_content-bio .bio_text_1_other span {
-    background: rgb(181, 181, 181);
-    font-weight: bold;
-    padding: 0px 3px;
+    background: transparent;
+    font-weight: normal;
+    padding: 0;
     color: #292727;
 }
 
@@ -381,7 +382,8 @@
 
 @media screen and (width <= 500px) {
     .bio_folder {
-        width: 380px;
+        width: 95%;
+        min-height: 460px;
     }
     .folder_content-bio .bio_img {
         width: 160px;

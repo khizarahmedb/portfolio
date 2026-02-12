@@ -6,6 +6,7 @@ import About from '../assets/ipng.png'
 import bioPC from '../assets/bio_pc.png'
 import tech from '../assets/tech.png'
 import hobby from '../assets/hobby.png'
+import { skillCatalog } from '../data/portfolioData';
 import '../css/MyBioFolder.css'
 
 
@@ -22,29 +23,61 @@ function MyBioFolder() {
     StyleHide,
     isTouchDevice,
     handleSetFocusItemTrue,
+    handleShow,
+    setProjectUrl,
+    setBackTrackIe,
+    setCurrentFolder,
+    setMyComputerExpand,
     inlineStyleExpand,
     inlineStyle,
     deleteTap,
    } = useContext(UseContext);
 
+  function openInBrowser(url) {
+    setProjectUrl(url);
+    setBackTrackIe((prev) => [...prev, url]);
+    handleShow('Internet');
+  }
+
+  function openSkillsDialog() {
+    setCurrentFolder('DiskC');
+    setMyComputerExpand((prev) => ({
+      ...prev,
+      show: true,
+      hide: false,
+      focusItem: true,
+    }));
+    handleShow('MyComputer');
+  }
+
   const technologyText = ( // don't have to use DangerousHTML
     <>
         <strong>Core Stack:</strong>
         <br />
-        <span>TypeScript, JavaScript, React, Next.js, Tailwind CSS</span>
+        <span>{skillCatalog.languages.slice(0, 8).join(', ')}</span>
         <br />
-        <span>Node.js, Express, Flask, ASP.NET Core, EF Core</span>
+        <span>{skillCatalog.frontend.slice(0, 8).join(', ')}</span>
         <br />
-        <span>PostgreSQL, MongoDB, MySQL, Prisma, Redis</span>
+        <span>{skillCatalog.backend.slice(0, 8).join(', ')}</span>
         <br />
         <br />
-        <strong>Specialized Focus:</strong>
+        <strong>Data + Security + Automation:</strong>
         <br />
-        <span>Automation pipelines for marketing/finance reporting</span>
+        <span>{skillCatalog.data.slice(0, 7).join(', ')}</span>
         <br />
-        <span>QA and AppSec verification workflows</span>
+        <span>{skillCatalog.qaSecurity.slice(0, 7).join(', ')}</span>
         <br />
-        <span>Production delivery for full-stack web products</span>
+        <span>{skillCatalog.automation.slice(0, 7).join(', ')}</span>
+        <br />
+        <br />
+        <strong>Infra + Delivery:</strong>
+        <br />
+        <span>{skillCatalog.infra.slice(0, 8).join(', ')}</span>
+        <br />
+        <br />
+        <strong>Applied In:</strong>
+        <br />
+        <span>MUNIK XVI, Invader Shop, TripleWhale Assistant, agents-config, QA/AppSec execution workflows.</span>
     </>
   );
 
@@ -88,13 +121,11 @@ function MyBioFolder() {
         <br />
         <strong>Quick Links:</strong>
         <br />
-        <a href="https://www.linkedin.com/in/khizar-ahmed-0a62841b5/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/')}>LinkedIn</span>
         <br />
-        <a href="https://github.com/khizarahmedb" target="_blank" rel="noreferrer">GitHub</a>
+        <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://github.com/khizarahmedb')}>GitHub</span>
         <br />
-        <a href="/reports/khizar-ahmed-cv.pdf" target="_blank" rel="noreferrer">CV (PDF)</a>
-        <br />
-        <a href="/reports/thesis-report-khizar-ahmed.pdf" target="_blank" rel="noreferrer">QA + AppSec Thesis</a>
+        <span>CV and thesis details are available on direct request.</span>
     </>
   );
 
@@ -122,7 +153,7 @@ function MyBioFolder() {
         <br />
         <strong>Primary Projects:</strong>
         <br />
-        <span>MUNIK XVI website, Invader Shop, decentralized insurance FYP, QA/AppSec thesis.</span>
+        <span>MUNIK XVI website, Invader Shop, TripleWhale Assistant, agents-config, decentralized insurance FYP, QA/AppSec execution.</span>
     </>
   );
 
@@ -256,7 +287,17 @@ function MyBioFolder() {
 
               <p className={generalTap || careerTap ? 'bio_text_1' : 'bio_text_1_other'}>
                 {generalTap ? bioText : careerTap ? careerText : technologyTap ? technologyText : hobbyText}
-              </p>   
+              </p>
+              {technologyTap ? (
+                <p className='bio_text_1_other' style={{ paddingTop: '6px' }}>
+                  <span
+                    onClick={openSkillsDialog}
+                    style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    Open Skills Dialog
+                  </span>
+                </p>
+              ) : null}
             </div>
               
             </div>

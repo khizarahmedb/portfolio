@@ -22,7 +22,47 @@ function ResumeFile() {
 
    } = useContext(UseContext);
 
-   const [ downloadBox, setDownloadBox ] = useState(false)
+   const [activeSection, setActiveSection] = useState('experience')
+
+   const sections = {
+    experience: {
+      title: 'Experience',
+      items: [
+        'Head of Automations for Marketing - Nysonian Inc (Sep 2025 - Present)',
+        'Software Team Lead - TFG Solutions (Jan 2025 - Aug 2025)',
+        'Junior Engineer - CodeCargo (Oct 2024 - Dec 2024)',
+        'Web Developer - Split Creatives (Apr 2024 - Sep 2024)',
+        'Software Engineer Intern - Simation Studios (Sep 2023 - Mar 2024)'
+      ]
+    },
+    impact: {
+      title: 'Impact',
+      items: [
+        'Reduced reporting turnaround by 90% using automation pipelines.',
+        'Verified 8 security findings including 2 critical account-impact paths.',
+        'Built production workflows for finance, marketing, and operations.'
+      ]
+    },
+    education: {
+      title: 'Education',
+      items: [
+        'BS Computer Science - SZABIST, Karachi',
+        'Graduated: 2024',
+        'GPA: 3.40'
+      ]
+    },
+    contact: {
+      title: 'Contact',
+      items: [
+        'Khizar Ahmed',
+        'Software Engineer',
+        'Email: khizar18ahmed@gmail.com',
+        'Phone: +92 345 3666623',
+        'Location: Karachi, Pakistan',
+        'LinkedIn: https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'
+      ]
+    }
+   }
 
       function handleDragStop(event, data) {
         const positionX = data.x 
@@ -117,16 +157,32 @@ function ResumeFile() {
                 <p className='x-resumefile'
                  onClick={!isTouchDevice ? () => {
                   deleteTap('ResumeFile')
-                  setDownloadBox(false)
+                  setActiveSection('experience')
                  }: undefined
                 }
                 onTouchEnd={() => {
                   deleteTap('ResumeFile')
-                  setDownloadBox(false)
+                  setActiveSection('experience')
               }}
                 >×</p>
               </div>
             </div>
+          </div>
+
+          <div className="file_edit_container-resumefile" style={{ paddingLeft: '8px', gap: '12px' }}>
+            {Object.entries(sections).map(([key, val]) => (
+              <p
+                key={key}
+                onClick={() => setActiveSection(key)}
+                style={{
+                  cursor: 'pointer',
+                  fontWeight: activeSection === key ? 'bold' : 'normal',
+                  textDecoration: activeSection === key ? 'underline' : 'none'
+                }}
+              >
+                {val.title}
+              </p>
+            ))}
           </div>
 
           <div className="folder_content-resumefile"
@@ -138,14 +194,20 @@ function ResumeFile() {
 
           >
             {ResumeFileExpand.show ? (
-              <iframe 
-              onClick={() => setDownloadBox(false)}
-              src="/reports/khizar-ahmed-cv.pdf" 
-              frameBorder='0'
-            >
-            </iframe>
-            ):(null)}
-            
+              <div style={{ padding: '14px', fontSize: '14px', lineHeight: '1.45' }}>
+                <h3 style={{ marginBottom: '10px' }}>{sections[activeSection].title}</h3>
+                <ul style={{ paddingLeft: '18px' }}>
+                  {sections[activeSection].items.map((item) => (
+                    <li key={item} style={{ marginBottom: '8px' }}>{item}</li>
+                  ))}
+                </ul>
+                {activeSection !== 'contact' && (
+                  <p style={{ marginTop: '14px' }}>
+                    Open the Projects window for full case studies, outcomes, and technical breakdowns.
+                  </p>
+                )}
+              </div>
+            ) : null}
           </div>
         </div>
       </Draggable>

@@ -8,6 +8,7 @@ import '../css/ResumeFolder.css';
 function ResumeFolder() {
 
   const iconRefs = useRef([]);
+  const getIconLabel = (icon) => icon.label || icon.desktopLabel || icon.name;
 
   const { 
     setCurrentRightClickFolder,
@@ -218,7 +219,7 @@ function ResumeFolder() {
                     <p className={icon.focus ? 'p_focus' : 'p_normal'}
                       style={iconTextSize(iconScreenSize)}
                     >
-                      {icon.name}
+                      {getIconLabel(icon)}
                     </p>
                   </div>
                   </Draggable>
