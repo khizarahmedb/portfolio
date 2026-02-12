@@ -351,7 +351,7 @@ function MyComputer() {
           onClick={(e) =>  e.stopPropagation()}
           style={{ 
             height: MyComputerExpand.expand ? 'calc(100svh - 122px)' : '',
-            overflow: dragging? '' : 'hidden' 
+            overflow: dragging ? '' : 'auto' 
           }}
         >
           {showSkillPanel && (

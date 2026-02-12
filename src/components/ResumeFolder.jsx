@@ -9,6 +9,31 @@ function ResumeFolder() {
 
   const iconRefs = useRef([]);
   const getIconLabel = (icon) => icon.label || icon.desktopLabel || icon.name;
+  const experienceItems = [
+    {
+      role: 'Head of Automations for Marketing - Nysonian Inc',
+      period: 'Sep 2025 - Present',
+      points: [
+        'Built cross-channel automation for reporting, PnL visibility, and forecasting workflows.',
+        'Reduced reporting turnaround by 90% using production script pipelines.',
+      ],
+    },
+    {
+      role: 'Software Team Lead - TFG Solutions',
+      period: 'Jan 2025 - Aug 2025',
+      points: [
+        'Led full-stack product delivery from planning to production release.',
+        'Coordinated engineering implementation with design and stakeholder teams.',
+      ],
+    },
+    {
+      role: 'Junior Engineer - CodeCargo',
+      period: 'Oct 2024 - Dec 2024',
+      points: [
+        'Built .NET Core APIs with EF Core, PostgreSQL, and integration testing support.',
+      ],
+    },
+  ];
 
   const { 
     setCurrentRightClickFolder,
@@ -226,6 +251,20 @@ function ResumeFolder() {
                 </Fragment>
               ))}
             </div>
+          </div>
+          <div className='resume_detail_panel'>
+            <h4>Experience Details</h4>
+            {experienceItems.map((item) => (
+              <div key={item.role} className='resume_detail_item'>
+                <p className='resume_role'>{item.role}</p>
+                <p className='resume_period'>{item.period}</p>
+                <ul>
+                  {item.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
         <div className="btm_bar_container">

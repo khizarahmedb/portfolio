@@ -168,6 +168,38 @@
     cursor: default;
 }
 
+@media screen and (max-width: 768px) {
+    .address_container_btn {
+        flex-wrap: wrap;
+        height: 64px;
+        padding-top: 4px;
+        gap: 2px;
+    }
+
+    .btn_addy {
+        width: 32px;
+        height: 28px;
+    }
+
+    .btn_addy img {
+        width: 18px;
+        height: 16px;
+    }
+
+    .btn_addy p {
+        display: none;
+    }
+
+    .address_container {
+        top: 2px;
+    }
+
+    .ifram_text_container {
+        top: 4px;
+        padding: 0 6px;
+    }
+}
+
 .btn_addy {
     display: flex;
     flex-direction: column;

@@ -464,7 +464,7 @@ export function handleDoubleClickEnterLink(name, handleshow) {
       break;
 
     case 'IE':
-      window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+      handleshow('IE');
       break;
 
     case 'Github':
@@ -494,14 +494,14 @@ if (now - lastTapTime < 300) {
       window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
       break;
     case 'IE':
-      window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+      setProjectUrl('https://www.google.com');
       break;
     case 'Github':
       window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
       break;
     default: break; 
   }
-  const projectOnly = ['Nft', 'Note', 'AgentConfig', 'BunBranch', 'PortfolioV2', '3dObject', 'Fortune', 'D2CAutomation', 'CV'];
+  const projectOnly = ['Nft', 'Note', 'AgentConfig', 'BunBranch', 'PortfolioV2', '3dObject', 'Fortune', 'D2CAutomation', 'CV', 'IE'];
   if (projectOnly.includes(name)) {
     setOpenProjectExpand(prev => ({ ...prev, show: true, hide: false, focusItem: true }));
   }

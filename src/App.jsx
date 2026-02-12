@@ -1545,7 +1545,6 @@ function handleShow(name) {
       thesis: 'Thesis',
     };
     const directExternalLinks = {
-      ie: 'https://www.google.com',
       linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
       type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
       github: 'https://github.com/khizarahmedb',
@@ -1631,7 +1630,8 @@ function handleShow(name) {
         handleShow('Internet');
         }
         if(lowerCaseName === 'ie') {
-          window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+          handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
         }
         if(lowerCaseName === 'agentconfig') {
         handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1723,7 +1723,6 @@ function handleShowMobile(name) {
         thesis: 'Thesis',
       };
       const directExternalLinks = {
-        ie: 'https://www.google.com',
         linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
         type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
         github: 'https://github.com/khizarahmedb',
@@ -1805,7 +1804,8 @@ function handleShowMobile(name) {
         handleShow('Internet');
         }
         if(lowerCaseName === 'ie') {
-          window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+          handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
         }
         if(lowerCaseName === 'agentconfig') {
           handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)

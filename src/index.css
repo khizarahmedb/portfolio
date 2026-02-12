@@ -67,7 +67,7 @@ body {
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
-    touch-action: none;
+    touch-action: manipulation;
 }
 
 a {
@@ -95,6 +95,39 @@ body {
   background-repeat: repeat;
   overflow: hidden;
   background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 768px) {
+    .folder_folder,
+    .folder_folder-project,
+    .folder_folder-open-project,
+    .folder_folder-resumefile,
+    .folder_folder-mail,
+    .folder_folder-open-store,
+    .folder_folder-taskmanager,
+    .folder_folder_run,
+    .folder_folder-MineSweeper,
+    .folder_folder-MSN,
+    .bio_folder {
+        width: calc(100vw - 12px) !important;
+        min-width: 280px !important;
+        max-width: calc(100vw - 12px) !important;
+        height: calc(100svh - 86px) !important;
+        min-height: 320px !important;
+        max-height: calc(100svh - 86px) !important;
+        left: 6px !important;
+        top: 8px !important;
+        resize: none !important;
+    }
+
+    .folder_folder .folder_content,
+    .folder_folder-project .folder_content-project,
+    .folder_folder-open-project .openproject_content,
+    .folder_folder-mail .folder_content-mail,
+    .folder_folder-resumefile .folder_content-resumefile,
+    .folder_folder .folder_content-mypc {
+        height: calc(100% - 118px) !important;
+    }
 }
 
 
@@ -1004,4 +1037,3 @@ body {
 .search_bar span:hover {
     opacity: 1;
 }
-
