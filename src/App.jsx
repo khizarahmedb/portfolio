@@ -38,6 +38,7 @@ import { StyleHide, imageMapping,
   iconContainerSize, iconImgSize, iconTextSize,
   handleDoubleClickPhotoOpen,
  } from './components/function/AppFunctions';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [backTrackIe, setBackTrackIe] = useState([]);
@@ -1139,6 +1140,7 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <BTC/>
         <Dragdrop/>
         <Footer/>
+        <Analytics />
       </UserContext.Provider>
     </>
   )
