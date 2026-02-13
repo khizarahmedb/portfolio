@@ -32,6 +32,7 @@ import SpinningCat from './components/SpinningCat';
 import Patch from './components/Patch';
 import WindowsDragLogin from './components/WindowsDragLogin';
 import TaskManager from './components/TaskManager';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { StyleHide, imageMapping,
   handleDoubleClickEnterLink,handleDoubleTapEnterMobile,
   handleDoubleClickiframe, handleDoubleTapiframeMobile,
@@ -1139,6 +1140,7 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <BTC/>
         <Dragdrop/>
         <Footer/>
+        <SpeedInsights />
       </UserContext.Provider>
     </>
   )
