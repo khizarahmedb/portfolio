@@ -45,7 +45,7 @@ function ResumeFile() {
       ]
     },
     roles: {
-      title: 'Roles I Can Step Into',
+      title: 'Target Roles',
       items: [
         'Full-Stack Software Engineer',
         'Automation Engineer (Marketing / Operations)',
@@ -214,7 +214,7 @@ function ResumeFile() {
                 </ul>
                 {activeSection !== 'contact' && (
                   <p style={{ marginTop: '14px' }}>
-                    Open the Projects window for full case studies, real outcomes, and technical breakdowns.
+                    Open the Projects window for detailed case studies, measurable outcomes, and technical breakdowns.
                   </p>
                 )}
               </div>

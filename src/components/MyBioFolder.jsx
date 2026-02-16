@@ -85,7 +85,7 @@ function MyBioFolder() {
     <>
         <strong>Objective:</strong>
         <br />
-        <span>I build scalable software and automation systems that connect paid-media data, business analytics,</span>
+        <span>I design and build scalable software and automation systems that connect paid-media data, business analytics,</span>
         <br />
         <span>and day-to-day operating decisions.</span>
         <br />
@@ -121,7 +121,7 @@ function MyBioFolder() {
         <span>Shipped full-stack platforms with clean API design, auth flows, and data-driven dashboards.</span>
         <br />
         <br />
-        <strong>How I can help:</strong>
+        <strong>Target Roles:</strong>
         <br />
         <span>Full-Stack Software Engineer</span>
         <br />
@@ -140,7 +140,7 @@ function MyBioFolder() {
         <br />
         <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://github.com/khizarahmedb')}>GitHub</span>
         <br />
-        <span>Want thesis details? Email me at khizar18ahmed@gmail.com and I’ll share them directly.</span>
+        <span>Thesis details are available on request via khizar18ahmed@gmail.com.</span>
     </>
   );
 

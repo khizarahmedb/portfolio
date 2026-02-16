@@ -5,7 +5,7 @@ export const projectProfiles = [
     period: '2025 - 2026',
     projectType: 'Production Website / Event Platform',
     summary: 'Production conference website for MUNIK XVI covering delegate onboarding, committee discovery, registration, and sponsor visibility.',
-    description: 'Built this as a multi-page Next.js event platform with clear navigation, responsive sections, and motion-led UI components.',
+    description: 'Developed as a multi-page Next.js event platform with clear navigation, responsive sections, and motion-led UI components.',
     goal: 'Make conference information and registration steps clear for local and international delegates while keeping content easy to maintain for future editions.',
     achievement: 'Delivered a complete public event website with dedicated registration tracks, committee pages, team/sponsor sections, and contact flows.',
     whatIBuilt: [
@@ -59,7 +59,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Full-Stack Product / Analytics Assistant',
     summary: 'Store-scoped marketing analytics assistant with planning/runs/chat workflows, connector integrations, and dual inference backends.',
-    description: 'A deployable Next.js + TypeScript app using App Router, tRPC + React Query, and scheduler workers for analytics operations.',
+    description: 'Deployable Next.js + TypeScript application using App Router, tRPC + React Query, and scheduler workers for analytics operations.',
     goal: 'Unify planning, execution, and communication for analytics/reporting work without context switching across disconnected tools.',
     achievement: 'Shipped planner, task-run history, chat sessions, store switching, and API surfaces for metrics, tasks, runs, Slack preview/send, and backend status.',
     whatIBuilt: [
@@ -139,7 +139,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Personal Website / Case Study Platform',
     summary: 'Personal domain portfolio with project case studies, role history, skills, and desktop-style interaction patterns.',
-    description: 'Maintained as a multi-branch portfolio system (experimental layouts, structure-lab, windows95 shell) with shared project storytelling.',
+    description: 'Maintained as a multi-branch portfolio system (experimental layouts, structure-lab, windows95 shell) with consistent project narratives.',
     goal: 'Provide a single public domain for clear technical storytelling and recruiter-friendly project visibility.',
     achievement: 'Consolidated project narratives, CV context, and interactive UI experiments into one domain-focused portfolio stack.',
     whatIBuilt: [
@@ -166,7 +166,7 @@ export const projectProfiles = [
     period: '2024',
     projectType: 'Final Year Project / Full-Stack Concept Build',
     summary: 'BSCS capstone prototype exploring transparent crypto-asset insurance workflows from cover purchase through claim handling.',
-    description: 'A React frontend connected to Node/Express backend services for auth, cover management, user handling, and claims.',
+    description: 'React frontend connected to Node/Express backend services for auth, cover management, user handling, and claims.',
     goal: 'Prototype a practical insurance workflow that improves transparency for digital-asset cover and claim lifecycle handling.',
     achievement: 'Delivered complete academic capstone scope with production-style modules across frontend screens, backend APIs, and state management.',
     whatIBuilt: [
@@ -322,7 +322,7 @@ export const projectProfiles = [
     period: '2025',
     projectType: 'Security Tooling / Flask Dashboard',
     summary: 'Flask dashboard for authorized API key leak discovery, pattern extraction, validation, and triage management.',
-    description: 'A security research tool with explicit ethical-use boundaries and an OAuth-assisted GitHub scraping workflow.',
+    description: 'Security research tool with explicit ethical-use boundaries and an OAuth-assisted GitHub scraping workflow.',
     goal: 'Provide a controlled workflow for permission-based key leak discovery and validation without ad-hoc scripts.',
     achievement: 'Delivered end-to-end flow for scraping, key testing, result filtering, and persistent finding management.',
     whatIBuilt: [
