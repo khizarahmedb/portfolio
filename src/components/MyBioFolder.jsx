@@ -85,9 +85,9 @@ function MyBioFolder() {
     <>
         <strong>Objective:</strong>
         <br />
-        <span>Build scalable software and automation systems that connect paid-media data, business analytics,</span>
+        <span>I build scalable software and automation systems that connect paid-media data, business analytics,</span>
         <br />
-        <span>and daily operating decisions.</span>
+        <span>and day-to-day operating decisions.</span>
         <br />
         <br />
         <strong>Information:</strong>
@@ -103,20 +103,35 @@ function MyBioFolder() {
         <br />
         <strong>Location: </strong>
         <br />
-        <span>Karachi, Pakistan</span>
+        <span>Islamabad, Pakistan</span>
         <br />
         <span>Open to work</span>
         <br />
         <span>Remote / Hybrid / On-site</span>
         <br />
         <br />
-        <strong>Impact Snapshot:</strong>
+        <strong>Highlights:</strong>
         <br />
-        <span>Reporting time reduction: 90%</span>
+        <span>Cut reporting turnaround by 90% using automation and scheduled pipelines.</span>
         <br />
-        <span>Verified security findings: 8</span>
+        <span>Validated 8 security findings (including high/critical paths) and confirmed remediation rechecks.</span>
         <br />
-        <span>Delivery stack: Next.js + TypeScript</span>
+        <span>Built production systems across marketing analytics, e-commerce, and workflow automation.</span>
+        <br />
+        <span>Shipped full-stack platforms with clean API design, auth flows, and data-driven dashboards.</span>
+        <br />
+        <br />
+        <strong>How I can help:</strong>
+        <br />
+        <span>Full-Stack Software Engineer</span>
+        <br />
+        <span>Automation Engineer (Marketing / Operations)</span>
+        <br />
+        <span>Data & Analytics Engineer</span>
+        <br />
+        <span>QA / AppSec Engineer</span>
+        <br />
+        <span>Technical Product Engineer</span>
         <br />
         <br />
         <strong>Quick Links:</strong>
@@ -125,7 +140,7 @@ function MyBioFolder() {
         <br />
         <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => openInBrowser('https://github.com/khizarahmedb')}>GitHub</span>
         <br />
-        <span>CV and thesis details are available on direct request.</span>
+        <span>Want thesis details? Email me at khizar18ahmed@gmail.com and I’ll share them directly.</span>
     </>
   );
 
@@ -151,18 +166,18 @@ function MyBioFolder() {
         <span>GPA: 3.40</span>
         <br />
         <br />
-        <strong>Primary Projects:</strong>
+        <strong>Featured Projects:</strong>
         <br />
-        <span>MUNIK XVI website, Invader Shop, TripleWhale Assistant, agents-config, decentralized insurance FYP, QA/AppSec execution.</span>
+        <span>MUNIK XVI website, Invader Shop, TripleWhale Assistant, agents-config, decentralized insurance FYP, and QA/AppSec execution.</span>
     </>
   );
 
   const hobbyText = ( // don't have to use DangerousHTML
     <>
-        Outside work, I like shipping side projects, improving developer workflows,
-        and experimenting with unusual UI concepts.
-        I also follow security research, growth analytics, and long-form technical writing.
-        Most weekends are spent polishing product ideas or exploring automation scripts.
+        Outside work, I love shipping side projects, refining developer workflows,
+        and experimenting with unusual UI ideas.
+        I also keep up with security research, growth analytics, and long-form technical writing.
+        Most weekends are spent polishing product ideas or testing new automation scripts.
     </>
   );
 

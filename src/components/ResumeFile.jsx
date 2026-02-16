@@ -36,11 +36,22 @@ function ResumeFile() {
       ]
     },
     impact: {
-      title: 'Impact',
+      title: 'Highlights',
       items: [
-        'Reduced reporting turnaround by 90% using automation pipelines.',
-        'Verified 8 security findings including 2 critical account-impact paths.',
-        'Built production workflows for finance, marketing, and operations.'
+        'Cut reporting turnaround by 90% by building reliable automation pipelines and reporting orchestration.',
+        'Validated 8 security findings, including critical account-impact paths, and confirmed remediation rechecks.',
+        'Built production workflows for finance, marketing, and operations with dependable day-to-day cadence.',
+        'Delivered full-stack products with solid API and data pipeline foundations.'
+      ]
+    },
+    roles: {
+      title: 'Roles I Can Step Into',
+      items: [
+        'Full-Stack Software Engineer',
+        'Automation Engineer (Marketing / Operations)',
+        'Data & Analytics Engineer',
+        'QA / AppSec Engineer',
+        'Technical Product Engineer'
       ]
     },
     education: {
@@ -58,7 +69,7 @@ function ResumeFile() {
         'Software Engineer',
         'Email: khizar18ahmed@gmail.com',
         'Phone: +92 345 3666623',
-        'Location: Karachi, Pakistan',
+        'Location: Islamabad, Pakistan',
         'LinkedIn: https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'
       ]
     }
@@ -203,7 +214,7 @@ function ResumeFile() {
                 </ul>
                 {activeSection !== 'contact' && (
                   <p style={{ marginTop: '14px' }}>
-                    Open the Projects window for full case studies, outcomes, and technical breakdowns.
+                    Open the Projects window for full case studies, real outcomes, and technical breakdowns.
                   </p>
                 )}
               </div>

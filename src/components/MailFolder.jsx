@@ -176,7 +176,7 @@ const form = useRef();
                   <a href="#" onClick={(e) => { e.preventDefault(); openInside('https://github.com/khizarahmedb'); }}>
                     GitHub
                   </a>
-                  <span>CV and thesis details are shared on direct request.</span>
+                  <span>Need thesis details? Email khizar18ahmed@gmail.com and I’ll share them directly.</span>
                 </div>
                 <div className="to_container">
                 <div className="sendmail_icon">
