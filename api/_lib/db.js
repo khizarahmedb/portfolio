@@ -1,6 +1,4 @@
-import { Signer } from '@aws-sdk/rds-signer';
 import { attachDatabasePool } from '@vercel/functions';
-import { awsCredentialsProvider } from '@vercel/functions/oidc';
 import { Pool } from 'pg';
 
 function templateToQuery(strings, values) {
@@ -22,9 +20,15 @@ let pool;
 let schemaInitPromise;
 
 function createPool() {
-  if (process.env.POSTGRES_URL) {
+  const connectionString =
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL;
+
+  if (connectionString) {
     return new Pool({
-      connectionString: process.env.POSTGRES_URL,
+      connectionString,
       ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
       max: 5,
       idleTimeoutMillis: 30_000,
@@ -39,22 +43,18 @@ function createPool() {
     process.env.PGDATABASE &&
     process.env.PGUSER
   ) {
-    const signer = new Signer({
-      hostname: process.env.PGHOST,
-      port: Number(process.env.PGPORT),
-      username: process.env.PGUSER,
-      region: process.env.AWS_REGION,
-      credentials: awsCredentialsProvider({
-        roleArn: process.env.AWS_ROLE_ARN,
-      }),
-    });
+    const directPassword =
+      process.env.PGPASSWORD ||
+      process.env.POSTGRES_PASSWORD ||
+      process.env.DB_PASSWORD ||
+      '';
 
     return new Pool({
       host: process.env.PGHOST,
       port: Number(process.env.PGPORT),
       database: process.env.PGDATABASE,
       user: process.env.PGUSER,
-      password: () => signer.getAuthToken(),
+      password: directPassword || undefined,
       ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
       max: 5,
       idleTimeoutMillis: 30_000,
@@ -63,7 +63,9 @@ function createPool() {
     });
   }
 
-  throw new Error('No supported Postgres configuration found in environment');
+  throw new Error(
+    'No supported Postgres configuration found in environment (expected POSTGRES_URL* or PGHOST/PGPORT/PGDATABASE/PGUSER[/PGPASSWORD])'
+  );
 }
 
 function getPool() {
