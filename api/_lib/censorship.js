@@ -1,5 +1,3 @@
-import Filter from 'bad-words';
-
 const EXTRA_BLOCKLIST = [
   'nigger',
   'n1gger',
@@ -11,11 +9,26 @@ const EXTRA_BLOCKLIST = [
   'asl',
 ];
 
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function looksLikeWord(value) {
+  return /^[a-z]+$/i.test(value);
+}
+
 export function sanitizeChatMessage(input) {
-  const message = String(input || '').trim();
+  let message = String(input || '').trim();
   if (!message) return '';
 
-  const filter = new Filter({ placeHolder: '*' });
-  EXTRA_BLOCKLIST.forEach((word) => filter.addWords(word));
-  return filter.clean(message);
+  for (const blocked of EXTRA_BLOCKLIST) {
+    const escaped = escapeRegex(blocked);
+    const pattern = looksLikeWord(blocked)
+      ? new RegExp(`\\b${escaped}\\b`, 'gi')
+      : new RegExp(escaped, 'gi');
+
+    message = message.replace(pattern, (match) => '*'.repeat(match.length));
+  }
+
+  return message;
 }
