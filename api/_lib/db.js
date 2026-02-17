@@ -1,4 +1,6 @@
+import { Signer } from '@aws-sdk/rds-signer';
 import { attachDatabasePool } from '@vercel/functions';
+import { awsCredentialsProvider } from '@vercel/functions/oidc';
 import { Pool } from 'pg';
 
 function templateToQuery(strings, values) {
@@ -43,11 +45,41 @@ function createPool() {
     process.env.PGDATABASE &&
     process.env.PGUSER
   ) {
+    const hasIamConfig =
+      Boolean(process.env.AWS_ROLE_ARN) &&
+      Boolean(process.env.AWS_REGION);
+
     const directPassword =
       process.env.PGPASSWORD ||
       process.env.POSTGRES_PASSWORD ||
       process.env.DB_PASSWORD ||
       '';
+
+    if (!directPassword && hasIamConfig) {
+      const signer = new Signer({
+        hostname: process.env.PGHOST,
+        port: Number(process.env.PGPORT),
+        username: process.env.PGUSER,
+        region: process.env.AWS_REGION,
+        credentials: awsCredentialsProvider({
+          roleArn: process.env.AWS_ROLE_ARN,
+          clientConfig: { region: process.env.AWS_REGION },
+        }),
+      });
+
+      return new Pool({
+        host: process.env.PGHOST,
+        port: Number(process.env.PGPORT),
+        database: process.env.PGDATABASE,
+        user: process.env.PGUSER,
+        password: () => signer.getAuthToken(),
+        ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
+        max: 5,
+        idleTimeoutMillis: 30_000,
+        connectionTimeoutMillis: 5_000,
+        keepAlive: true,
+      });
+    }
 
     return new Pool({
       host: process.env.PGHOST,

@@ -7,6 +7,7 @@ import {
   hashPassword,
 } from '../_lib/auth.js';
 import { ensureSchema, sql } from '../_lib/db.js';
+import { upsertMemoryUser } from '../_lib/chatMemory.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,8 +20,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    await ensureSchema();
-
     const body = parseRequestBody(req);
     const username = normalizeUsername(body.username);
     const usernameKey = normalizeUsernameKey(body.username);
@@ -29,38 +28,46 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Username must be 3-20 characters (letters, numbers, spaces, _, ., -)' });
     }
 
-    const existingUserQuery = await sql`
-      SELECT id, username, password_hash, role
-      FROM chat_users
-      WHERE username_norm = ${usernameKey}
-         OR (username_norm IS NULL AND LOWER(username) = ${usernameKey})
-      LIMIT 1
-    `;
+    let user;
+    try {
+      await ensureSchema();
 
-    let user = existingUserQuery.rows[0];
-
-    if (!user) {
-      const hashedPassword = await hashPassword(`username-only:${usernameKey}`);
-      const insertQuery = await sql`
-        INSERT INTO chat_users (username, username_norm, password_hash, role, last_seen_at)
-        VALUES (${username}, ${usernameKey}, ${hashedPassword}, 'user', NOW())
-        RETURNING id, username, role
+      const existingUserQuery = await sql`
+        SELECT id, username, password_hash, role
+        FROM chat_users
+        WHERE username_norm = ${usernameKey}
+           OR (username_norm IS NULL AND LOWER(username) = ${usernameKey})
+        LIMIT 1
       `;
-      user = insertQuery.rows[0];
-    } else {
-      if (!user.username_norm) {
+
+      user = existingUserQuery.rows[0];
+
+      if (!user) {
+        const hashedPassword = await hashPassword(`username-only:${usernameKey}`);
+        const insertQuery = await sql`
+          INSERT INTO chat_users (username, username_norm, password_hash, role, last_seen_at)
+          VALUES (${username}, ${usernameKey}, ${hashedPassword}, 'user', NOW())
+          RETURNING id, username, role
+        `;
+        user = insertQuery.rows[0];
+      } else {
+        if (!user.username_norm) {
+          await sql`
+            UPDATE chat_users
+            SET username_norm = ${usernameKey}
+            WHERE id = ${user.id}
+          `;
+        }
+
         await sql`
           UPDATE chat_users
-          SET username_norm = ${usernameKey}
+          SET last_seen_at = NOW()
           WHERE id = ${user.id}
         `;
       }
-
-      await sql`
-        UPDATE chat_users
-        SET last_seen_at = NOW()
-        WHERE id = ${user.id}
-      `;
+    } catch (dbError) {
+      console.error('chat/login db fallback', dbError);
+      user = upsertMemoryUser(usernameKey, username);
     }
 
     const token = createSignedToken(
