@@ -16,6 +16,10 @@ function MsnFolder() {
     ringMsn, setRingMsn,
     connectWebSocket,
     websocketConnection,
+    chatLogin,
+    clearChatSession,
+    chatAuthToken,
+    chatAuthUser,
     chatBotActive, setChatBotActive,
     onlineUser,
     loadedMessages, setLoadedMessages,
@@ -38,6 +42,10 @@ function MsnFolder() {
 
 
   const [userName, setUserName] = useState(false);
+  const [chatLoginModal, setChatLoginModal] = useState(false);
+  const [chatLoginName, setChatLoginName] = useState('');
+  const [chatLoginError, setChatLoginError] = useState('');
+  const [chatLoginLoading, setChatLoginLoading] = useState(false);
   const topOfMessagesRef = useRef(null); // Ref to track the top of the chat container
   const [initialLoading, setInitialLoading] = useState(false)
   const hasScrolledRef = useRef(false);
@@ -49,6 +57,14 @@ function MsnFolder() {
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [MSNExpand.show])
+
+  useEffect(() => {
+    if (MSNExpand.show && !chatAuthToken) {
+      setChatLoginModal(true);
+      setChatLoginName(chatAuthUser?.username || localStorage.getItem('username') || '');
+      setChatLoginError('');
+    }
+  }, [MSNExpand.show, chatAuthToken, chatAuthUser?.username]);
   
 
   useEffect(() => {
@@ -299,12 +315,22 @@ useEffect(() => {
             >
               <img src={nudge} alt="" />
             </div>
-            <span>Username: {userNameValue ? userNameValue : 'Anonymous'}</span>
+            <span>Username: {chatAuthUser?.username || userNameValue || 'Anonymous'}</span>
             <div className={`activate_bot ${chatBotActive ? 'active' : ''}`}
               onClick={() => setChatBotActive(!chatBotActive)}
             >
               <span>{chatBotActive? 'Bot Online' : 'Bot Offline' }</span>
             </div>     
+            {chatAuthToken ? (
+              <div className="activate_bot"
+                onClick={() => {
+                  clearChatSession();
+                  setChatLoginModal(true);
+                }}
+              >
+                <span>Logout</span>
+              </div>
+            ) : null}
           </div>
           <div className="chat_to_div">
             <span>
@@ -317,14 +343,18 @@ useEffect(() => {
               background: !websocketConnection ? 'rgba(0, 0, 0, 0.426)' : '',
             }}
           >
-            {!websocketConnection && (
+            {!websocketConnection && !chatLoginModal && (
               <div className="reconnect_container">
                 <p
                   onClick={() => {
+                    if (!chatAuthToken) {
+                      setChatLoginModal(true);
+                      return;
+                    }
                     connectWebSocket()
                   }}
                 >
-                  Click here to reconnect
+                  {chatAuthToken ? 'Click here to reconnect' : 'Login required'}
                 </p>
               </div>
             )}
@@ -353,14 +383,15 @@ useEffect(() => {
               maxLength={100}
               placeholder='Enter your message here...'
               value={chatValue}
+              disabled={!chatAuthToken}
               onChange={(e) => setChatValue(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') createChat()
               }}
             />
             <button
-              style={{ color: sendDisable ? 'grey' : null }}
-              disabled={sendDisable}
+              style={{ color: sendDisable || !chatAuthToken ? 'grey' : null }}
+              disabled={sendDisable || !chatAuthToken}
               onClick={() => {
                 createChat()
               }}
@@ -376,6 +407,74 @@ useEffect(() => {
             </p>
 
           </div>
+
+          {chatLoginModal ? (
+            <div
+              style={{
+                position: 'absolute',
+                inset: '30px 10px 28px 10px',
+                background: 'rgba(0,0,0,0.72)',
+                zIndex: 120,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                style={{
+                  width: 'min(380px, 96%)',
+                  background: '#d4d2d2',
+                  border: '2px solid #f5f5f5',
+                  borderRight: '1px solid #222',
+                  borderBottom: '1px solid #222',
+                  padding: '12px',
+                }}
+              >
+                <p style={{ marginBottom: '8px', fontWeight: 'bold' }}>Live Chat Login</p>
+                <p style={{ marginBottom: '8px' }}>Enter your username to join chat.</p>
+                <input
+                  type="text"
+                  maxLength={20}
+                  placeholder="Username"
+                  value={chatLoginName}
+                  onChange={(e) => setChatLoginName(e.target.value)}
+                  style={{ width: '100%', marginBottom: '8px', padding: '5px' }}
+                />
+                {chatLoginError ? (
+                  <p style={{ color: '#8d0000', marginBottom: '8px' }}>{chatLoginError}</p>
+                ) : null}
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <button
+                    type="button"
+                    disabled={chatLoginLoading}
+                    onClick={async () => {
+                      setChatLoginLoading(true);
+                      setChatLoginError('');
+                      try {
+                        await chatLogin(chatLoginName);
+                        setChatLoginModal(false);
+                      } catch (error) {
+                        setChatLoginError(error?.message || 'Unable to login');
+                      } finally {
+                        setChatLoginLoading(false);
+                      }
+                    }}
+                  >
+                    {chatLoginLoading ? 'Logging in...' : 'Login'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setChatLoginModal(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </Draggable>
     </>
