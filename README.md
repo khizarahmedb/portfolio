@@ -1,50 +1,62 @@
-# Windows 95 Portfolio (Khizar Ahmed)
+# Khizar Ahmed Portfolio
 
-This branch (`codex/windows95`) now runs a Windows95-style portfolio experience based on the upstream `wins95Portfolio` implementation, customized for Khizar Ahmed.
+This is my interactive portfolio, built as a retro Windows-style desktop experience on the web.  
+It presents my profile, experience, skills, projects, and contact details through draggable app windows instead of a traditional single-page layout.
 
-## What was achieved in this conversation
+## Live Site
 
-- Rebased this branch to the upstream Win95-style codebase structure (Vite + React) to keep behavior and UI close to the original interaction model.
-- Kept the experience deploy-safe for static hosting by replacing live network dependencies with static/local behavior where needed.
-- Updated personal identity/contact details to Khizar Ahmed across the experience.
-- Converted project-facing content to Khizar-only work.
+- [https://www.khizarahmed.com](https://www.khizarahmed.com)
 
-## UI/content changes made
+## What This Project Includes
 
-- Desktop keeps all extra icons, while emphasizing five primary section icons:
-  - `About`
-  - `Projects`
-  - `Experience`
-  - `Skills`
-  - `Contact`
-- Projects folder now shows only Khizar projects:
-  - MUNIK XVI Website
-  - Invader Shop
-  - Decentralized Insurance (FYP)
-  - Insurance Backend API
-  - QA + AppSec Thesis
-- About window was expanded with deeper profile detail:
-  - objective + impact snapshot
-  - role history + education summary
-  - core stack + specialization areas
-  - direct links (LinkedIn, GitHub, CV, thesis)
-- Contact window now includes always-visible quick links to LinkedIn/GitHub/CV/thesis in addition to the contact form flow.
+- Windows-style desktop shell with icon-based navigation
+- Core portfolio sections:
+  - About
+  - Projects
+  - Experience
+  - Skills
+  - Contact
+- Project detail windows with structured descriptions, outcomes, stack, and links
+- Resume/CV access from desktop shortcuts
+- MSN-style live chat window with persistent message history
+- Admin console access path via Run/CMD for moderation and monitoring
 
-## Static/deploy adjustments
+## Tech Stack
 
-- Removed dependence on live websocket/news/weather/wallpaper external APIs for baseline behavior.
-- Resume and thesis assets are served locally from `public/reports/`.
-- App runs at root path for local/dev preview.
+- React 18
+- Vite 5
+- Vercel Functions (`/api/*`)
+- Vercel Postgres
+- JWT-based session tokens for chat/admin APIs
+- `bad-words` filtering + custom blocked terms for chat message sanitization
 
-## Run
+## Local Development
 
 ```bash
 npm install
 npm run dev -- --port 3006
 ```
 
-## Build
+## Production Build
 
 ```bash
 npm run build
 ```
+
+## Environment Variables
+
+For full chat/admin functionality, configure these on Vercel (and locally if needed):
+
+- `CHAT_TOKEN_SECRET`
+- `ADMIN_TOKEN_SECRET`
+- `ADMIN_PASSWORD_BCRYPT_HASH` (or `ADMIN_PASSWORD_SHA256`)
+- `POSTGRES_URL` (provided by Vercel Postgres integration)
+
+Optional frontend hint for admin unlock UX:
+
+- `VITE_ADMIN_PASSWORD_SHA256`
+
+## Notes
+
+- Portfolio content is intentionally focused on my own projects and experience.
+- Some private/internal project resources are listed for completeness and are shared on direct request.
