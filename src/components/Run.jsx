@@ -57,20 +57,6 @@ function Run() {
         return;
       }
 
-      try {
-        const unlocked = await unlockAdminFromRun(input);
-        if (unlocked) {
-          handleShow('Admin');
-          closeRun();
-          return;
-        }
-      } catch (error) {
-        setRegErrorPopUp(true);
-        setRegErrorPopUpVal('AdminAuth');
-        closeRun();
-        return;
-      }
-
       if (lowerCaseName === 'admin') {
         if (adminAuthToken) {
           handleShow('Admin');
@@ -82,39 +68,46 @@ function Run() {
         return;
       }
 
-      
-      if(!matchedItem) {
-        setRegErrorPopUp(true);
-        setRegErrorPopUpVal(input);
-        closeRun();
+      // Normal Run behavior first: open matched desktop items.
+      if (matchedItem) {
+        if (cannotOpenFile.includes(lowerCaseName)) {
+          closeRun();
+          return;
+        }
+
+        switch (lowerCaseName) {
+          case 'resume': // Resume File
+            setTimeout(() => {
+              handleShow('ResumeFile');
+              closeRun();
+            }, 100);
+            break;
+
+          default:
+            setTimeout(() => {
+              handleShow(matchedItem.name);
+              closeRun();
+            }, 100);
+            break;
+        }
         return;
       }
 
-      // Prevent opening restricted files
-      if (cannotOpenFile.includes(lowerCaseName)) {
-        closeRun();
-        return;
+      // Fallback: treat unknown input as potential admin unlock secret.
+      try {
+        const unlocked = await unlockAdminFromRun(input);
+        if (unlocked) {
+          handleShow('Admin');
+          closeRun();
+          return;
+        }
+      } catch (error) {
+        // Avoid blocking regular Run behavior when admin API is unavailable.
       }
 
-      switch (lowerCaseName) {
-        
-
-        case 'resume': // Resume File
-          setTimeout(() => {
-            handleShow('ResumeFile');
-            closeRun();
-          }, 100);
-          break;
-
-
-        default:
-          setTimeout(() => {
-            const passedName = matchedItem ? matchedItem.name : name;
-            handleShow(passedName);
-            closeRun();
-          }, 100);
-          break;
-      }
+      setRegErrorPopUp(true);
+      setRegErrorPopUpVal(input);
+      closeRun();
     }
 
     // Generate allowed desktop items in run's list
