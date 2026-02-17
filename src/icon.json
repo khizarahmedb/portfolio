@@ -52,6 +52,18 @@
         "desktopLabel": "Contact"
     },
     {
+        "name": "MSN",
+        "pic": "MSN",
+        "folderId": "Desktop",
+        "size": 18,
+        "type": ".exe",
+        "x": 4.5,
+        "y": 4.5,
+        "category": "Communication",
+        "description": "Live chat with persistent user accounts and message history.",
+        "desktopLabel": "MSN"
+    },
+    {
         "name": "MineSweeper",
         "pic": "MineSweeper",
         "folderId": "Utility",

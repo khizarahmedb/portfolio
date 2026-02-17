@@ -529,20 +529,23 @@
 }
 
 .reconnect_container {
-    position: fixed;
-    width: 95%;
+    position: absolute;
+    width: 100%;
     height: 50px;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
     text-align: center;
-    z-index: 55555555555555555;
+    z-index: 6;
+    pointer-events: none;
 }
 .reconnect_container p {
     position: relative;
     top: 1rem;
     color: rgb(220, 219, 219);
     cursor: pointer;
-    z-index: 55555555555555555;
+    z-index: 6;
+    pointer-events: auto;
 }
 
 .reconnect_container p:hover {

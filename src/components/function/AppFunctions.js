@@ -40,6 +40,7 @@ import taskmanager from '../../assets/taskmanager.png'
 import notepad from '../../assets/notepad.png'
 import store from '../../assets/store.png'
 import layer from '../../assets/layer.png'
+import chatIcon from '../../assets/chat.png'
 
 
 
@@ -89,6 +90,10 @@ export function imageMapping (name, type) {
 
     case 'Mail':
       return Mail;
+
+    case 'MSN':
+    case 'msn':
+      return chatIcon;
 
     case 'Project':
     case 'Picture':
@@ -183,6 +188,10 @@ export function imageMapping (name, type) {
 
     case "TaskManager":
     case "taskmanager":
+      return taskmanager;
+
+    case "Admin":
+    case "admin":
       return taskmanager;
 
     case "NewFolder":
