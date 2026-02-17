@@ -98,7 +98,9 @@ function NewsApp() {
     }, [newsContainerRef]);
 
     function openNews(url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+        setProjectUrl(url);
+        setBackTrackIe(prev => [...prev, url]);
+        handleShow('Internet');
     }
 
     useEffect(() => {

@@ -29,8 +29,10 @@ import loadingSpin from './assets/loading.gif'
 const NewsApp = lazy(() => import('./components/NewsApp'));
 const SpinningCat = lazy(() => import('./components/SpinningCat'));
 const Patch = lazy(() => import('./components/Patch'));
+import MsnFolder from './components/MsnFolder';
 import WindowsDragLogin from './components/WindowsDragLogin';
 const TaskManager = lazy(() => import('./components/TaskManager'));
+import AdminPanel from './components/AdminPanel';
 import { StyleHide, imageMapping,
   handleDoubleClickEnterLink,handleDoubleTapEnterMobile,
   handleDoubleClickiframe, handleDoubleTapiframeMobile,
@@ -121,7 +123,6 @@ function App() {
   });
   const [iconSize, setIconSize] = useState(false)
   const [allowNoti, setAllowNoti] = useState(false)
-  const socket = useRef(null);
   const [clearNotiTimeOut, setClearNotiTimeOut] = useState(null)
   const [newMessage, setNewMessage] = useState('');
   const [notiOn, setNotiOn] = useState(false);
@@ -144,13 +145,24 @@ function App() {
   const [windowsShutDownAnimation, setWindowsShutDownAnimation] = useState(false)
   const [detectMouse, setDetectMouse] = useState(false)
   const endOfMessagesRef = useRef(null);
-  const [KeyChatSession, setKeyChatSession] = useState('')
   const [sendDisable, setSendDisable] = useState(false)
   const [userNameValue, setUserNameValue] = useState(() => {
     return localStorage.getItem('username') || '';
   });
   const [chatValue, setChatValue] = useState('')
   const [chatData, setChatData] = useState([])
+  const [chatAuthToken, setChatAuthToken] = useState(() => sessionStorage.getItem('chat_token') || '')
+  const [chatAuthUser, setChatAuthUser] = useState(() => {
+    const raw = sessionStorage.getItem('chat_user');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  })
+  const [adminAuthToken, setAdminAuthToken] = useState(() => sessionStorage.getItem('admin_token') || '')
+  const [adminOverview, setAdminOverview] = useState({ users: [], messages: [], stats: { totalUsers: 0, totalMessages: 0 } })
   const [shutdownWindow, setShutdownWindow] = useState(false)
   const ClearTOdonttouch = useRef(null);
   const ClearTOSongfunction = useRef(null);
@@ -170,7 +182,6 @@ function App() {
   const [showClippy, setShowClippy] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [startActive, setStartActive] = useState(false);
-  const [time, setTime] = useState('');
   const [tap, setTap] = useState([])
   const [lastTapTime, setLastTapTime] = useState(0)
   const [projectUrl, setProjectUrl] = useState('')
@@ -251,6 +262,9 @@ function App() {
   const [TaskManagerExpand, setTaskManagerExpand] = useState(
     {expand: false, show: false, hide: false, focusItem: true, x: 0, y: 0, zIndex: 1,});
 
+  const [AdminExpand, setAdminExpand] = useState(
+    {expand: false, show: false, hide: false, focusItem: true, x: 0, y: 0, zIndex: 1,});
+
   const [StoreExpand, setStoreExpand] = useState(
     {expand: false, show: false, hide: false, focusItem: true, x: 0, y: 0, zIndex: 1,});
   
@@ -274,6 +288,8 @@ function App() {
 });
 
   const UserCreatedFolderRef = useRef([]);
+  const chatPollIntervalRef = useRef(null);
+  const chatEventCursorRef = useRef(0);
 
     useEffect(() => { // REF for user created folder
       // Ensure refs array matches folders
@@ -286,11 +302,25 @@ function App() {
   
     const allPicture = desktopIcon.filter(picture => picture.type === '.jpeg'); // photo open
 
+  const privateResourceLabel =
+    typeof regErrorPopUpVal === 'string' && regErrorPopUpVal.startsWith('PrivateResource|')
+      ? regErrorPopUpVal.split('|')[1]
+      : '';
+
   const textError = ( // error message
-      regErrorPopUpVal === 'Thesis' ? (
+      privateResourceLabel ? (
+        <>
+          The link '{privateResourceLabel}' is a private/internal resource and is not publicly accessible.
+          Contact me at khizar18ahmed@gmail.com if you need access.
+        </>
+      ) : regErrorPopUpVal === 'AdminAuth' ? (
+        <>
+          Admin authentication failed. Enter the correct admin password in Run/CMD to open the Admin Console.
+        </>
+      ) : regErrorPopUpVal === 'Thesis' ? (
         <>
           This document contains sensitive information. 
-          Please contact me directly to discuss further details.
+          Please contact me at khizar18ahmed@gmail.com to discuss further details.
         </>
       ) : (
         <>
@@ -482,54 +512,225 @@ useEffect(() => {
 
 
 
-    const connectWebSocket = async () => {
-      const offlineMessage = {
-        name: 'System',
-        chat: 'MSN live chat is disabled in static mode.',
-        date: new Date().toISOString(),
-      };
-      setChatData([offlineMessage]);
-      setLoadedMessages([offlineMessage]);
-      setOnlineUser(1);
-      setLoading(false);
+    async function apiRequest(path, options = {}) {
+      const response = await fetch(path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {}),
+        },
+      });
+
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const errorMessage = payload?.error || 'Request failed';
+        throw new Error(errorMessage);
+      }
+
+      return payload;
+    }
+
+    function clearChatPolling() {
+      if (chatPollIntervalRef.current) {
+        clearInterval(chatPollIntervalRef.current);
+        chatPollIntervalRef.current = null;
+      }
+    }
+
+    function clearChatSession() {
+      clearChatPolling();
+      sessionStorage.removeItem('chat_token');
+      sessionStorage.removeItem('chat_user');
+      setChatAuthToken('');
+      setChatAuthUser(null);
       setWebsocketConnection(false);
+      setChatData([]);
+      setLoadedMessages([]);
+      chatEventCursorRef.current = 0;
+      setOnlineUser(0);
+    }
+
+    async function getChat(tokenOverride = chatAuthToken) {
+      const token = tokenOverride || chatAuthToken;
+      if (!token) {
+        setWebsocketConnection(false);
+        return;
+      }
+
+      const payload = await apiRequest(`/api/chat/messages?sinceEventId=${chatEventCursorRef.current}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const messages = payload.messages || [];
+      const events = payload.events || [];
+
+      setChatData(messages);
+      setLoadedMessages((prev) => {
+        if (!prev.length) return messages.slice(-20);
+        const knownIds = new Set(prev.map((message) => message.id));
+        const newMessages = messages.filter((message) => !knownIds.has(message.id));
+        return newMessages.length ? [...prev, ...newMessages] : prev;
+      });
+
+      if (Array.isArray(events) && events.length > 0) {
+        const hasRingEvent = events.some((event) => event.eventType === 'ring');
+        if (hasRingEvent && (!MSNExpand.show || MSNExpand.hide)) {
+          setRingMsn(true);
+        }
+      }
+
+      if (typeof payload.latestEventId === 'number') {
+        chatEventCursorRef.current = payload.latestEventId;
+      }
+
+      setOnlineUser(payload.onlineUsers || 0);
+      setChatDown(false);
+      setWebsocketConnection(true);
+    }
+
+    const connectWebSocket = async (tokenOverride = chatAuthToken) => {
+      const token = tokenOverride || chatAuthToken;
+      clearChatPolling();
+
+      if (!token) {
+        setLoading(false);
+        setWebsocketConnection(false);
+        return;
+      }
+
+      try {
+        await getChat(token);
+        setWebsocketConnection(true);
+        setLoading(false);
+      } catch (error) {
+        console.error('chat connect error', error);
+        setWebsocketConnection(false);
+        setChatDown(true);
+        setLoading(false);
+        return;
+      }
+
+      chatPollIntervalRef.current = setInterval(async () => {
+        try {
+          await getChat(token);
+        } catch (pollError) {
+          console.error('chat poll error', pollError);
+          setWebsocketConnection(false);
+          setChatDown(true);
+        }
+      }, 2500);
     };
+
+    async function chatLogin(username) {
+      const payload = await apiRequest('/api/chat/login', {
+        method: 'POST',
+        body: JSON.stringify({ username }),
+      });
+
+      sessionStorage.setItem('chat_token', payload.token);
+      sessionStorage.setItem('chat_user', JSON.stringify(payload.user));
+
+      setChatAuthToken(payload.token);
+      setChatAuthUser(payload.user);
+      setUserNameValue(payload.user?.username || username);
+      localStorage.setItem('username', payload.user?.username || username);
+      setChatValue('');
+      setChatData([]);
+      setLoadedMessages([]);
+      chatEventCursorRef.current = 0;
+      await connectWebSocket(payload.token);
+      return payload.user;
+    }
+
+    async function unlockAdminFromRun(rawInput) {
+      const candidate = String(rawInput || '').trim();
+      if (!candidate) return false;
+
+      const frontendHash = String(import.meta.env.VITE_ADMIN_PASSWORD_SHA256 || '')
+        .trim()
+        .toLowerCase();
+      if (frontendHash) {
+        const encoded = new TextEncoder().encode(candidate);
+        const digestBuffer = await crypto.subtle.digest('SHA-256', encoded);
+        const digestHex = Array.from(new Uint8Array(digestBuffer))
+          .map((byte) => byte.toString(16).padStart(2, '0'))
+          .join('')
+          .toLowerCase();
+
+        // Keep the frontend hash as a hint only. Backend remains the source of truth.
+        if (digestHex !== frontendHash) {
+          // Continue to backend verification instead of hard failing.
+        }
+      }
+
+      try {
+        const payload = await apiRequest('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({ password: candidate }),
+        });
+
+        sessionStorage.setItem('admin_token', payload.token);
+        setAdminAuthToken(payload.token);
+        return true;
+      } catch (error) {
+        if (error?.message === 'Invalid admin password') {
+          return false;
+        }
+        throw error;
+      }
+    }
+
+    function clearAdminSession() {
+      sessionStorage.removeItem('admin_token');
+      setAdminAuthToken('');
+      setAdminOverview({ users: [], messages: [], stats: { totalUsers: 0, totalMessages: 0 } });
+    }
+
+    async function fetchAdminOverview() {
+      if (!adminAuthToken) {
+        throw new Error('Admin session missing');
+      }
+
+      const payload = await apiRequest('/api/admin/overview', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${adminAuthToken}`,
+        },
+      });
+
+      setAdminOverview(payload);
+      return payload;
+    }
 
     useEffect(() => {
       setLoading(true);
-      connectWebSocket();
+      connectWebSocket(chatAuthToken);
 
       return () => {
-        if (socket.current) {
-          socket.current.onopen = null;
-          socket.current.onclose = null;
-          socket.current.onerror = null;
-          socket.current.onmessage = null;
-          socket.current.close();
-          setWebsocketConnection(false);
-        }
+        clearChatPolling();
       };
     }, []);
-
 
     useEffect(() => {
       let invisibilityTimeout = null;
 
       const handleVisibilityChange = () => {
         if (document.visibilityState === 'hidden') {
-          // Start a 30s countdown to close socket
           invisibilityTimeout = setTimeout(() => {
-            if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-              console.log('User was invisible for 10s. Closing WebSocket.');
-              socket.current.close();
-              setWebsocketConnection(false);
-            }
-          }, 10000); 
+            clearChatPolling();
+            setWebsocketConnection(false);
+          }, 10000);
         } else {
-          // 
           if (invisibilityTimeout) {
             clearTimeout(invisibilityTimeout);
             invisibilityTimeout = null;
+          }
+          if (chatAuthToken) {
+            connectWebSocket(chatAuthToken);
           }
         }
       };
@@ -540,7 +741,7 @@ useEffect(() => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         if (invisibilityTimeout) clearTimeout(invisibilityTimeout);
       };
-    }, []);
+    }, [chatAuthToken]);
 
 
 
@@ -577,9 +778,10 @@ useEffect(() => { // touch support device === true
   const onTouchStartSupported = 'ontouchstart' in document.documentElement;
   setIsTouchDevice(onTouchStartSupported);
 
-  document.addEventListener('gesturestart', function (e) { // prevent zooming on mobile
+  const handleGestureStart = (e) => {
     e.preventDefault();
-  });
+  };
+  document.addEventListener('gesturestart', handleGestureStart);
 
   function handleKeyPress(event){ // hitting windows button activates start menu
     if (event.keyCode === 91 || event.keyCode === 92 || event.keyCode === 93) {
@@ -589,6 +791,7 @@ useEffect(() => { // touch support device === true
   document.addEventListener('keydown', handleKeyPress);
   return () => {
       document.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener('gesturestart', handleGestureStart);
       htmlElement.removeEventListener('mouseenter', handleMouseSeen);
   };
 
@@ -878,7 +1081,11 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     localEffect, setLocalEffect,
     localBg, setLocalBg,
     connectWebSocket,
+    chatLogin,
+    clearChatSession,
     websocketConnection, setWebsocketConnection,
+    chatAuthToken,
+    chatAuthUser,
     city, setCity,
     Cel, setCel,
     weather, setWeather,
@@ -944,7 +1151,6 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     dropTargetFolder, setDropTargetFolder,
     draggedIcon, setDraggedIcon,
     startActive, setStartActive,
-    time, setTime,
     desktopIcon, setDesktopIcon,
     MybioExpand, setMybioExpand,
     tap, setTap,
@@ -991,6 +1197,7 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     shutdownWindow, setShutdownWindow,
     MineSweeperExpand, setMineSweeperExpand,
     MSNExpand, setMSNExpand,
+    AdminExpand, setAdminExpand,
     chatData, setChatData,
     chatValue, setChatValue,
     createChat,
@@ -999,6 +1206,11 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     clippyUsername, setClippyUsername,
     ClearTOclippyUsernameFunction,
     sendDisable, setSendDisable,
+    unlockAdminFromRun,
+    adminAuthToken,
+    adminOverview,
+    fetchAdminOverview,
+    clearAdminSession,
     login, setLogin,
     openProjectExpand, setOpenProjectExpand,
     projectUrl, setProjectUrl,
@@ -1139,15 +1351,15 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
           photoMode={true}
         />
         <Suspense fallback={null}>
-          <Store/>
-          <TaskManager/>
-          <Patch/>
-          <SpinningCat/>
-          <NewsApp/>
+          {StoreExpand.show && <Store/>}
+          {TaskManagerExpand.show && <TaskManager/>}
+          {PatchExpand.show && <Patch/>}
+          {runCatVideo && <SpinningCat/>}
+          {newsPopup && <NewsApp/>}
         </Suspense>
         <RightClickWindows/>
         <Suspense fallback={null}>
-          <Notification/>
+          {notiOn && <Notification/>}
         </Suspense>
         <Shutdown/>
         <MyComputer/>
@@ -1155,16 +1367,18 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <ResumeFolder/>
         <ProjectFolder/>
         <MailFolder/>
+        <MsnFolder/>
         <ResumeFile/>
         <Suspense fallback={null}>
-          <WebampPlayer/>
-          <MineSweeper/>
+          {WinampExpand.show && <WebampPlayer/>}
+          {MineSweeperExpand.show && <MineSweeper/>}
         </Suspense>
         <OpenProject/>
+        {AdminExpand.show && <AdminPanel/>}
         <BgSetting/>
         <Run/>
         <Suspense fallback={null}>
-          <BTC/>
+          {btcShow.show && <BTC/>}
         </Suspense>
         <Dragdrop/>
         <Footer/>
@@ -1369,12 +1583,18 @@ function handleDrop(e, name, target, oldFolderID) {
     }
 
 
-    function ringMsnOff() {
+    async function ringMsnOff() {
+      if (!chatAuthToken) return;
 
-      if(socket.current) {
-        socket.current.send(JSON.stringify({ ring: true }));
-      } else {
-          console.error('WebSocket is not initialized.');
+      try {
+        await apiRequest('/api/chat/nudge', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${chatAuthToken}`,
+          },
+        });
+      } catch (error) {
+        console.error('nudge error', error);
       }
     }
 
@@ -1393,54 +1613,41 @@ function handleDrop(e, name, target, oldFolderID) {
           setSendDisable(false);
           return;
       }
+
+      if (!chatAuthToken) {
+        setWebsocketConnection(false);
+        setSendDisable(false);
+        return;
+      }
   
       const offendedWords = badword(); // imported another file
       offendedWords.forEach(word => filter.addWords(word));
   
       const newChatVal = filter.clean(chatValue);
-      const payload = {
-          chat: newChatVal,
-          key: KeyChatSession,
-          mouse: detectMouse,
-          touch: isTouchDevice,
-          chatBotActive: chatBotActive,
-      };
-
-      if (userNameValue.trim().length < 1) {
-        payload.name = 'Anonymous'
+      try {
+        await apiRequest('/api/chat/messages', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${chatAuthToken}`,
+          },
+          body: JSON.stringify({
+            chat: newChatVal,
+            mouse: detectMouse,
+            touch: isTouchDevice,
+            chatBotActive: chatBotActive,
+            name: userNameValue.trim() || 'Anonymous',
+          }),
+        });
+        setChatValue('');
+        await getChat(chatAuthToken);
+      } catch (error) {
+        console.error('chat send error', error);
+        setChatDown(true);
+        setWebsocketConnection(false);
+      } finally {
+        setSendDisable(false);
       }
-  
-      if (userNameValue.trim().length > 0) {
-          const cleanedName = filter.clean(userNameValue);
-          payload.name = cleanedName;
-      }
-  
-      // Send the payload via WebSocket
-      if (socket.current) { // Check if socket is initialized
-          socket.current.send(JSON.stringify(payload));
-          console.log(payload)
-      } else {
-          console.error('WebSocket is not initialized.');
-      }
-  
-      // Clear the chat input field and reset sendDisable
-      setChatValue('');
-      setSendDisable(false);
-      console.log('Chat message sent:', payload);
   }
-
-
-// Function to fetch chat data
-async function getChat() {
-  const offlineMessage = {
-    name: 'System',
-    chat: 'No backend connected. Static portfolio mode is active.',
-    date: new Date().toISOString(),
-  };
-  setChatDown(true);
-  setChatData([offlineMessage]);
-  setLoadedMessages([offlineMessage]);
-}
 
 
 function ObjectState() {
@@ -1472,6 +1679,7 @@ function ObjectState() {
     { name: 'Paint',       setter: setPaintExpand,      usestate: PaintExpand,      color: 'rgba(193, 178, 46, 0.85)', size: 'small' },
     { name: 'Utility',     setter: setUtilityExpand,    usestate: UtilityExpand,    color: 'rgba(116, 85, 54, 0.85)', size: 'small' },
     { name: 'TaskManager', setter: setTaskManagerExpand,usestate: TaskManagerExpand,color: 'rgba(218, 160, 109, 0.85)', size: 'small' },
+    { name: 'Admin',       setter: setAdminExpand,      usestate: AdminExpand,      color: 'rgba(58, 58, 58, 0.85)', size: 'small' },
     { name: 'Store',       setter: setStoreExpand,      usestate: StoreExpand,      color: 'rgba(132, 140, 207, 0.85)', size: 'small' },
     { name: 'Bitcoin',     setter: setBtcShow,          usestate: btcShow,          color: 'rgba(132, 140, 207, 0.85)', size: 'small' },
     
@@ -1542,28 +1750,22 @@ function handleShow(name) {
 
   if (!itemExists) {
     const directBrowserItems = {
+      github: 'Github',
       cv: 'CV',
       bunbranch: 'BunBranch',
+      linkedin: 'LinkedIn',
+      type: 'Type',
       agentconfig: 'AgentConfig',
       portfoliov2: 'PortfolioV2',
+      ie: 'IE',
       nft: 'Nft',
       note: 'Note',
       aiagent: 'AiAgent',
-      d2cautomation: 'D2CAutomation',
       '3dobject': '3dObject',
       fortune: 'Fortune',
       pixelpic: 'PixelPic',
       thesis: 'Thesis',
     };
-    const directExternalLinks = {
-      linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
-      type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
-      github: 'https://github.com/khizarahmedb',
-    };
-    if (directExternalLinks[lowerCaseName]) {
-      window.open(directExternalLinks[lowerCaseName], '_blank', 'noopener,noreferrer');
-      return;
-    }
     if (directBrowserItems[lowerCaseName]) {
       handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
       handleShow('Internet');
@@ -1624,10 +1826,6 @@ function handleShow(name) {
           handleDoubleClickiframe('AiAgent', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe   )
           handleShow('Internet');
         }
-        if(lowerCaseName === 'd2cautomation') {
-          handleDoubleClickiframe('D2CAutomation', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
-        }
         if(lowerCaseName === '3dobject') {
         handleDoubleClickiframe('3dObject', setOpenProjectExpand, setProjectUrl , setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
@@ -1641,8 +1839,8 @@ function handleShow(name) {
         handleShow('Internet');
         }
         if(lowerCaseName === 'ie') {
-          handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
+        handleDoubleClickiframe('IE', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
         }
         if(lowerCaseName === 'agentconfig') {
         handleDoubleClickiframe('AgentConfig', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1652,11 +1850,17 @@ function handleShow(name) {
         handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
         }
-        if(lowerCaseName === 'linkedin' || lowerCaseName === 'type') {
-          window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
+        if(lowerCaseName === 'linkedin') {
+        handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
+        }
+        if(lowerCaseName === 'type') {
+        handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
         }
         if(lowerCaseName === 'github') {
-          window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
+        handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+        handleShow('Internet');
         }
         if(lowerCaseName === 'cv') {
         handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1666,7 +1870,7 @@ function handleShow(name) {
         handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
         handleShow('Internet');
         }
-        if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
+        if(lowerCaseName === 'thesis') {
           // Show error for thesis - sensitive information
           setRegErrorPopUp(true);
           setRegErrorPopUpVal('Thesis');
@@ -1687,7 +1891,7 @@ function handleShow(name) {
   if(tap.includes(name)) return;
   setStartActive(false);
 
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', 'D2CAutomation', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
   if (notToOpenList.includes(name)) return;
 
   setTap(prevTap => [...prevTap, name]);
@@ -1720,28 +1924,22 @@ function handleShowMobile(name) {
   
     if (!itemExists) {
       const directBrowserItems = {
+        github: 'Github',
         cv: 'CV',
         bunbranch: 'BunBranch',
+        linkedin: 'LinkedIn',
+        type: 'Type',
         agentconfig: 'AgentConfig',
         portfoliov2: 'PortfolioV2',
+        ie: 'IE',
         nft: 'Nft',
         note: 'Note',
         aiagent: 'AiAgent',
-        d2cautomation: 'D2CAutomation',
         '3dobject': '3dObject',
         fortune: 'Fortune',
         pixelpic: 'PixelPic',
         thesis: 'Thesis',
       };
-      const directExternalLinks = {
-        linkedin: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
-        type: 'https://www.linkedin.com/in/khizar-ahmed-0a62841b5/',
-        github: 'https://github.com/khizarahmedb',
-      };
-      if (directExternalLinks[lowerCaseName]) {
-        window.open(directExternalLinks[lowerCaseName], '_blank', 'noopener,noreferrer');
-        return;
-      }
       if (directBrowserItems[lowerCaseName]) {
         handleDoubleClickiframe(directBrowserItems[lowerCaseName], setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe);
         handleShow('Internet');
@@ -1798,10 +1996,6 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('AiAgent', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
-        if(lowerCaseName === 'd2cautomation') {
-          handleDoubleClickiframe('D2CAutomation', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
-          handleShow('Internet');
-        }
         if(lowerCaseName === '3dobject') {
         handleDoubleClickiframe('3dObject', setOpenProjectExpand, setProjectUrl)
         handleShow('Internet');
@@ -1826,11 +2020,17 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('PortfolioV2', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
-        if(lowerCaseName === 'linkedin' || lowerCaseName === 'type') {
-          window.open('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/', '_blank', 'noopener,noreferrer');
+        if(lowerCaseName === 'linkedin') {
+          handleDoubleClickiframe('LinkedIn', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
+        }
+        if(lowerCaseName === 'type') {
+          handleDoubleClickiframe('Type', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
         }
         if(lowerCaseName === 'github') {
-          window.open('https://github.com/khizarahmedb', '_blank', 'noopener,noreferrer');
+          handleDoubleClickiframe('Github', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
+          handleShow('Internet');
         }
         if(lowerCaseName === 'cv') {
           handleDoubleClickiframe('CV', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
@@ -1840,7 +2040,7 @@ function handleShowMobile(name) {
           handleDoubleClickiframe('BunBranch', setOpenProjectExpand, setProjectUrl, setBackTrackIe, setForwardTrackIe)
           handleShow('Internet');
         }
-        if(lowerCaseName === 'thesis' || lowerCaseName === 'pixelpic') {
+        if(lowerCaseName === 'thesis') {
           // Show error for thesis - sensitive information
           setRegErrorPopUp(true);
           setRegErrorPopUpVal('Thesis');
@@ -1858,7 +2058,7 @@ function handleShowMobile(name) {
     if(tap.includes(name)) return;
     setStartActive(false)
   
-  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', 'D2CAutomation', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
+  const notToOpenList = ['Run', 'Nft', 'Note', 'AiAgent', '3dObject', 'Fortune', 'Bitcoin', 'PixelPic', 'IE', 'AgentConfig', 'PortfolioV2', 'LinkedIn', 'Type', 'Thesis', 'BunBranch', 'Github', 'CV'];
     if (notToOpenList.includes(name)) return;
   
     setTap(prevTap => [...prevTap, name]);

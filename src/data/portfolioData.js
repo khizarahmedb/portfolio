@@ -5,7 +5,7 @@ export const projectProfiles = [
     period: '2025 - 2026',
     projectType: 'Production Website / Event Platform',
     summary: 'Production conference website for MUNIK XVI covering delegate onboarding, committee discovery, registration, and sponsor visibility.',
-    description: 'Built as a multi-page Next.js event platform with structured navigation, responsive sections, and motion-driven UI components.',
+    description: 'Developed as a multi-page Next.js event platform with clear navigation, responsive sections, and motion-led UI components.',
     goal: 'Make conference information and registration steps clear for local and international delegates while keeping content easy to maintain for future editions.',
     achievement: 'Delivered a complete public event website with dedicated registration tracks, committee pages, team/sponsor sections, and contact flows.',
     whatIBuilt: [
@@ -32,7 +32,7 @@ export const projectProfiles = [
     period: '2025',
     projectType: 'E-commerce / Full-Stack Frontend Platform',
     summary: 'Commerce frontend with full auth lifecycle, catalog/search flows, cart/checkout, support modules, and encrypted API transport.',
-    description: 'Implemented on Next.js with route-based journeys and a large API client layer for product, auth, wallet, and checkout operations.',
+    description: 'Built on Next.js with route-based user journeys and a large API client layer for products, auth, wallet, and checkout operations.',
     goal: 'Ship a reliable storefront journey from discovery to payment while improving transport security and auth/account robustness.',
     achievement: 'Delivered full customer flow: signup/login, 2FA/OTP and verification, product detail/search, cart, checkout success/failure, and support requests.',
     whatIBuilt: [
@@ -59,7 +59,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Full-Stack Product / Analytics Assistant',
     summary: 'Store-scoped marketing analytics assistant with planning/runs/chat workflows, connector integrations, and dual inference backends.',
-    description: 'Deployable Next.js + TypeScript app using App Router, tRPC + React Query, and scheduler workers for analytics operations.',
+    description: 'Deployable Next.js + TypeScript application using App Router, tRPC + React Query, and scheduler workers for analytics operations.',
     goal: 'Unify planning, execution, and communication for analytics/reporting work without context switching across disconnected tools.',
     achievement: 'Shipped planner, task-run history, chat sessions, store switching, and API surfaces for metrics, tasks, runs, Slack preview/send, and backend status.',
     whatIBuilt: [
@@ -75,6 +75,10 @@ export const projectProfiles = [
       'Created a deployable foundation for store-aware analytics operations.'
     ],
     skillsUsed: ['Next.js', 'TypeScript', 'API design', 'PostgreSQL', 'Scheduler workflows'],
+    references: [
+      { label: 'Architecture docs (private)', url: 'https://github.com/khizarahmedb/triplewhale-assistant', isPublic: false },
+      { label: 'Ops runbook (private)', url: 'https://github.com/khizarahmedb/triplewhale-assistant/wiki', isPublic: false }
+    ],
     confidentialityNote: 'Connector credentials and live store payload details are intentionally private.'
   },
   {
@@ -83,7 +87,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Developer Tooling / Configuration Architecture',
     summary: 'Reusable cross-repo configuration system for AI coding agents with deterministic setup and policy enforcement.',
-    description: 'Published templates, setup instructions, and bootstrap scripts to standardize AGENTS behavior across repositories and tools.',
+    description: 'Published templates, setup guides, and bootstrap scripts to keep AGENTS behavior consistent across repositories and tools.',
     goal: 'Reduce setup drift and make agent configuration consistent across local and remote repo contexts.',
     achievement: 'Documented copy-paste setup flow plus idempotent scripts for repo bootstrap, ignore policy, and consistency validation.',
     whatIBuilt: [
@@ -111,7 +115,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Developer Tooling / Branch Variant',
     summary: 'Bun-focused variant of the agents-config system to preserve workflow parity across runtimes.',
-    description: 'Extended core agent-config patterns with Bun-compatible setup paths while keeping behavior aligned with the main branch.',
+    description: 'Extended core agent-config patterns with Bun-compatible setup paths while keeping behavior aligned with the main branch experience.',
     goal: 'Support teams using Bun without splitting operational behavior from the primary configuration standard.',
     achievement: 'Maintained branch-specific compatibility with shared templates, precedence rules, and setup expectations.',
     whatIBuilt: [
@@ -135,7 +139,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'Personal Website / Case Study Platform',
     summary: 'Personal domain portfolio with project case studies, role history, skills, and desktop-style interaction patterns.',
-    description: 'Maintained as a multi-branch portfolio system (experimental layouts, structure-lab, windows95 shell) with shared project narratives.',
+    description: 'Maintained as a multi-branch portfolio system (experimental layouts, structure-lab, windows95 shell) with consistent project narratives.',
     goal: 'Provide a single public domain for clear technical storytelling and recruiter-friendly project visibility.',
     achievement: 'Consolidated project narratives, CV context, and interactive UI experiments into one domain-focused portfolio stack.',
     whatIBuilt: [
@@ -162,7 +166,7 @@ export const projectProfiles = [
     period: '2024',
     projectType: 'Final Year Project / Full-Stack Concept Build',
     summary: 'BSCS capstone prototype exploring transparent crypto-asset insurance workflows from cover purchase through claim handling.',
-    description: 'Frontend React app connected to Node/Express backend services for auth, cover management, user handling, and claims.',
+    description: 'React frontend connected to Node/Express backend services for auth, cover management, user handling, and claims.',
     goal: 'Prototype a practical insurance workflow that improves transparency for digital-asset cover and claim lifecycle handling.',
     achievement: 'Delivered complete academic capstone scope with production-style modules across frontend screens, backend APIs, and state management.',
     whatIBuilt: [
@@ -189,7 +193,7 @@ export const projectProfiles = [
     period: '2024',
     projectType: 'Backend API / Claims + Covers',
     summary: 'Express + MongoDB API service for decentralized insurance admin/auth, cover CRUD, claim lifecycle, and user endpoints.',
-    description: 'Backend powers the FYP insurance product with JWT auth, route controllers, and model-driven operations.',
+    description: 'The backend powers the FYP insurance product with JWT auth, route controllers, and model-driven operations.',
     goal: 'Provide stable service endpoints for cover creation/updates, claim submissions, and user/account workflows.',
     achievement: 'Implemented route groups (`/auth`, `/cover`, `/claim`, `/user`) with dedicated controllers and MongoDB models.',
     whatIBuilt: [
@@ -215,7 +219,7 @@ export const projectProfiles = [
     period: '2026',
     projectType: 'QA / AppSec Execution',
     summary: 'Sanitized, portfolio-safe QA/AppSec engagement report covering discovery, exploitation validation, and remediation recheck.',
-    description: 'Executed iterative QA and application security validation on web and API surfaces, then documented engineering-ready remediation guidance.',
+    description: 'Ran iterative QA and application security validation across web and API surfaces, then documented engineering-ready remediation guidance.',
     goal: 'Identify high-impact issues, verify exploitability, and provide actionable recheck-ready reports for engineering teams.',
     achievement: 'Closed a full test lifecycle: baseline recon, exploit confirmation, tooling-assisted validation, and remediation verification.',
     whatIBuilt: [
@@ -230,7 +234,7 @@ export const projectProfiles = [
       'Produced reusable QA/AppSec report format for future engagements.'
     ],
     skillsUsed: ['QA strategy', 'API security testing', 'Authorization analysis', 'Remediation validation'],
-    confidentialityNote: 'Sensitive report details are shared only on direct request.'
+    confidentialityNote: 'Sensitive report details are shared only on direct request via khizar18ahmed@gmail.com.'
   },
   {
     id: 'D2CAutomation',
@@ -248,27 +252,16 @@ export const projectProfiles = [
       'Indexing and attribution pipelines (`indexing/*`, rolling/prescient/post-purchase variants).',
       'Attach-rate and merchandising analysis automation (`flo-attach-rate-automation`).'
     ],
-    features: [
-      'Scheduled multi-frequency script orchestration',
-      'Cross-source data normalization',
-      'Alert routing for spend drops and tracking failures',
-      'Executive summary generation for CMO and growth reviews'
-    ],
     outcomes: [
       'Reduced reporting cycle time by 90%.',
       'Standardized decision metrics across finance and marketing.',
       'Improved operational visibility through scheduled alerting and compact report formats.'
     ],
-    scriptUseCases: [
-      { script: 'Daily PnL Reconciliation', useCase: 'Automates paid media spend, margin, and order-value reconciliation across stores.' },
-      { script: 'Historical Backfill Jobs', useCase: 'Repairs delayed reporting windows so long-term trends remain decision-ready.' },
-      { script: 'CMO Daily Report Pack', useCase: 'Generates leadership-ready daily snapshots of channel movement and risk signals.' },
-      { script: 'Hourly Performance Monitor', useCase: 'Runs hourly checks for sudden spend/performance anomalies and sends alerts.' },
-      { script: 'Attach-Rate Analysis Pack', useCase: 'Produces repeatable attach-rate and bundle-performance reviews for merchandising.' },
-      { script: 'Forecast and Pacing Runner', useCase: 'Builds pacing and forecast snapshots for planning and inventory coordination.' }
-    ],
     skillsUsed: ['JavaScript automation', 'Python scripting', 'Data transformation', 'Business intelligence'],
-    confidentialityNote: 'Store/company identifiers are anonymized.'
+    references: [
+      { label: 'Automation script workspace (private)', url: 'https://github.com/khizarahmedb/d2c-automation-platform', isPublic: false },
+      { label: 'Operations dashboard pack (private)', url: 'https://lookerstudio.google.com/reporting', isPublic: false }
+    ]
   },
   {
     id: 'Ittefaq',
@@ -276,7 +269,7 @@ export const projectProfiles = [
     period: '2025 - 2026',
     projectType: 'Full-Stack Social Product',
     summary: 'Map-first social platform (repo: `heystranger`, package: `ittefaq`) with story posts, nested comments, likes, bookmarks, and auth.',
-    description: 'Next.js social app centered around geolocation-aware storytelling and lightweight engagement loops.',
+    description: 'A Next.js social app centered around geolocation-aware storytelling and lightweight engagement loops.',
     goal: 'Build a location-aware social MVP where users can post, discover, and interact safely through account-scoped actions.',
     achievement: 'Implemented full social data model with role-aware users, map flows, and API routes for posts/comments/likes/bookmarks/auth.',
     whatIBuilt: [
@@ -303,7 +296,7 @@ export const projectProfiles = [
     period: '2025',
     projectType: 'Marketplace / Admin + Moderation Platform',
     summary: 'Marketplace app with listing lifecycle, categories, reviews/reports, and a full admin moderation/control plane.',
-    description: 'Next.js + Prisma platform with separated user/admin workflows and moderation-focused API surfaces.',
+    description: 'A Next.js + Prisma platform with separated user/admin workflows and moderation-focused API surfaces.',
     goal: 'Enable listing-based commerce while keeping moderation and operational visibility first-class.',
     achievement: 'Implemented role-aware schema and route groups for admin users, listings, categories, reports, and overview dashboards.',
     whatIBuilt: [
@@ -329,7 +322,7 @@ export const projectProfiles = [
     period: '2025',
     projectType: 'Security Tooling / Flask Dashboard',
     summary: 'Flask dashboard for authorized API key leak discovery, pattern extraction, validation, and triage management.',
-    description: 'Security research tool with explicit ethical use boundaries and OAuth-assisted GitHub scraping workflow.',
+    description: 'Security research tool with explicit ethical-use boundaries and an OAuth-assisted GitHub scraping workflow.',
     goal: 'Provide a controlled workflow for permission-based key leak discovery and validation without ad-hoc scripts.',
     achievement: 'Delivered end-to-end flow for scraping, key testing, result filtering, and persistent finding management.',
     whatIBuilt: [
@@ -347,9 +340,9 @@ export const projectProfiles = [
     skillsUsed: ['Python', 'Flask', 'SQLite', 'Security automation'],
     url: 'https://github.com/khizarahmedb/api-scrapper',
     references: [
-      { label: 'Repository', url: 'https://github.com/khizarahmedb/api-scrapper' }
-    ],
-    confidentialityNote: 'Use restricted to authorized security research contexts.'
+      { label: 'Repository', url: 'https://github.com/khizarahmedb/api-scrapper' },
+      { label: 'Research dataset snapshots (private)', url: 'https://github.com/khizarahmedb/api-scrapper/private-audit-notes', isPublic: false }
+    ]
   },
   {
     id: 'Github',
@@ -400,7 +393,9 @@ export const projectProfiles = [
       'Cleaner portfolio UX for desktop-style navigation.'
     ],
     skillsUsed: ['Technical writing', 'Information architecture'],
-    confidentialityNote: 'Detailed attachments are shared on direct request.'
+    references: [
+      { label: 'Detailed CV PDF', url: 'https://khizarahmed.com/reports/khizar-ahmed-cv.pdf', isPublic: true }
+    ]
   }
 ];
 
@@ -411,8 +406,5 @@ export const skillCatalog = {
   data: ['PostgreSQL', 'MySQL', 'MongoDB', 'SQLite', 'Redis', 'Prisma ORM', 'SQL query optimization', 'Data normalization pipelines', 'Reporting data models', 'Analytics schema mapping'],
   qaSecurity: ['Application security testing', 'API security testing', 'Authorization boundary analysis', 'Exploit path validation', 'Vulnerability reporting and remediation rechecks', 'Test strategy design', 'Unit and integration testing', 'Cypress component and flow testing', 'Rate limiting and abuse protection patterns', 'Secure API transport handling'],
   automation: ['Marketing reporting automation', 'PnL automation workflows', 'Forecasting automation', 'Attribution/indexing pipelines', 'Slack alerting integrations', 'Shopify connector integration', 'TripleWhale connector integration', 'Google Ads data integration', 'Meta paid-media data integration', 'Looker-ready feed preparation', 'Executive dashboard reporting'],
-  infra: ['Docker', 'Docker Compose', 'Nginx reverse proxy', 'PM2 process management', 'Linux server management', 'Vercel deployments', 'Netlify deployments', 'Environment and secret management', 'CI/CD with GitHub Actions', 'Build/release troubleshooting', 'Domain and SSL setup'],
-  architecture: ['Modular monolith architecture', 'Service-layer backend design', 'Repository/data-access pattern', 'Adapter/connector pattern', 'API-first product design', 'Feature-driven frontend structure', 'State management patterns', 'Pipeline and scheduler architecture', 'Event/alert workflow orchestration', 'Scalability and maintainability planning'],
-  frameworks: ['Next.js', 'React', 'Node.js', 'ASP.NET Core', 'EF Core', 'Cypress'],
-  delivery: ['Technical documentation', 'Performance optimization', 'Accessibility']
+  infra: ['Docker', 'Docker Compose', 'Nginx reverse proxy', 'PM2 process management', 'Linux server management', 'Vercel deployments', 'Netlify deployments', 'Environment and secret management', 'CI/CD with GitHub Actions', 'Build/release troubleshooting', 'Domain and SSL setup']
 };

@@ -12,7 +12,6 @@ function MyComputer() {
   const iconRefs = useRef([]);
   const getIconLabel = (icon) => icon.label || icon.desktopLabel || icon.name;
   const [popUpFolder, setPopUpFolder] = useState(false)
-  const isMobileViewport = window.innerWidth <= 500;
 
   const { 
     setCurrentRightClickFolder,
@@ -210,10 +209,10 @@ function MyComputer() {
                     ? inlineStyleExpand('MyComputer')
                     : inlineStyle('MyComputer')
             ),
-            width: MyComputerExpand.expand ? 'calc(100vw - 12px)' : (isMobileViewport ? 'calc(100vw - 12px)' : '760px'),
-            height: MyComputerExpand.expand ? 'calc(100svh - 46px)' : (isMobileViewport ? 'calc(100svh - 120px)' : '560px'),
-            minWidth: isMobileViewport ? '300px' : '620px',
-            minHeight: isMobileViewport ? '360px' : '460px',
+            width: MyComputerExpand.expand ? 'calc(100vw - 12px)' : '760px',
+            height: MyComputerExpand.expand ? 'calc(100svh - 46px)' : '560px',
+            minWidth: '620px',
+            minHeight: '460px',
             overflow: dragging ? '' : 'hidden'
         }}
         >
@@ -351,12 +350,12 @@ function MyComputer() {
           onClick={(e) =>  e.stopPropagation()}
           style={{ 
             height: MyComputerExpand.expand ? 'calc(100svh - 122px)' : '',
-            overflow: dragging ? '' : 'auto' 
+            overflow: dragging? '' : 'hidden' 
           }}
         >
           {showSkillPanel && (
             <div className="skills_panel_mypc">
-              <h4>Engineer Compatibility - Skills Matrix</h4>
+              <h4>Core Skills</h4>
               <div className="skills_panel_grid">
                 <div>
                   <strong>Languages:</strong>
@@ -371,28 +370,8 @@ function MyComputer() {
                   <p>{skillCatalog.backend.join(', ')}</p>
                 </div>
                 <div>
-                  <strong>Data + Storage:</strong>
-                  <p>{skillCatalog.data.join(', ')}</p>
-                </div>
-                <div>
-                  <strong>QA + Security:</strong>
-                  <p>{skillCatalog.qaSecurity.join(', ')}</p>
-                </div>
-                <div>
-                  <strong>Automation + Analytics:</strong>
-                  <p>{skillCatalog.automation.join(', ')}</p>
-                </div>
-                <div>
-                  <strong>Infrastructure:</strong>
-                  <p>{skillCatalog.infra.join(', ')}</p>
-                </div>
-                <div>
-                  <strong>Architecture + Patterns:</strong>
-                  <p>{skillCatalog.architecture.join(', ')}</p>
-                </div>
-                <div>
-                  <strong>Frameworks + Delivery:</strong>
-                  <p>{[...skillCatalog.frameworks, ...skillCatalog.delivery].join(', ')}</p>
+                  <strong>Data + QA/Security:</strong>
+                  <p>{[...skillCatalog.data, ...skillCatalog.qaSecurity].join(', ')}</p>
                 </div>
               </div>
             </div>

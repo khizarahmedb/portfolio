@@ -1,11 +1,9 @@
-import { useEffect, useRef, useContext, useState } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import UseContext from '../Context'
 import Webamp from 'webamp';
 import mp3 from '../assets/never-gonna-give-you-up.mp3';
 
 const WebampPlayer = () => {
-
-    const [focus, setFocus] = useState(false)
 
     const { 
         ObjectState,
@@ -52,11 +50,10 @@ const WebampPlayer = () => {
       
                     if (webampElement) {
                         webampElement.style.opacity = 0;
-                        webampElement.style.pointerEvent = 'none'
+                        webampElement.style.pointerEvents = 'none'
                         webampElement.style.touchAction = 'none'
                         webampElement.style.zIndex = -1
                         setWinampExpand(prev => ({...prev, hide: true, focusItem: false}));
-                        setFocus(false)
                     }
                 });
     
@@ -92,35 +89,27 @@ const WebampPlayer = () => {
             if(!WinampExpand.focusItem && !WinampExpand.hide) {
                 const maxZindex = (maxZindexRef.current || 0 ) + 1;
                 webampElement.style.zIndex = maxZindex;
-                maxZindexRef.cururent = maxZindex;
+                maxZindexRef.current = maxZindex;
             }
                
         } 
     }, [WinampExpand.focusItem]);
     
     useEffect(() => {
-        
         const handleFocusWinamp = (event) => {
+            const insideWinamp = event.target.closest('#webamp') || event.target.closest('#winamp-container');
+            if (!insideWinamp) return;
 
-            if (event.target.closest('#webamp' || event.target.closest('#winamp-container')) && !focus) {
-                const allState = ObjectState()
-                allState.forEach(item => {
-                    item.setter(prev => ({...prev, focusItem: item.name === 'Winamp'}))
-                })
-            }
+            const allState = ObjectState();
+            allState.forEach(item => {
+                item.setter(prev => ({ ...prev, focusItem: item.name === 'Winamp' }));
+            });
         };
-    
-        document.addEventListener('click', () => {
-            handleFocusWinamp()
-            setFocus(true)
-        });
-        document.addEventListener('touchstart', handleFocusWinamp);
-        document.addEventListener('mousedown', handleFocusWinamp);
-    
+
+        document.addEventListener('pointerdown', handleFocusWinamp);
+
         return () => {
-            document.removeEventListener('click', handleFocusWinamp);
-            document.removeEventListener('touchstart', handleFocusWinamp);
-            document.removeEventListener('mousedown', handleFocusWinamp);
+            document.removeEventListener('pointerdown', handleFocusWinamp);
         };
     }, []);
     

@@ -52,6 +52,18 @@
         "desktopLabel": "Contact"
     },
     {
+        "name": "MSN",
+        "pic": "MSN",
+        "folderId": "Desktop",
+        "size": 18,
+        "type": ".exe",
+        "x": 4.5,
+        "y": 4.5,
+        "category": "Communication",
+        "description": "Live chat with persistent user accounts and message history.",
+        "desktopLabel": "MSN"
+    },
+    {
         "name": "MineSweeper",
         "pic": "MineSweeper",
         "folderId": "Utility",
@@ -299,18 +311,6 @@
         "category": "Productivity",
         "description": "Analytics assistant with task planning, report runs, and chat workflows.",
         "label": "TripleWhale Assistant"
-    },
-    {
-        "name": "D2CAutomation",
-        "pic": "AiAgent",
-        "folderId": "Project",
-        "size": 9600,
-        "type": ".exe",
-        "x": 48,
-        "y": 48,
-        "category": "Productivity",
-        "description": "Marketing automation platform for PnL, forecasting, and alert workflows.",
-        "label": "D2C Automation Platform"
     },
     {
         "name": "Cat",

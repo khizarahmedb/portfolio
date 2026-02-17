@@ -115,6 +115,11 @@ function OpenProject() {
     return url.includes('github.com') || url.includes('linkedin.com');
   }
 
+  function getMirrorUrl(url) {
+    if (!url || !url.startsWith('http')) return '';
+    return `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`;
+  }
+
   function openInsideBrowser(url) {
     if (!url) return;
     setProjectUrl(url);
@@ -139,6 +144,7 @@ function OpenProject() {
   const isProjectDetailsView = projectUrl.startsWith('project://');
   const embeddableUrl = !isProjectDetailsView && projectUrl.startsWith('http') ? projectUrl : '';
   const canEmbed = Boolean(embeddableUrl) && !isFrameBlockedUrl(embeddableUrl);
+  const mirrorUrl = isFrameBlockedUrl(embeddableUrl) ? getMirrorUrl(embeddableUrl) : '';
   const splitColumns = window.innerWidth <= 800 ? '1fr' : '1.1fr 1fr';
   const referenceLinks = (activeProject?.references || [])
     .filter((reference) => Boolean(reference?.url))
@@ -279,11 +285,6 @@ function OpenProject() {
                 {allIEPRojects.map((project) => (
                   <div key={project.id}
                     onClick={() => {
-                      if (project.type === 'public') {
-                        window.open(project.url, '_blank', 'noopener,noreferrer');
-                        setExpandAddy(false);
-                        return;
-                      }
                       openInsideBrowser(project.url)
                     }}
                   >
@@ -328,8 +329,17 @@ function OpenProject() {
                     {embeddableUrl && !canEmbed ? (
                       <div style={{ marginBottom: '10px' }}>
                         <p style={{ marginBottom: '8px' }}>
-                          This site blocks embedding in iframes. Open it in a new tab instead.
+                          This site blocks embedding in iframes. Use the links on the right to continue.
                         </p>
+                        {mirrorUrl ? (
+                          <button
+                            type="button"
+                            onClick={() => openInsideBrowser(mirrorUrl)}
+                            style={{ padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
+                          >
+                            Open text mirror in emulator
+                          </button>
+                        ) : null}
                       </div>
                     ) : null}
                     <div style={{ border: '1px solid #d0d0d0', padding: '10px', background: '#f8f8f8' }}>
@@ -342,7 +352,7 @@ function OpenProject() {
               <div style={{ padding: '12px', overflowY: 'auto', fontSize: '13px' }}>
                 {activeProject ? (
                   <>
-                    <h3 style={{ fontSize: '18px', marginBottom: '4px' }}>{activeProject.title}</h3>
+                    <h3>{activeProject.title}</h3>
                     <p><strong>{activeProject.projectType}</strong> - {activeProject.period}</p>
                     <p style={{ margin: '8px 0' }}>{activeProject.summary}</p>
                     {activeProject.description ? (
@@ -364,38 +374,10 @@ function OpenProject() {
                     <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
                       {activeProject.whatIBuilt.map((point) => <li key={point}>{point}</li>)}
                     </ul>
-                    {activeProject.features ? (
-                      <>
-                        <p><strong>Features</strong></p>
-                        <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
-                          {activeProject.features.map((point) => <li key={point}>{point}</li>)}
-                        </ul>
-                      </>
-                    ) : null}
                     <p><strong>Outcomes</strong></p>
                     <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
                       {activeProject.outcomes.map((point) => <li key={point}>{point}</li>)}
                     </ul>
-                    {activeProject.scriptUseCases ? (
-                      <>
-                        <p><strong>Automation Use Cases</strong></p>
-                        <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
-                          {activeProject.scriptUseCases.map((entry) => (
-                            <li key={entry.script}><strong>{entry.script}:</strong> {entry.useCase}</li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : null}
-                    {activeProject.disclosures ? (
-                      <>
-                        <p><strong>Disclosure Notes</strong></p>
-                        <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
-                          {activeProject.disclosures.map((entry) => (
-                            <li key={entry.title}><strong>{entry.title}:</strong> {entry.detail}</li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : null}
                     <p><strong>Skills used</strong></p>
                     <p>{activeProject.skillsUsed.join(', ')}</p>
                     {activeProject.url ? (
@@ -413,10 +395,10 @@ function OpenProject() {
                         </p>
                         <button
                           type="button"
-                          onClick={() => window.open(activeProject.url, '_blank', 'noopener,noreferrer')}
+                          onClick={() => openInsideBrowser(activeProject.url)}
                           style={{ marginTop: '6px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
                         >
-                          Open in new tab
+                          Open Public URL Here
                         </button>
                         <p style={{ marginTop: '8px' }}>
                           <a
@@ -464,7 +446,7 @@ function OpenProject() {
           </div>
           <div className='ifram_text_container'>
             <p>
-                {activeProject?.url ? 'Project icons open description pages here. Public links open in a new tab.' : 'Contact Khizar Ahmed for non-public project details.'}
+                {activeProject?.url ? 'Use Open Public URL Here to load the page in this browser emulator, or View in your own browser to open a new tab.' : 'Contact Khizar Ahmed for non-public project details.'}
             </p>
           </div>
         </div>

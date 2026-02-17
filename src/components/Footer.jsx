@@ -34,6 +34,7 @@ export default function Footer() {
     const [calValue, calOnChange] = useState(new Date());
     const [width, setWidth] = useState(0);
     const [reRenderFooter, setRerenderFooter] = useState(0)
+    const [time, setTime] = useState('');
 
     const {
         deleteTap,
@@ -52,7 +53,6 @@ export default function Footer() {
         chatDown,
         remountRunPosition,
         startActive, setStartActive,
-        time, setTime,
         tap,
         imageMapping,
         handleShow,

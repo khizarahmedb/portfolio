@@ -23,7 +23,16 @@ function MailFolder() {
     inlineStyle,
     deleteTap,
     iconFocusIcon,
+    handleShow,
+    setProjectUrl,
+    setBackTrackIe,
    } = useContext(UseContext);
+
+  function openInside(url) {
+    setProjectUrl(url);
+    setBackTrackIe((prev) => [...prev, url]);
+    handleShow('Internet');
+  }
 
 const form = useRef();
 
@@ -161,13 +170,13 @@ const form = useRef();
 
               <div className="form_container">
                 <div className="profile_links_mail">
-                  <a href="https://www.linkedin.com/in/khizar-ahmed-0a62841b5/" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                  <a href="#" onClick={(e) => { e.preventDefault(); openInside('https://www.linkedin.com/in/khizar-ahmed-0a62841b5/'); }}>
                     LinkedIn
                   </a>
-                  <a href="https://github.com/khizarahmedb" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                  <a href="#" onClick={(e) => { e.preventDefault(); openInside('https://github.com/khizarahmedb'); }}>
                     GitHub
                   </a>
-                  <span>CV and thesis details are shared on direct request.</span>
+                  <span>Thesis details are available on request via khizar18ahmed@gmail.com.</span>
                 </div>
                 <div className="to_container">
                 <div className="sendmail_icon">

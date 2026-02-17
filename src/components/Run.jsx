@@ -33,12 +33,15 @@ function Run() {
     setRegErrorPopUpVal,
     setCurrentFolder,
     setSelectedFolder,
+    unlockAdminFromRun,
+    adminAuthToken,
    } = useContext(UseContext);
 
   const cannotOpenFile = ['internet', 'type', 'run', 'hard disk (c:)', 'hard disk (d:)', 'cd-rom' ]; // files that should not be opened by RUN
 
-    function handleRunOpenFile(ObjectState, name) {
-      const lowerCaseName = name.toLowerCase().trim();
+    async function handleRunOpenFile(ObjectState, name) {
+      const input = String(name || '').trim();
+      const lowerCaseName = input.toLowerCase();
       const matchedItem = desktopIcon.find(
         item => item.name.toLowerCase().trim() === lowerCaseName
       );
@@ -49,10 +52,40 @@ function Run() {
         setRunItemBox(false);
       };
 
+      if (!input) {
+        closeRun();
+        return;
+      }
+
+      try {
+        const unlocked = await unlockAdminFromRun(input);
+        if (unlocked) {
+          handleShow('Admin');
+          closeRun();
+          return;
+        }
+      } catch (error) {
+        setRegErrorPopUp(true);
+        setRegErrorPopUpVal('AdminAuth');
+        closeRun();
+        return;
+      }
+
+      if (lowerCaseName === 'admin') {
+        if (adminAuthToken) {
+          handleShow('Admin');
+        } else {
+          setRegErrorPopUp(true);
+          setRegErrorPopUpVal('AdminAuth');
+        }
+        closeRun();
+        return;
+      }
+
       
       if(!matchedItem) {
         setRegErrorPopUp(true);
-        setRegErrorPopUpVal(name);
+        setRegErrorPopUpVal(input);
         closeRun();
         return;
       }
