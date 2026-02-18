@@ -17,25 +17,11 @@ function OpenProject() {
 
   const [iframeKey, setIframeKey] = useState(0);
   const [expandAddy, setExpandAddy] = useState(false);
-  const allIEPRojects = projectProfiles.flatMap((project) => {
-    const descriptionEntry = {
-      id: project.id,
-      label: `${project.title} (Details)`,
-      url: `project://${project.id}`,
-      type: 'details',
-    };
-
-    const publicEntry = project.url
-      ? {
-          id: `${project.id}-public`,
-          label: `${project.title} (Public URL)`,
-          url: project.url,
-          type: 'public',
-        }
-      : null;
-
-    return publicEntry ? [descriptionEntry, publicEntry] : [descriptionEntry];
-  });
+  const allIEProjects = projectProfiles.map((project) => ({
+    id: project.id,
+    label: `${project.title} (Details)`,
+    url: `project://${project.id}`,
+  }));
 
   const { 
     handleShow,
@@ -54,6 +40,8 @@ function OpenProject() {
     inlineStyle,
     iconFocusIcon,
     deleteTap,
+    setRegErrorPopUp,
+    setRegErrorPopUpVal,
 
    } = useContext(UseContext);
 
@@ -141,18 +129,51 @@ function OpenProject() {
     return byUrl;
   })();
 
+  function openProjectResource(link) {
+    if (!link?.url) return;
+
+    if (link.isPublic === false) {
+      setRegErrorPopUpVal(`PrivateResource|${link.label || 'Resource'}`);
+      setRegErrorPopUp(true);
+      return;
+    }
+
+    window.open(link.url, '_blank', 'noopener,noreferrer');
+  }
+
   const isProjectDetailsView = projectUrl.startsWith('project://');
   const embeddableUrl = !isProjectDetailsView && projectUrl.startsWith('http') ? projectUrl : '';
   const canEmbed = Boolean(embeddableUrl) && !isFrameBlockedUrl(embeddableUrl);
   const mirrorUrl = isFrameBlockedUrl(embeddableUrl) ? getMirrorUrl(embeddableUrl) : '';
   const splitColumns = window.innerWidth <= 800 ? '1fr' : '1.1fr 1fr';
-  const referenceLinks = (activeProject?.references || [])
-    .filter((reference) => Boolean(reference?.url))
-    .filter(
-      (reference, index, all) =>
-        all.findIndex((item) => item.url === reference.url) === index
+  const projectLinks = (() => {
+    const baseLinks = [];
+
+    if (activeProject?.url) {
+      baseLinks.push({
+        label: 'Primary project link',
+        url: activeProject.url,
+        isPublic: true,
+      });
+    }
+
+    (activeProject?.references || [])
+      .filter((reference) => Boolean(reference?.url))
+      .forEach((reference) => {
+        baseLinks.push({
+          label: reference.label || reference.url,
+          url: reference.url,
+          isPublic: reference.isPublic !== false,
+        });
+      });
+
+    return baseLinks.filter(
+      (item, index, all) =>
+        all.findIndex((other) => other.url === item.url) === index
     );
-  const hasPublicResources = Boolean(activeProject?.url) || referenceLinks.length > 0;
+  })();
+  const hasPublicResources = projectLinks.some((link) => link.isPublic !== false);
+  const hasPrivateResources = projectLinks.some((link) => link.isPublic === false);
 
   return (
     <>
@@ -273,7 +294,7 @@ function OpenProject() {
           <div className="address_container">
             <p className='address'>Address:</p>
             <div className="address_box">
-                    <p>{projectUrl.length > 1 ? projectUrl : 'Search project details or choose a public URL'}</p>
+                    <p>{projectUrl.length > 1 ? projectUrl : 'Search project details from the list'}</p>
                 <div 
                   onClick={() => setExpandAddy(prev => !prev)}
                 >
@@ -282,7 +303,7 @@ function OpenProject() {
             </div>
             {expandAddy && (
               <div className="addy_expand_container">
-                {allIEPRojects.map((project) => (
+                {allIEProjects.map((project) => (
                   <div key={project.id}
                     onClick={() => {
                       openInsideBrowser(project.url)
@@ -380,60 +401,44 @@ function OpenProject() {
                     </ul>
                     <p><strong>Skills used</strong></p>
                     <p>{activeProject.skillsUsed.join(', ')}</p>
-                    {activeProject.url ? (
+                    {projectLinks.length > 0 ? (
                       <div style={{ marginTop: '10px' }}>
-                        <p>
-                          <strong>Public URL:</strong>{' '}
-                          <a
-                            href={activeProject.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'blue', textDecoration: 'underline' }}
-                          >
-                            {activeProject.url}
-                          </a>
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => openInsideBrowser(activeProject.url)}
-                          style={{ marginTop: '6px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
-                        >
-                          Open Public URL Here
-                        </button>
-                        <p style={{ marginTop: '8px' }}>
-                          <a
-                            href={activeProject.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'blue', textDecoration: 'underline' }}
-                          >
-                            View in your own browser
-                          </a>
-                        </p>
-                      </div>
-                    ) : null}
-                    {referenceLinks.length > 0 ? (
-                      <div style={{ marginTop: '10px' }}>
-                        <p><strong>Reference links</strong></p>
+                        <p><strong>Links</strong></p>
                         <ul style={{ paddingLeft: '18px', marginBottom: '8px' }}>
-                          {referenceLinks.map((reference) => (
-                            <li key={`${reference.label}-${reference.url}`}>
-                              <a
-                                href={reference.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ color: 'blue', textDecoration: 'underline' }}
+                          {projectLinks.map((reference) => (
+                            <li key={`${reference.label}-${reference.url}`} style={{ marginBottom: '4px' }}>
+                              <button
+                                type="button"
+                                onClick={() => openProjectResource(reference)}
+                                style={{
+                                  color: 'blue',
+                                  textDecoration: 'underline',
+                                  background: 'transparent',
+                                  border: 0,
+                                  padding: 0,
+                                  cursor: 'pointer',
+                                  fontSize: '13px',
+                                  fontFamily: 'inherit',
+                                }}
                               >
-                                {reference.label || reference.url}
-                              </a>
+                                {reference.label}
+                              </button>
+                              <span style={{ marginLeft: '6px', color: '#666' }}>
+                                ({reference.isPublic === false ? 'Private' : 'Public'})
+                              </span>
                             </li>
                           ))}
                         </ul>
                       </div>
                     ) : null}
                     <p style={{ marginTop: '10px' }}>
-                      <strong>Availability:</strong> {hasPublicResources ? 'Public resources available in Address list.' : 'Contact Khizar Ahmed for more details.'}
+                      <strong>Availability:</strong> {hasPublicResources ? 'Public links are available.' : 'Contact Khizar Ahmed at khizar18ahmed@gmail.com for more details.'}
                     </p>
+                    {hasPrivateResources ? (
+                      <p style={{ marginTop: '8px' }}>
+                        <strong>Private links:</strong> Some resources are listed for completeness and can be shared on request via khizar18ahmed@gmail.com.
+                      </p>
+                    ) : null}
                     {activeProject.confidentialityNote && (
                       <p style={{ marginTop: '8px' }}><strong>Note:</strong> {activeProject.confidentialityNote}</p>
                     )}
@@ -446,7 +451,7 @@ function OpenProject() {
           </div>
           <div className='ifram_text_container'>
             <p>
-                {activeProject?.url ? 'Use Open Public URL Here to load the page in this browser emulator, or View in your own browser to open a new tab.' : 'Contact Khizar Ahmed for non-public project details.'}
+                {hasPublicResources ? 'Open any public link from the project links list.' : 'Contact Khizar Ahmed at khizar18ahmed@gmail.com for non-public project details.'}
             </p>
           </div>
         </div>
