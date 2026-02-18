@@ -558,6 +558,11 @@ useEffect(() => {
       return 12000;
     }
 
+    function isUnauthorizedChatError(error) {
+      const message = String(error?.message || '').toLowerCase();
+      return message.includes('unauthorized');
+    }
+
     function clearChatSession() {
       clearChatPolling();
       sessionStorage.removeItem('chat_token');
@@ -651,6 +656,13 @@ useEffect(() => {
         setWebsocketConnection(false);
         setChatDown(true);
         setLoading(false);
+        if (isUnauthorizedChatError(error)) {
+          clearChatSession();
+          return;
+        }
+        chatPollTimeoutRef.current = setTimeout(() => {
+          connectWebSocket(token);
+        }, Math.max(2000, getChatPollDelay()));
         return;
       }
 
@@ -659,10 +671,16 @@ useEffect(() => {
           await getChat(token);
         } catch (pollError) {
           console.error('chat poll error', pollError);
+          if (isUnauthorizedChatError(pollError)) {
+            clearChatSession();
+            return;
+          }
           setWebsocketConnection(false);
           setChatDown(true);
         } finally {
-          chatPollTimeoutRef.current = setTimeout(poll, getChatPollDelay());
+          if (chatAuthToken || token) {
+            chatPollTimeoutRef.current = setTimeout(poll, getChatPollDelay());
+          }
         }
       };
 
@@ -687,7 +705,7 @@ useEffect(() => {
       setLoadedMessages([]);
       chatEventCursorRef.current = 0;
       chatMessageCursorRef.current = 0;
-      await connectWebSocket(payload.token);
+      connectWebSocket(payload.token);
       return payload.user;
     }
 

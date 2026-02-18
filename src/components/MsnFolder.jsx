@@ -65,6 +65,14 @@ function MsnFolder() {
       setChatLoginError('');
     }
   }, [MSNExpand.show, chatAuthToken, chatAuthUser?.username]);
+
+  useEffect(() => {
+    if (!MSNExpand.show || chatLoginModal || !chatAuthToken || websocketConnection) return;
+    const retry = setTimeout(() => {
+      connectWebSocket(chatAuthToken);
+    }, 1200);
+    return () => clearTimeout(retry);
+  }, [MSNExpand.show, chatLoginModal, chatAuthToken, websocketConnection, connectWebSocket]);
   
 
   useEffect(() => {
@@ -358,9 +366,9 @@ useEffect(() => {
                 </p>
               </div>
             )}
-            {chatData.length === 0 &&  (
+            {chatData.length === 0 && (
               <span style={{ position: 'relative', fontSize: '13px' }}>
-                LOADING.......
+                {websocketConnection ? 'No messages yet. Say hello.' : 'LOADING.......'}
               </span>
             )}
             <div ref={topOfMessagesRef} /> {/* Ref to track the top of the chat container */}

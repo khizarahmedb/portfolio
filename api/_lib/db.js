@@ -20,6 +20,15 @@ function templateToQuery(strings, values) {
 
 let pool;
 let schemaInitPromise;
+const poolConfig = {
+  max: Number(process.env.PG_POOL_MAX || 5),
+  idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT_MS || 30_000),
+  // Fail fast to fallback memory chat if DB is temporarily unavailable.
+  connectionTimeoutMillis: Number(process.env.PG_CONNECT_TIMEOUT_MS || 1500),
+  query_timeout: Number(process.env.PG_QUERY_TIMEOUT_MS || 4000),
+  statement_timeout: Number(process.env.PG_STATEMENT_TIMEOUT_MS || 4000),
+  keepAlive: true,
+};
 
 function createPool() {
   const connectionString =
@@ -32,10 +41,7 @@ function createPool() {
     return new Pool({
       connectionString,
       ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
-      max: 5,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
-      keepAlive: true,
+      ...poolConfig,
     });
   }
 
@@ -74,10 +80,7 @@ function createPool() {
         user: process.env.PGUSER,
         password: () => signer.getAuthToken(),
         ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
-        max: 5,
-        idleTimeoutMillis: 30_000,
-        connectionTimeoutMillis: 5_000,
-        keepAlive: true,
+        ...poolConfig,
       });
     }
 
@@ -88,10 +91,7 @@ function createPool() {
       user: process.env.PGUSER,
       password: directPassword || undefined,
       ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : undefined,
-      max: 5,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
-      keepAlive: true,
+      ...poolConfig,
     });
   }
 
