@@ -6,7 +6,7 @@ import Tile from './Tile';
 import '../css/Tile.css'
 import dayjs from 'dayjs';
 import bg0 from '../assets/bg0.png';
-import bg5 from '../assets/bg5.png';
+import bg5 from '../assets/bg5.webp';
 import bg7 from '../assets/bg7.png';
 import bg8 from '../assets/bg8.png';
 

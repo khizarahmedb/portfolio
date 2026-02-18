@@ -5,21 +5,21 @@ import badword from './badword'
 import Footer from './components/Footer';
 const Store = lazy(() => import('./components/Store'));
 import Dragdrop from './components/Dragdrop';
-import MyBioFolder from './components/MyBioFolder';
-import MyComputer from './components/MyComputer';
-import ResumeFolder from './components/ResumeFolder';
-import ProjectFolder from './components/ProjectFolder';
-import MailFolder from './components/MailFolder';
+const MyBioFolder = lazy(() => import('./components/MyBioFolder'));
+const MyComputer = lazy(() => import('./components/MyComputer'));
+const ResumeFolder = lazy(() => import('./components/ResumeFolder'));
+const ProjectFolder = lazy(() => import('./components/ProjectFolder'));
+const MailFolder = lazy(() => import('./components/MailFolder'));
 const WebampPlayer = lazy(() => import('./components/WinampPlayer'));
-import ResumeFile from './components/ResumeFile';
-import Shutdown from './components/Shutdown';
+const ResumeFile = lazy(() => import('./components/ResumeFile'));
+const Shutdown = lazy(() => import('./components/Shutdown'));
 const MineSweeper = lazy(() => import('./components/MineSweeper'));
 import iconInfo from './icon.json'
-import Login from './components/Login';
-import OpenProject from './components/OpenProject';
-import WindowsShutdown from './components/WindowsShutdown';
-import BgSetting from './components/BgSetting';
-import Run from './components/Run';
+const Login = lazy(() => import('./components/Login'));
+const OpenProject = lazy(() => import('./components/OpenProject'));
+const WindowsShutdown = lazy(() => import('./components/WindowsShutdown'));
+const BgSetting = lazy(() => import('./components/BgSetting'));
+const Run = lazy(() => import('./components/Run'));
 const Notification = lazy(() => import('./components/Notification'));
 const BTC = lazy(() => import('./components/BTC'));
 import EmptyFolder from './components/EmptyFolder';
@@ -29,10 +29,10 @@ import loadingSpin from './assets/loading.gif'
 const NewsApp = lazy(() => import('./components/NewsApp'));
 const SpinningCat = lazy(() => import('./components/SpinningCat'));
 const Patch = lazy(() => import('./components/Patch'));
-import MsnFolder from './components/MsnFolder';
-import WindowsDragLogin from './components/WindowsDragLogin';
+const MsnFolder = lazy(() => import('./components/MsnFolder'));
+const WindowsDragLogin = lazy(() => import('./components/WindowsDragLogin'));
 const TaskManager = lazy(() => import('./components/TaskManager'));
-import AdminPanel from './components/AdminPanel';
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
 import { StyleHide, imageMapping,
   handleDoubleClickEnterLink,handleDoubleTapEnterMobile,
   handleDoubleClickiframe, handleDoubleTapiframeMobile,
@@ -43,6 +43,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
+  const enableVercelTelemetry = import.meta.env.VITE_ENABLE_VERCEL_TELEMETRY === '1';
   const [backTrackIe, setBackTrackIe] = useState([]);
   const [forwardTrackIe, setForwardTrackIe] = useState([]);
   const [itemIsBeingDeleted, setItemIsBeingDeleted] = useState('')
@@ -290,8 +291,10 @@ function App() {
 });
 
   const UserCreatedFolderRef = useRef([]);
-  const chatPollIntervalRef = useRef(null);
+  const chatPollTimeoutRef = useRef(null);
   const chatEventCursorRef = useRef(0);
+  const chatMessageCursorRef = useRef(0);
+  const msnVisibilityRef = useRef({ show: false, hide: false });
 
     useEffect(() => { // REF for user created folder
       // Ensure refs array matches folders
@@ -514,6 +517,13 @@ useEffect(() => {
 
 
 
+    useEffect(() => {
+      msnVisibilityRef.current = {
+        show: Boolean(MSNExpand.show),
+        hide: Boolean(MSNExpand.hide),
+      };
+    }, [MSNExpand.show, MSNExpand.hide]);
+
     async function apiRequest(path, options = {}) {
       const response = await fetch(path, {
         ...options,
@@ -534,10 +544,18 @@ useEffect(() => {
     }
 
     function clearChatPolling() {
-      if (chatPollIntervalRef.current) {
-        clearInterval(chatPollIntervalRef.current);
-        chatPollIntervalRef.current = null;
+      if (chatPollTimeoutRef.current) {
+        clearTimeout(chatPollTimeoutRef.current);
+        chatPollTimeoutRef.current = null;
       }
+    }
+
+    function getChatPollDelay() {
+      const msnVisible = msnVisibilityRef.current.show && !msnVisibilityRef.current.hide;
+      const tabVisible = document.visibilityState === 'visible';
+      if (msnVisible && tabVisible) return 3500;
+      if (tabVisible) return 7000;
+      return 12000;
     }
 
     function clearChatSession() {
@@ -550,6 +568,7 @@ useEffect(() => {
       setChatData([]);
       setLoadedMessages([]);
       chatEventCursorRef.current = 0;
+      chatMessageCursorRef.current = 0;
       setOnlineUser(0);
     }
 
@@ -560,7 +579,9 @@ useEffect(() => {
         return;
       }
 
-      const payload = await apiRequest(`/api/chat/messages?sinceEventId=${chatEventCursorRef.current}`, {
+      const payload = await apiRequest(
+        `/api/chat/messages?sinceEventId=${chatEventCursorRef.current}&sinceMessageId=${chatMessageCursorRef.current}`,
+        {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -569,14 +590,31 @@ useEffect(() => {
 
       const messages = payload.messages || [];
       const events = payload.events || [];
+      const isSnapshot = chatMessageCursorRef.current === 0;
 
-      setChatData(messages);
-      setLoadedMessages((prev) => {
-        if (!prev.length) return messages.slice(-20);
-        const knownIds = new Set(prev.map((message) => message.id));
-        const newMessages = messages.filter((message) => !knownIds.has(message.id));
-        return newMessages.length ? [...prev, ...newMessages] : prev;
-      });
+      if (isSnapshot) {
+        setChatData(messages);
+        setLoadedMessages(messages.slice(-20));
+      } else if (messages.length > 0) {
+        setChatData((prev) => {
+          const knownIds = new Set(prev.map((message) => message.id));
+          const newMessages = messages.filter((message) => !knownIds.has(message.id));
+          return newMessages.length ? [...prev, ...newMessages] : prev;
+        });
+
+        setLoadedMessages((prev) => {
+          const knownIds = new Set(prev.map((message) => message.id));
+          const newMessages = messages.filter((message) => !knownIds.has(message.id));
+          return newMessages.length ? [...prev, ...newMessages] : prev;
+        });
+      }
+
+      if (messages.length > 0) {
+        const latestMessageId = messages[messages.length - 1]?.id;
+        if (typeof latestMessageId === 'number' && latestMessageId > chatMessageCursorRef.current) {
+          chatMessageCursorRef.current = latestMessageId;
+        }
+      }
 
       if (Array.isArray(events) && events.length > 0) {
         const hasRingEvent = events.some((event) => event.eventType === 'ring');
@@ -616,15 +654,19 @@ useEffect(() => {
         return;
       }
 
-      chatPollIntervalRef.current = setInterval(async () => {
+      const poll = async () => {
         try {
           await getChat(token);
         } catch (pollError) {
           console.error('chat poll error', pollError);
           setWebsocketConnection(false);
           setChatDown(true);
+        } finally {
+          chatPollTimeoutRef.current = setTimeout(poll, getChatPollDelay());
         }
-      }, 2500);
+      };
+
+      chatPollTimeoutRef.current = setTimeout(poll, getChatPollDelay());
     };
 
     async function chatLogin(username) {
@@ -644,6 +686,7 @@ useEffect(() => {
       setChatData([]);
       setLoadedMessages([]);
       chatEventCursorRef.current = 0;
+      chatMessageCursorRef.current = 0;
       await connectWebSocket(payload.token);
       return payload.user;
     }
@@ -1234,8 +1277,10 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
     }
     return(
       <UserContext.Provider value={contextValue}>
-        <Login/>
-        <WindowsDragLogin/>
+        <Suspense fallback={null}>
+          <Login/>
+          <WindowsDragLogin/>
+        </Suspense>
       </UserContext.Provider>
     )
   }
@@ -1243,7 +1288,9 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
   if(windowsShutDownAnimation) {
     return(
       <UserContext.Provider value={contextValue}>
-        <WindowsShutdown/>
+        <Suspense fallback={null}>
+          <WindowsShutdown/>
+        </Suspense>
       </UserContext.Provider>
     )
   }
@@ -1283,7 +1330,9 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
   return (
     <>
       <UserContext.Provider value={contextValue}>
-      <WindowsDragLogin/>
+      <Suspense fallback={null}>
+        {tileScreen && <WindowsDragLogin/>}
+      </Suspense>
       {regErrorPopUp && (
         <ErrorBtn
             themeDragBar={themeDragBar}
@@ -1294,7 +1343,7 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         />  
     )}
 
-        {UserCreatedFolder.length > 0 && UserCreatedFolder.map((folder, index) => (
+        {UserCreatedFolder.length > 0 && UserCreatedFolder.filter((folder) => folder.show).map((folder, index) => (
           <EmptyFolder
             key={folder.id}
             state={folder} 
@@ -1318,40 +1367,50 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
 
 
 
-        <EmptyFolder
-          state={PaintExpand} 
-          setState={setPaintExpand}
-          folderName='Paint'
-          paintMode={true}
-        />
+        {PaintExpand.show && (
+          <EmptyFolder
+            state={PaintExpand} 
+            setState={setPaintExpand}
+            folderName='Paint'
+            paintMode={true}
+          />
+        )}
 
-        <EmptyFolder
-          state={pictureExpand} 
-          setState={setPictureExpand}
-          refState={PictureRef}
-          folderName='Picture'
-        />
+        {pictureExpand.show && (
+          <EmptyFolder
+            state={pictureExpand} 
+            setState={setPictureExpand}
+            refState={PictureRef}
+            folderName='Picture'
+          />
+        )}
 
-        <EmptyFolder
-          state={BinExpand} 
-          setState={setBinExpand}
-          refState={BinRef}
-          folderName='RecycleBin'
-        />
+        {BinExpand.show && (
+          <EmptyFolder
+            state={BinExpand} 
+            setState={setBinExpand}
+            refState={BinRef}
+            folderName='RecycleBin'
+          />
+        )}
 
-        <EmptyFolder
-          state={UtilityExpand} 
-          setState={setUtilityExpand}
-          refState={UtilityRef}
-          folderName='Utility'
-        />
+        {UtilityExpand.show && (
+          <EmptyFolder
+            state={UtilityExpand} 
+            setState={setUtilityExpand}
+            refState={UtilityRef}
+            folderName='Utility'
+          />
+        )}
 
-        <EmptyFolder
-          state={photoOpenExpand} 
-          setState={setPhotoOpenExpand}
-          folderName='Photo'
-          photoMode={true}
-        />
+        {photoOpenExpand.show && (
+          <EmptyFolder
+            state={photoOpenExpand} 
+            setState={setPhotoOpenExpand}
+            folderName='Photo'
+            photoMode={true}
+          />
+        )}
         <Suspense fallback={null}>
           {StoreExpand.show && <Store/>}
           {TaskManagerExpand.show && <TaskManager/>}
@@ -1363,29 +1422,29 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <Suspense fallback={null}>
           {notiOn && <Notification/>}
         </Suspense>
-        <Shutdown/>
-        <MyComputer/>
-        <MyBioFolder/>
-        <ResumeFolder/>
-        <ProjectFolder/>
-        <MailFolder/>
-        <MsnFolder/>
-        <ResumeFile/>
         <Suspense fallback={null}>
+          {shutdownWindow && <Shutdown/>}
+          {MyComputerExpand.show && <MyComputer/>}
+          {MybioExpand.show && <MyBioFolder/>}
+          {ResumeExpand.show && <ResumeFolder/>}
+          {ProjectExpand.show && <ProjectFolder/>}
+          {MailExpand.show && <MailFolder/>}
+          {MSNExpand.show && <MsnFolder/>}
+          {ResumeFileExpand.show && <ResumeFile/>}
           {WinampExpand.show && <WebampPlayer/>}
           {MineSweeperExpand.show && <MineSweeper/>}
+          {openProjectExpand.show && <OpenProject/>}
+          {AdminExpand.show && <AdminPanel/>}
+          {BgSettingExpand.show && <BgSetting/>}
+          {RunExpand.show && <Run/>}
         </Suspense>
-        <OpenProject/>
-        {AdminExpand.show && <AdminPanel/>}
-        <BgSetting/>
-        <Run/>
         <Suspense fallback={null}>
           {btcShow.show && <BTC/>}
         </Suspense>
         <Dragdrop/>
         <Footer/>
-        <Analytics />
-        <SpeedInsights />
+        {enableVercelTelemetry && <Analytics />}
+        {enableVercelTelemetry && <SpeedInsights />}
       </UserContext.Provider>
     </>
   )

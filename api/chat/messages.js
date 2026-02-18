@@ -64,6 +64,8 @@ export default async function handler(req, res) {
     const userId = Number(auth.payload.sub);
     const sinceEventIdRaw = Number(req.query?.sinceEventId || 0);
     const sinceEventId = Number.isFinite(sinceEventIdRaw) ? sinceEventIdRaw : 0;
+    const sinceMessageIdRaw = Number(req.query?.sinceMessageId || 0);
+    const sinceMessageId = Number.isFinite(sinceMessageIdRaw) ? sinceMessageIdRaw : 0;
 
     try {
       await ensureSchema();
@@ -115,12 +117,20 @@ export default async function handler(req, res) {
         return res.status(201).json({ message: toMessageRow(message) });
       }
 
-      const messagesQuery = await sql`
-        SELECT id, username, body, created_at, is_bot
-        FROM chat_messages
-        ORDER BY created_at DESC
-        LIMIT 300
-      `;
+      const messagesQuery = sinceMessageId > 0
+        ? await sql`
+            SELECT id, username, body, created_at, is_bot
+            FROM chat_messages
+            WHERE id > ${sinceMessageId}
+            ORDER BY id ASC
+            LIMIT 300
+          `
+        : await sql`
+            SELECT id, username, body, created_at, is_bot
+            FROM chat_messages
+            ORDER BY created_at DESC
+            LIMIT 300
+          `;
 
       const onlineUsersQuery = await sql`
         SELECT COUNT(*)::INT AS count
@@ -136,7 +146,9 @@ export default async function handler(req, res) {
         LIMIT 100
       `;
 
-      const messages = [...messagesQuery.rows].reverse().map(toMessageRow);
+      const messages = sinceMessageId > 0
+        ? messagesQuery.rows.map(toMessageRow)
+        : [...messagesQuery.rows].reverse().map(toMessageRow);
       const events = eventsQuery.rows.map(toEventRow);
 
       return res.status(200).json({
@@ -188,7 +200,11 @@ export default async function handler(req, res) {
         return res.status(201).json({ message: toMessageRow(message) });
       }
 
-      const messages = listMemoryMessages(300).map(toMessageRow);
+      const messages = sinceMessageId > 0
+        ? listMemoryMessages(300)
+            .filter((message) => Number(message.id) > sinceMessageId)
+            .map(toMessageRow)
+        : listMemoryMessages(300).map(toMessageRow);
       const events = listMemoryEventsSince(sinceEventId, 100).map(toEventRow);
 
       return res.status(200).json({

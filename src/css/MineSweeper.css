@@ -1,6 +1,10 @@
 /* ------------ Folders ---------------- */
 
-@import url('https://fonts.cdnfonts.com/css/digital-dismay');
+@font-face {
+    font-family: 'Digital Dismay';
+    src: url('../assets/Digital Dismay.otf') format('opentype');
+    font-display: swap;
+}
 
 
 .folder_folder-MineSweeper {
