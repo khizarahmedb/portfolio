@@ -40,6 +40,7 @@ import { StyleHide, imageMapping,
   handleDoubleClickPhotoOpen,
  } from './components/function/AppFunctions';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
   const [backTrackIe, setBackTrackIe] = useState([]);
@@ -1384,6 +1385,7 @@ function handleShowInfolderMobile(name, type) { //important handleshow for in fo
         <Dragdrop/>
         <Footer/>
         <Analytics />
+        <SpeedInsights />
       </UserContext.Provider>
     </>
   )
